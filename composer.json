@@ -7,7 +7,7 @@
 	],
 	"require" : {
 		"bolt/bolt" : ">2.0,<3.0.0",
-		"bolt/authenticate" : ">1.0.4",
+		"bolt/sociallogin" : ">1.0.4",
 		"bolt/membership" : ">1.0.0"
 	},
 	"license" : "GPL",
