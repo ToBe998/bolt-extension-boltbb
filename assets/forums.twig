@@ -42,7 +42,7 @@
         <div class="forum-last-post">
             {% setcontent lastpost = contenttypes.topics orderby '-datecreated' returnsingle %}
             {%  if lastpost is not empty %}
-                {% set author = getvisitorprofile(lastpost['author']) %}
+                {% set author = memberprofile(lastpost['author']) %}
 
                 {% if author is not empty %}
 		            <div>{{ lastpost['datecreated']|date('M j, Y H:i:s') }}</div>
