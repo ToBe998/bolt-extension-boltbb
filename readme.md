@@ -1,7 +1,7 @@
 BoltBB
 ======
 
-
+```
 topics:
     name: Topics
     singular_name: Topic
@@ -57,3 +57,4 @@ replies:
     default_status: published
     sort: datepublish DESC
     recordsperpage: 10
+```
