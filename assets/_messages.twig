@@ -1,0 +1,45 @@
+
+{% if app.session.flashBag.keys()|length() %}
+
+<div class="row">
+    <div class="col-md-8">
+
+    {% if app.session.flashBag.has('info') %}
+        <div data-alert class="alert-box info">
+            {% for msg in app.session.flashBag.get('info') %}
+                {{ msg }}
+            {% endfor %}
+            <a href="#" class="close">&times;</a>
+        </div>
+    {% endif %}
+
+    {% if app.session.flashBag.has('error') %}
+        <div data-alert class="alert-box alert">
+            {% for msg in app.session.flashBag.get('error') %}
+                {{ msg }}
+            {% endfor %}
+            <a href="#" class="close">&times;</a>
+        </div>
+    {% endif %}
+
+    {% if app.session.flashBag.has('warning') %}
+        <div data-alert class="alert-box warning">
+            {% for msg in app.session.flashBag.get('warning') %}
+                {{ msg }}
+            {% endfor %}
+            <a href="#" class="close">&times;</a>
+        </div>
+    {% endif %}
+
+    {% if app.session.flashBag.has('success') %}
+        <div data-alert class="alert-box success">
+            {% for msg in app.session.flashBag.get('success') %}
+                {{ msg }}
+            {% endfor %}
+            <a href="#" class="close">&times;</a>
+        </div>
+    {% endif %}
+
+    </div>
+</div>
+{% endif %}

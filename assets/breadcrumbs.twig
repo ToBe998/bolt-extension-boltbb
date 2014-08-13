@@ -1,0 +1,12 @@
+
+{% block breadcrumbs %}
+<ul class="breadcrumbs">
+    <li><a href="/">Home</a></li>
+    {% if forum.title is empty %}
+        <li class="current"><a href="/{{ boltbb.base_uri }}/">Forums</a></li>
+    {% else %}
+        <li><a href="/{{ boltbb.base_uri }}/">Forums</a></li>
+        <li class="current"><a href="/{{ boltbb.base_uri }}/{{ forum.slug }}">{{ forum.title }}</a></li>
+    {% endif %}
+</ul>
+{% endblock %}

@@ -1,0 +1,97 @@
+{% extends twigparent %}
+
+{% block css %}
+<link rel="stylesheet" href="{{ css }}">
+{% endblock css %}
+
+{% block forums %}
+
+<div class="topic-title">
+	<h4>{{ topic['title'] }}</h4>
+
+	{{ forumsbreadcrumbs(forum.id) }}
+</div>
+
+{% include '_messages.twig' %}
+
+{% set query = contenttypes.replies~'/latest/'~pagercount %}
+{% setcontent replies = query where { forum: forum.id, topic: topic.id } orderby 'datecreated' allowpaging %}
+
+<div class="discussion">
+
+    {% if (request('page') == 1) or (request('page') is empty) %}
+	<div class="topic" id="topic-{{ forum.id }}-{{ topic.id }}">
+        <div class="topic-header">
+            <div>Posted on {{ topic['datecreated']|date('M j, Y H:i:s') }}</div>
+        </div>
+
+        <div class="topic-body">
+            <div class="author">
+                {% set author = getvisitorprofile(topic['author']) %}
+                <div><img src="{{ author.avatar }}" alt="{{ author.username }}" class="avatar"></div>
+                <div>{{ author.username }}</div>
+                <div>{{ topic.authorip }}</div>
+            </div>
+
+            <div class="body">
+		        {{ topic['body'] }}
+		    </div>
+		</div>
+
+		<div class="topic-footer">
+        </div>
+    </div>
+    <hr>
+    {% endif %}
+
+    {% for reply in replies %}
+    <div class="reply" id="reply-{{ forum.id }}-{{ topic.id }}-{{ reply['id'] }}">
+        <div class="reply-header">
+            {{ reply['datecreated']|date('M j, Y H:i:s') }}
+        </div>
+
+        <div class="reply-body">
+            <div class="author">
+                {% set author = getvisitorprofile(reply['author']) %}
+                <div><img src="{{ author.avatar }}" alt="{{ author.username }}" class="avatar"></div>
+                <div>{{ author.username }}</div>
+                <div>{{ reply.authorip }}</div>
+            </div>
+
+            <div class="body">
+		        {{ reply['body'] }}
+		    </div>
+		</div>
+
+		<div class="reply-footer">
+        </div>
+    </div>
+    {% endfor %}
+
+    <hr>
+    {{ pager() }}
+    <hr>
+
+</div>
+
+<hr>
+
+<div class="panel callout">
+    <h4>Create a new reply</h4>
+
+    {% if knownvisitor() %}
+        {{ form_start(form) }}
+            {{ form_row(form.editor) }}
+            {{ form_row(form.author, {value : visitor.id}) }}
+            <br>
+            {{ form_row(form.post) }}
+        {{ form_end(form) }}
+    {% else %}
+        {{ showvisitorlogin() }}
+    {% endif %}
+</div>
+
+<script src="{{ app['paths']['app'] }}view/lib/ckeditor/ckeditor.js"></script>
+<script src="{{ app['paths']['extensions'] }}BoltBB/js/BoltBB.js"></script>
+
+{% endblock %}

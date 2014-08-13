@@ -1,0 +1,33 @@
+{
+	"name" : "bolt/boltbb",
+	"description" : "A bulletin board extension",
+	"type" : "bolt-extension",
+	"keywords" : [
+		"lock"
+	],
+	"require" : {
+		"bolt/bolt" : ">2.0,<3.0.0",
+		"bolt/authenticate" : ">1.0.4",
+		"bolt/membership" : ">1.0.0"
+	},
+	"license" : "GPL",
+	"authors" : [{
+			"name" : "Gawain Lynch",
+			"email" : "gawain.lynch@gmail.com"
+		}
+	],
+	"autoload" : {
+		"files" : [
+			"init.php"
+		],
+		"psr-4" : {
+			"BoltBB\\" : "",
+			"BoltBB\\Libraries\\" : "src/"
+		}
+	},
+	"extra" : {
+		"branch-alias" : {
+			"dev-master" : "1.0.*"
+		}
+	}
+}

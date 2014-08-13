@@ -1,0 +1,30 @@
+forum_title: Sample Site Forums 
+forum_description: The place to talk about this site
+base_uri: forums
+contenttypes:
+  topics: topics
+  replies: replies
+
+forums:
+  general:
+    title: General Forum
+    description: A general forum for discussion
+
+pagercount: 10
+
+parent_template: boltbb.twig
+
+# Located in assets/
+templates:
+  index: forums.twig
+  forum: forum.twig
+  topic: topic.twig
+  uncategorised: uncategorised.twig
+  breadcrumbs: breadcrumbs.twig
+
+
+# Assumed to be in css/
+stylesheet: BoltBB.css
+
+notifications:
+  from_address: noreply@example.com

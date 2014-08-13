@@ -1,0 +1,92 @@
+{% extends twigparent %}
+
+{% block css %}
+<link rel="stylesheet" href="{{ css }}">
+{% endblock css %}
+
+{% block forums %}
+
+<div class="forum-title">
+    <h4>{{ forum['title'] }} Forum</h4>
+    <h6>{{ forum['description'] }}</h6>
+
+    {{ forumsbreadcrumbs(forum.id) }}
+</div>
+
+{% include '_messages.twig' %}
+
+{% set query = contenttypes.topics~'/latest/'~pagercount %}
+{% setcontent topics = query where { forum: forum.id } orderby '-datecreated' allowpaging %}
+
+<div class="forums">
+
+    <div class="forum-topics">
+
+        <div class="topic-header">
+            <div class="topic-title">Topic</div>
+            <div class="topic-replies">Replies</div>
+            <div class="topic-last-post">Last Post</div>
+        </div>
+
+        <div class="topic-body">
+            {% for topic in topics %}
+            <div class="topic {{ topic.state }}" id="topic-{{ topic.forum }}-{{ topic.id }}">
+
+                <div class="topic-title">
+                    <p><a href="/{{ boltbb.base_uri }}/{{ forum['slug'] }}/{{ topic.slug }}">{{ topic.title }}</a></p>
+                    {% set author = getvisitorprofile(topic['author']) %}
+                    <div>Posted by {{ author.username }} on {{ topic['datecreated']|date('M j, Y H:i:s') }}</div>
+                </div>
+
+                <div class="topic-replies">
+                    {{ topicreplycount(forum.id, topic.id) }}
+                </div>
+
+                <div class="topic-last-post">
+                    {% setcontent lastpost = contenttypes.topics where { topic: topic.id } orderby '-datecreated' returnsingle %}
+		            {% if lastpost is not empty %}
+		                {% set author = getvisitorprofile(lastpost['author']) %}
+
+		                {% if author is not empty %}
+		                    <div>{{ lastpost['datecreated']|date('M j, Y H:i:s') }}</div>
+		                    <div><img src="{{ author.avatar }}" alt="{{ author.username }}" class="avatar">&nbsp;{{ author.username }}</div>
+		                {% endif %}
+		            {% endif %}
+                </div>
+
+            </div>
+            {% endfor %}
+        </div>
+
+        <div class="topic-footer">
+        </div>
+
+        <hr>
+        {{ pager() }}
+        <hr>
+
+    </div>
+
+</div>
+
+
+<div class="panel callout">
+    <h4>Create a new topic in {{ forum['title'] }}</h4>
+
+    {% if knownvisitor() %}
+        {{ form_start(form) }}
+            {{ form_row(form.title) }}
+            {{ form_row(form.editor) }}
+            {{ form_row(form.author, {value : visitor.id}) }}
+            <br>
+            {{ form_row(form.post) }}
+        {{ form_end(form) }}
+    {% else %}
+        {{ showvisitorlogin() }}
+    {% endif %}
+</div>
+
+<script src="{{ app['paths']['app'] }}view/lib/ckeditor/ckeditor.js"></script>
+<script src="{{ app['paths']['extensions'] }}BoltBB/js/BoltBB.js"></script>
+
+{% endblock %}
