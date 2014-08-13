@@ -55,7 +55,6 @@ class Extension extends \Bolt\BaseExtension
 
         // Twig functions
         $this->app['twig']->addExtension(new ForumsTwigExtension($this->functions));
-        //$this->app['twig']->addGlobal('visitor', $recognizedvisitor);
     }
 
     /**
