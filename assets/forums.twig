@@ -42,10 +42,10 @@
         <div class="forum-last-post">
             {% setcontent lastpost = contenttypes.topics orderby '-datecreated' returnsingle %}
             {%  if lastpost is not empty %}
-                {% set author = memberprofile(lastpost['author']) %}
+	            <div>{{ lastpost['datecreated']|date('M j, Y H:i:s') }}</div>
 
+                {% set author = memberprofile(lastpost['author']) %}
                 {% if author is not empty %}
-		            <div>{{ lastpost['datecreated']|date('M j, Y H:i:s') }}</div>
                     <div><img src="{{ author.avatar }}" alt="{{ author.username }}" class="avatar">&nbsp;{{ author.username }}</div>
                 {% endif %}
             {% endif %}
@@ -73,10 +73,10 @@
         <div class="forum-last-post">
             {% setcontent lastpost = contenttypes.topics where { forum: forum.id } orderby '-datecreated' returnsingle %}
             {%  if lastpost is not empty %}
-                {% set author = memberprofile(lastpost['author']) %}
+	            <div>{{ lastpost['datecreated']|date('M j, Y H:i:s') }}</div>
 
+                {% set author = memberprofile(lastpost['author']) %}
                 {% if author is not empty %}
-		            <div>{{ lastpost['datecreated']|date('M j, Y H:i:s') }}</div>
                     <div><img src="{{ author.avatar }}" alt="{{ author.username }}" class="avatar">&nbsp;{{ author.username }}</div>
                 {% endif %}
             {% endif %}

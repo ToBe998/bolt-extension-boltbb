@@ -27,10 +27,12 @@
 
         <div class="topic-body">
             <div class="author">
-                {% set author = getvisitorprofile(topic['author']) %}
-                <div><img src="{{ author.avatar }}" alt="{{ author.username }}" class="avatar"></div>
-                <div>{{ author.username }}</div>
-                <div>{{ topic.authorip }}</div>
+                {% set author = memberprofile(topic['author']) %}
+                {% if author is not empty %}
+                    <div><img src="{{ author.avatar }}" alt="{{ author.username }}" class="avatar"></div>
+                    <div>{{ author.username }}</div>
+                    <div>{{ topic.authorip }}</div>
+                {% endif %}
             </div>
 
             <div class="body">
@@ -52,10 +54,12 @@
 
         <div class="reply-body">
             <div class="author">
-                {% set author = getvisitorprofile(reply['author']) %}
-                <div><img src="{{ author.avatar }}" alt="{{ author.username }}" class="avatar"></div>
-                <div>{{ author.username }}</div>
-                <div>{{ reply.authorip }}</div>
+                {% set author = memberprofile(reply['author']) %}
+                {% if author is not empty %}
+                    <div><img src="{{ author.avatar }}" alt="{{ author.username }}" class="avatar"></div>
+                    <div>{{ author.username }}</div>
+                    <div>{{ reply.authorip }}</div>
+                {% endif %}
             </div>
 
             <div class="body">
