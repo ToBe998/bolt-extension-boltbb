@@ -73,7 +73,8 @@
 <div class="panel callout">
     <h4>Create a new topic in {{ forum.title }}</h4>
 
-    {% if knownvisitor() %}
+    {% set profile = memberprofile() %}
+    {% if profile() %}
         {{ form_start(form) }}
             {{ form_row(form.title) }}
             {{ form_row(form.editor) }}
@@ -82,7 +83,7 @@
             {{ form_row(form.post) }}
         {{ form_end(form) }}
     {% else %}
-        {{ showvisitorlogin() }}
+        {{ sociallogin() }}
     {% endif %}
 </div>
 
