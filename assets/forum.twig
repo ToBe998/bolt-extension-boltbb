@@ -74,7 +74,7 @@
     <h4>Create a new topic in {{ forum.title }}</h4>
 
     {% set profile = memberprofile() %}
-    {% if profile() %}
+    {% if profile %}
         {{ form_start(form) }}
             {{ form_row(form.title) }}
             {{ form_row(form.editor) }}
