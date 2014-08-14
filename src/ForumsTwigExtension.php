@@ -40,8 +40,6 @@ class ForumsTwigExtension extends \Twig_Extension
             'forumreplycount'   => new \Twig_Function_Method($this, 'forumReplyCount'),
             'topicreplycount'   => new \Twig_Function_Method($this, 'topicReplyCount'),
         );
-//             'forumlastpost'   => new \Twig_Function_Method($this, 'forumLastPost'),
-//             'topiclastpost'   => new \Twig_Function_Method($this, 'topicLastPost'),
     }
 
     /**
