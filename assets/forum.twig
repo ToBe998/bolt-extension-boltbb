@@ -7,7 +7,7 @@
 {% block forums %}
 
 <div class="forum-title">
-    <h4>{{ forum['title'] }} Forum</h4>
+    <h4>{{ forum.title }} Forum</h4>
     <h6>{{ forum['description'] }}</h6>
 
     {{ forumsbreadcrumbs(forum.id) }}
@@ -35,7 +35,7 @@
                 <div class="topic-title">
                     <p><a href="/{{ boltbb.base_uri }}/{{ forum['slug'] }}/{{ topic.slug }}">{{ topic.title }}</a></p>
                     {% set author = memberprofile(topic['author']) %}
-                    <div>Posted by {{ author.username }} on {{ topic['datecreated']|date('M j, Y H:i:s') }}</div>
+                    <div>Posted by {{ author.username }} on {{ topic.datecreated|date('M j, Y H:i:s') }}</div>
                 </div>
 
                 <div class="topic-replies">
@@ -45,7 +45,7 @@
                 <div class="topic-last-post">
                     {% setcontent lastpost = contenttypes.topics where { topic: topic.id } orderby '-datecreated' returnsingle %}
 		            {% if lastpost is not empty %}
-	                    <div>{{ lastpost['datecreated']|date('M j, Y H:i:s') }}</div>
+	                    <div>{{ lastpost.datecreated|date('M j, Y H:i:s') }}</div>
 
 		                {% set author = memberprofile(lastpost['author']) %}
 		                {% if author is not empty %}
@@ -71,7 +71,7 @@
 
 
 <div class="panel callout">
-    <h4>Create a new topic in {{ forum['title'] }}</h4>
+    <h4>Create a new topic in {{ forum.title }}</h4>
 
     {% if knownvisitor() %}
         {{ form_start(form) }}

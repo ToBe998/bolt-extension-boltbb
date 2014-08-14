@@ -22,7 +22,7 @@
     {% if (request('page') == 1) or (request('page') is empty) %}
 	<div class="topic" id="topic-{{ forum.id }}-{{ topic.id }}">
         <div class="topic-header">
-            <div>Posted on {{ topic['datecreated']|date('M j, Y H:i:s') }}</div>
+            <div>Posted on {{ topic.datecreated|date('M j, Y H:i:s') }}</div>
         </div>
 
         <div class="topic-body">

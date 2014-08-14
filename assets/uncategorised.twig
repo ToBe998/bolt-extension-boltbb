@@ -32,8 +32,8 @@
             <div class="topic {{ topic.state }}" id="topic-{{ topic.forum }}-{{ topic.id }}">
 
                 <div class="topic-title">
-                    <p><a href="/{{ boltbb.base_uri }}/{{ forumslug(topic.forum) }}/{{ topic.slug }}">{{ topic.title }}</a></p>
-                    {% set author = getvisitorprofile(topic.author) %}
+                    <p><a href="/{{ boltbb.base_uri }}/{{ forum['slug'] }}/{{ topic.slug }}">{{ topic.title }}</a></p>
+                    {% set author = memberprofile(topic['author']) %}
                     <div>Posted by {{ author.username }} on {{ topic.datecreated|date('M j, Y H:i:s') }}</div>
                 </div>
 
@@ -44,7 +44,7 @@
                 <div class="topic-last-post">
                     {% setcontent lastpost = 'replies' where { forum: topic.forum, topic: topic.id } returnsingle %}
 		            {%  if lastpost is not empty %}
-		                {% set author = getvisitorprofile(lastpost.author) %}
+		                {% set author = memberprofile(lastpost.author) %}
 
 		                <div>{{ lastpost.datecreated|date('M j, Y H:i:s') }}</div>
 		                <div><img src="{{ author.avatar }}" alt="{{ author.username }}" class="avatar">&nbsp;{{ author.username }}</div>
@@ -69,7 +69,7 @@
 
 {#
 <div class="panel callout">
-    <h4>Create a new topic in {{ forum['title'] }}</h4>
+    <h4>Create a new topic in {{ forum.title }}</h4>
 
     {% if knownvisitor() %}
         {{ form_start(form) }}

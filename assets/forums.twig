@@ -42,7 +42,7 @@
         <div class="forum-last-post">
             {% setcontent lastpost = contenttypes.topics orderby '-datecreated' returnsingle %}
             {%  if lastpost is not empty %}
-	            <div>{{ lastpost['datecreated']|date('M j, Y H:i:s') }}</div>
+	            <div>{{ lastpost.datecreated|date('M j, Y H:i:s') }}</div>
 
                 {% set author = memberprofile(lastpost['author']) %}
                 {% if author is not empty %}
@@ -58,7 +58,7 @@
     <div class="forum">
 
         <div class="forum-title">
-	        <p><a href="/{{ boltbb.base_uri }}/{{ slug }}">{{ forum['title'] }}</a></p>
+	        <p><a href="/{{ boltbb.base_uri }}/{{ slug }}">{{ forum.title }}</a></p>
 	        <p><em>{{ forum['description'] }}</em></p>
         </div>
 
@@ -73,7 +73,7 @@
         <div class="forum-last-post">
             {% setcontent lastpost = contenttypes.topics where { forum: forum.id } orderby '-datecreated' returnsingle %}
             {%  if lastpost is not empty %}
-	            <div>{{ lastpost['datecreated']|date('M j, Y H:i:s') }}</div>
+	            <div>{{ lastpost.datecreated|date('M j, Y H:i:s') }}</div>
 
                 {% set author = memberprofile(lastpost['author']) %}
                 {% if author is not empty %}
