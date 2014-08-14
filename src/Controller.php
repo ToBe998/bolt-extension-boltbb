@@ -46,6 +46,7 @@ class Controller
                 'pagercount' => $this->config['pagercount'],
                 'forums' => $forums,
                 'css' => $this->config['stylesheet'],
+                'js' => $this->config['javascript'],
                 'boltbb' => $this->config
         ));
 
@@ -70,6 +71,7 @@ class Controller
                 'contenttypes' => $this->config['contenttypes'],
                 'pagercount' => $this->config['pagercount'],
                 'css' => $this->config['stylesheet'],
+                'js' => $this->config['javascript'],
                 'boltbb' => $this->config
         ));
 
@@ -125,6 +127,7 @@ class Controller
             'pagercount' => $this->config['pagercount'],
             'forum' => $forum,
             'css' => $this->config['stylesheet'],
+            'js' => $this->config['javascript'],
             'boltbb' => $this->config
         ));
 
@@ -180,6 +183,7 @@ class Controller
             'topic' => $topic,
             'topic_author' => $topic['author'],
             'css' => $this->config['stylesheet'],
+            'js' => $this->config['javascript'],
             'boltbb' => $this->config
         ));
 

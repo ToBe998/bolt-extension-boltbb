@@ -30,6 +30,9 @@ class Extension extends \Bolt\BaseExtension
             $this->config['stylesheet'] = substr(__DIR__, strlen($this->app['paths']['rootpath'])) . '/css/BoltBB.css';
         }
 
+        // JS
+        $this->config['javascript'] = substr(__DIR__, strlen($this->app['paths']['rootpath'])) . '/js/BoltBB.js';
+
         // Check the database table is up and working
         $this->dbRegister();
 
