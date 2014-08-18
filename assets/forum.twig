@@ -34,7 +34,7 @@
 
                 <div class="topic-title">
                     <p><a href="/{{ boltbb.base_uri }}/{{ forum['slug'] }}/{{ topic.slug }}">{{ topic.title }}</a></p>
-                    {% set author = memberprofile(topic['author']) %}
+                    {% set author = clientprofile(topic['author']) %}
                     <div>Posted by {{ author.username }} on {{ topic.datecreated|date('M j, Y H:i:s') }}</div>
                 </div>
 
@@ -47,7 +47,7 @@
 		            {% if lastpost is not empty %}
 	                    <div>{{ lastpost.datecreated|date('M j, Y H:i:s') }}</div>
 
-		                {% set author = memberprofile(lastpost['author']) %}
+		                {% set author = clientprofile(lastpost['author']) %}
 		                {% if author is not empty %}
 		                    <div><img src="{{ author.avatar }}" alt="{{ author.username }}" class="avatar">&nbsp;{{ author.username }}</div>
 		                {% endif %}
