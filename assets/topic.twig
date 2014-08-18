@@ -27,7 +27,7 @@
 
         <div class="topic-body">
             <div class="author">
-                {% set author = memberprofile(topic['author']) %}
+                {% set author = clientprofile(topic['author']) %}
                 {% if author is not empty %}
                     <div><img src="{{ author.avatar }}" alt="{{ author.username }}" class="avatar"></div>
                     <div>{{ author.username }}</div>
@@ -54,7 +54,7 @@
 
         <div class="reply-body">
             <div class="author">
-                {% set author = memberprofile(reply['author']) %}
+                {% set author = clientprofile(reply['author']) %}
                 {% if author is not empty %}
                     <div><img src="{{ author.avatar }}" alt="{{ author.username }}" class="avatar"></div>
                     <div>{{ author.username }}</div>
