@@ -14,7 +14,7 @@ class Extension extends \Bolt\BaseExtension
 {
     public function getName()
     {
-        return "BoltBB";
+        return "boltbb";
     }
 
     public function initialize()
