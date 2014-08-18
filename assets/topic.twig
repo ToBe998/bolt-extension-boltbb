@@ -83,7 +83,7 @@
 <div class="panel callout">
     <h4>Create a new reply</h4>
 
-    {% set profile = memberprofile() %}
+    {% set profile = clientprofile() %}
     {% if profile %}
         {{ form_start(form) }}
             {{ form_row(form.editor) }}
