@@ -22,6 +22,9 @@ class Extension extends \Bolt\BaseExtension
         if (! isset($this->config['base_uri'])) {
             $this->base_uri = 'forums';
         }
+        if (! isset($this->config['csrf'])) {
+            $this->csrf = true;
+        }
 
         // CSS
         if (isset($this->config['stylesheet'])) {

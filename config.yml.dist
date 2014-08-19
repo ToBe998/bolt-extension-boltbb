@@ -28,3 +28,7 @@ stylesheet: BoltBB.css
 
 notifications:
   from_address: noreply@example.com
+  
+# Enable CSRF protection for forms. You should leave this set to 'true', unless
+# you know what you're doing.
+csrf: true
