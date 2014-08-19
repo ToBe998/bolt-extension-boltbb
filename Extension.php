@@ -19,10 +19,10 @@ class Extension extends \Bolt\BaseExtension
 
     public function initialize()
     {
-        if (! isset($this->config['base_uri'])) {
+        if (empty($this->config['base_uri'])) {
             $this->base_uri = 'forums';
         }
-        if (! isset($this->config['csrf'])) {
+        if (empty($this->config['csrf'])) {
             $this->csrf = true;
         }
 
