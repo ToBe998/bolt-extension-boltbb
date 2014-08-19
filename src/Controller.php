@@ -7,19 +7,17 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\Validator\Constraints as Assert;
-use \Authenticate\Controller as SocialLogin;
 
 class Controller
 {
     private $app;
-    private $config;
     private $functions;
 
-    public function __construct(Silex\Application $app, $config, Functions $functions)
+    public function __construct(Silex\Application $app)
     {
         $this->app = $app;
-        $this->config = $config;
-        $this->functions = $functions;
+        $this->config = $this->app['extensions.' . Extension::NAME]->config;;
+        $this->functions = new Functions($this->app);
     }
 
     /**
@@ -62,8 +60,6 @@ class Controller
     {
         // Add assets to Twig path
         $this->addTwigPath();
-
-        $func = new Functions($this->app, $this->config);
 
         $html = $this->app['render']->render(
             $this->config['templates']['uncategorised'], array(

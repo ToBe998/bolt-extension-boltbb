@@ -8,11 +8,10 @@ namespace BoltBB;
 class ForumsTwigExtension extends \Twig_Extension
 {
     private $twig = null;
-    private $functions = null;
 
-    public function __construct(Functions $functions)
+    public function __construct(\Silex\Application $app)
     {
-        $this->functions = $functions;
+        $this->functions = new Functions($app);
     }
 
     public function initRuntime(\Twig_Environment $environment)

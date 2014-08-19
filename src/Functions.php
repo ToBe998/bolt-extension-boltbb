@@ -9,10 +9,10 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 class Functions
 {
-    public function __construct(Silex\Application $app, $config)
+    public function __construct(Silex\Application $app)
     {
         $this->app = $app;
-        $this->config = $config;
+        $this->config = $this->config = $this->app['extensions.' . Extension::NAME]->config;;
 
 // XXX
         $this->forums_table_name = 'bolt_forums';

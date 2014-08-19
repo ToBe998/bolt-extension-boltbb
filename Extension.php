@@ -12,18 +12,23 @@ use Doctrine\DBAL\Schema\Schema;
 
 class Extension extends \Bolt\BaseExtension
 {
+    /**
+     * @var Extension name
+     */
+    const NAME = 'clientlogin';
+
     public function getName()
     {
-        return "boltbb";
+        return Extension::NAME;
     }
 
     public function initialize()
     {
         if (empty($this->config['base_uri'])) {
-            $this->base_uri = 'forums';
+            $this->config['base_uri'] = 'forums';
         }
         if (empty($this->config['csrf'])) {
-            $this->csrf = true;
+            $this->config['csrf'] = true;
         }
 
         // CSS
@@ -39,8 +44,8 @@ class Extension extends \Bolt\BaseExtension
         // Check the database table is up and working
         $this->dbRegister();
 
-        $this->functions = new Functions($this->app, $this->config);
-        $this->controller = new Controller($this->app, $this->config, $this->functions);
+        $this->functions = new Functions($this->app);
+        $this->controller = new Controller($this->app, $this->functions);
 
         /*
          * Routes for forum base, individual forums and individual topics
@@ -60,7 +65,7 @@ class Extension extends \Bolt\BaseExtension
                   ->method('GET|POST');
 
         // Twig functions
-        $this->app['twig']->addExtension(new ForumsTwigExtension($this->functions));
+        $this->app['twig']->addExtension(new ForumsTwigExtension($this->app));
     }
 
     /**
