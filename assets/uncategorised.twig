@@ -71,8 +71,7 @@
 <div class="panel callout">
     <h4>Create a new reply</h4>
 
-    {% set profile = clientprofile() %}
-    {% if profile %}
+    {% if hasauth() %}
         {{ form_start(form) }}
             {{ form_row(form.editor) }}
             {{ form_row(form.author, {value : visitor.id}) }}
@@ -80,7 +79,7 @@
             {{ form_row(form.post) }}
         {{ form_end(form) }}
     {% else %}
-        {{ clientlogin(true) }}
+        {{ displayauth(true) }}
     {% endif %}
 </div>
 
