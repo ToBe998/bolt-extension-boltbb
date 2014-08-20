@@ -1,5 +1,6 @@
 <?php
-namespace BoltBB;
+
+namespace Bolt\Extension\BoltBB;
 
 use Silex;
 use Symfony\Component\HttpFoundation\Request;

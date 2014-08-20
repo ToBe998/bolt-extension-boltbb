@@ -1,11 +1,7 @@
 <?php
 // Simple Bulletin Board extension for Bolt
 
-namespace BoltBB;
-
-require_once dirname(__FILE__) . '/src/Controller.php';
-require_once dirname(__FILE__) . '/src/Functions.php';
-require_once dirname(__FILE__) . '/src/ForumsTwigExtension.php';
+namespace Bolt\Extension\BoltBB;
 
 // Database access
 use Doctrine\DBAL\Schema\Schema;
