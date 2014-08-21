@@ -8,7 +8,7 @@
 
 <div class="forum-title">
     <h4>{{ forum.title }} Forum</h4>
-    <h6>{{ forum['description'] }}</h6>
+    <h6>{{ forum.description }}</h6>
 
     {{ forumsbreadcrumbs(forum.id) }}
 </div>
@@ -33,8 +33,8 @@
             <div class="topic {{ topic.state }}" id="topic-{{ topic.forum }}-{{ topic.id }}">
 
                 <div class="topic-title">
-                    <p><a href="/{{ boltbb.base_uri }}/{{ forum['slug'] }}/{{ topic.slug }}">{{ topic.title }}</a></p>
-                    {% set author = clientprofile(topic['author']) %}
+                    <p><a href="/{{ boltbb.base_uri }}/{{ forum.slug }}/{{ topic.slug }}">{{ topic.title }}</a></p>
+                    {% set author = clientprofile(topic.author) %}
                     <div>Posted by {{ author.username }} on {{ topic.datecreated|date('M j, Y H:i:s') }}</div>
                 </div>
 
@@ -47,7 +47,7 @@
 		            {% if lastpost is not empty %}
 	                    <div>{{ lastpost.datecreated|date('M j, Y H:i:s') }}</div>
 
-		                {% set author = clientprofile(lastpost['author']) %}
+		                {% set author = clientprofile(lastpost.author) %}
 		                {% if author is not empty %}
 		                    <div><img src="{{ author.avatar }}" alt="{{ author.username }}" class="avatar">&nbsp;{{ author.username }}</div>
 		                {% endif %}

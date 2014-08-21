@@ -7,7 +7,7 @@
 {% block forums %}
 
 <div class="topic-title">
-	<h4>{{ topic['title'] }}</h4>
+	<h4>{{ topic.title }}</h4>
 
 	{{ forumsbreadcrumbs(forum.id) }}
 </div>
@@ -27,7 +27,7 @@
 
         <div class="topic-body">
             <div class="author">
-                {% set author = clientprofile(topic['author']) %}
+                {% set author = clientprofile(topic.author) %}
                 {% if author is not empty %}
                     <div><img src="{{ author.avatar }}" alt="{{ author.username }}" class="avatar"></div>
                     <div>{{ author.username }}</div>
@@ -36,7 +36,7 @@
             </div>
 
             <div class="body">
-		        {{ topic['body'] }}
+		        {{ topic.body }}
 		    </div>
 		</div>
 
@@ -54,7 +54,7 @@
 
         <div class="reply-body">
             <div class="author">
-                {% set author = clientprofile(reply['author']) %}
+                {% set author = clientprofile(reply.author) %}
                 {% if author is not empty %}
                     <div><img src="{{ author.avatar }}" alt="{{ author.username }}" class="avatar"></div>
                     <div>{{ author.username }}</div>
@@ -63,7 +63,7 @@
             </div>
 
             <div class="body">
-		        {{ reply['body'] }}
+		        {{ reply.body }}
 		    </div>
 		</div>
 

@@ -44,7 +44,7 @@
             {%  if lastpost is not empty %}
 	            <div>{{ lastpost.datecreated|date('M j, Y H:i:s') }}</div>
 
-                {% set author = clientprofile(lastpost['author']) %}
+                {% set author = clientprofile(lastpost.author) %}
                 {% if author is not empty %}
                     <div><img src="{{ author.avatar }}" alt="{{ author.username }}" class="avatar">&nbsp;{{ author.username }}</div>
                 {% endif %}
@@ -59,7 +59,7 @@
 
         <div class="forum-title">
 	        <p><a href="/{{ boltbb.base_uri }}/{{ slug }}">{{ forum.title }}</a></p>
-	        <p><em>{{ forum['description'] }}</em></p>
+	        <p><em>{{ forum.description }}</em></p>
         </div>
 
         <div class="forum-posts">
@@ -75,7 +75,7 @@
             {%  if lastpost is not empty %}
 	            <div>{{ lastpost.datecreated|date('M j, Y H:i:s') }}</div>
 
-                {% set author = clientprofile(lastpost['author']) %}
+                {% set author = clientprofile(lastpost.author) %}
                 {% if author is not empty %}
                     <div><img src="{{ author.avatar }}" alt="{{ author.username }}" class="avatar">&nbsp;{{ author.username }}</div>
                 {% endif %}
