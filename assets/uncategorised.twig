@@ -43,12 +43,12 @@
 
                 <div class="topic-last-post">
                     {% setcontent lastpost = 'replies' where { forum: topic.forum, topic: topic.id } returnsingle %}
-		            {%  if lastpost is not empty %}
-		                {% set author = clientprofile(lastpost.author) %}
+                    {%  if lastpost is not empty %}
+                        {% set author = clientprofile(lastpost.author) %}
 
-		                <div>{{ lastpost.datecreated|date('M j, Y H:i:s') }}</div>
-		                <div><img src="{{ author.avatar }}" alt="{{ author.username }}" class="avatar">&nbsp;{{ author.username }}</div>
-		            {% endif %}
+                        <div>{{ lastpost.datecreated|date('M j, Y H:i:s') }}</div>
+                        <div><img src="{{ author.avatar }}" alt="{{ author.username }}" class="avatar">&nbsp;{{ author.username }}</div>
+                    {% endif %}
                 </div>
 
             </div>

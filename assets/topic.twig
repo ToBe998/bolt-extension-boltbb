@@ -7,9 +7,9 @@
 {% block forums %}
 
 <div class="topic-title">
-	<h4>{{ topic.title }}</h4>
+    <h4>{{ topic.title }}</h4>
 
-	{{ forumsbreadcrumbs(forum.id) }}
+    {{ forumsbreadcrumbs(forum.id) }}
 </div>
 
 {% include '_messages.twig' %}
@@ -20,7 +20,7 @@
 <div class="discussion">
 
     {% if (request('page') == 1) or (request('page') is empty) %}
-	<div class="topic" id="topic-{{ forum.id }}-{{ topic.id }}">
+    <div class="topic" id="topic-{{ forum.id }}-{{ topic.id }}">
         <div class="topic-header">
             <div>Posted on {{ topic.datecreated|date('M j, Y H:i:s') }}</div>
         </div>
@@ -36,11 +36,11 @@
             </div>
 
             <div class="body">
-		        {{ topic.body }}
-		    </div>
-		</div>
+                {{ topic.body }}
+            </div>
+        </div>
 
-		<div class="topic-footer">
+        <div class="topic-footer">
         </div>
     </div>
     <hr>
@@ -63,11 +63,11 @@
             </div>
 
             <div class="body">
-		        {{ reply.body }}
-		    </div>
-		</div>
+                {{ reply.body }}
+            </div>
+        </div>
 
-		<div class="reply-footer">
+        <div class="reply-footer">
         </div>
     </div>
     {% endfor %}

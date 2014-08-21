@@ -7,10 +7,10 @@
 {% block forums %}
 
 <div class="forum-title">
-	<h4>{{ boltbb.forum_title }}</h4>
-	<h6>{{ boltbb.forum_description }}</h6>
+    <h4>{{ boltbb.forum_title }}</h4>
+    <h6>{{ boltbb.forum_description }}</h6>
 
-	{{ forumsbreadcrumbs(forum.id) }}
+    {{ forumsbreadcrumbs(forum.id) }}
 </div>
 
 {% include '_messages.twig' %}
@@ -27,7 +27,7 @@
     <div class="forum">
 
         <div class="forum-title">
-	        <p><a href="/{{ boltbb.base_uri }}/all">All Discussions</a></p>
+            <p><a href="/{{ boltbb.base_uri }}/all">All Discussions</a></p>
             <p><em>The uncategorized version</em></p>
         </div>
 
@@ -42,7 +42,7 @@
         <div class="forum-last-post">
             {% setcontent lastpost = contenttypes.topics orderby '-datecreated' returnsingle %}
             {%  if lastpost is not empty %}
-	            <div>{{ lastpost.datecreated|date('M j, Y H:i:s') }}</div>
+                <div>{{ lastpost.datecreated|date('M j, Y H:i:s') }}</div>
 
                 {% set author = clientprofile(lastpost.author) %}
                 {% if author is not empty %}
@@ -58,8 +58,8 @@
     <div class="forum">
 
         <div class="forum-title">
-	        <p><a href="/{{ boltbb.base_uri }}/{{ slug }}">{{ forum.title }}</a></p>
-	        <p><em>{{ forum.description }}</em></p>
+            <p><a href="/{{ boltbb.base_uri }}/{{ slug }}">{{ forum.title }}</a></p>
+            <p><em>{{ forum.description }}</em></p>
         </div>
 
         <div class="forum-posts">
@@ -73,7 +73,7 @@
         <div class="forum-last-post">
             {% setcontent lastpost = contenttypes.topics where { forum: forum.id } orderby '-datecreated' returnsingle %}
             {%  if lastpost is not empty %}
-	            <div>{{ lastpost.datecreated|date('M j, Y H:i:s') }}</div>
+                <div>{{ lastpost.datecreated|date('M j, Y H:i:s') }}</div>
 
                 {% set author = clientprofile(lastpost.author) %}
                 {% if author is not empty %}

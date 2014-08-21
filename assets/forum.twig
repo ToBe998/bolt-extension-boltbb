@@ -44,14 +44,14 @@
 
                 <div class="topic-last-post">
                     {% setcontent lastpost = contenttypes.topics where { topic: topic.id } orderby '-datecreated' returnsingle %}
-		            {% if lastpost is not empty %}
-	                    <div>{{ lastpost.datecreated|date('M j, Y H:i:s') }}</div>
+                    {% if lastpost is not empty %}
+                        <div>{{ lastpost.datecreated|date('M j, Y H:i:s') }}</div>
 
-		                {% set author = clientprofile(lastpost.author) %}
-		                {% if author is not empty %}
-		                    <div><img src="{{ author.avatar }}" alt="{{ author.username }}" class="avatar">&nbsp;{{ author.username }}</div>
-		                {% endif %}
-		            {% endif %}
+                        {% set author = clientprofile(lastpost.author) %}
+                        {% if author is not empty %}
+                            <div><img src="{{ author.avatar }}" alt="{{ author.username }}" class="avatar">&nbsp;{{ author.username }}</div>
+                        {% endif %}
+                    {% endif %}
                 </div>
 
             </div>
