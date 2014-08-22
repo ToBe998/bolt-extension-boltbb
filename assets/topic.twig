@@ -6,78 +6,98 @@
 
 {% block forums %}
 
-<div class="topic-title">
-    <h4>{{ topic.title }}</h4>
-
-    {{ forumsbreadcrumbs(forum.id) }}
-</div>
-
 {% include '_messages.twig' %}
 
 {% set query = contenttypes.replies~'/latest/'~pagercount %}
 {% setcontent replies = query where { forum: forum.id, topic: topic.id } orderby 'datecreated' allowpaging %}
 
-<div class="discussion">
-
-    {% if (request('page') == 1) or (request('page') is empty) %}
-    <div class="topic" id="topic-{{ forum.id }}-{{ topic.id }}">
-        <div class="topic-header">
-            <div>Posted on {{ topic.datecreated|date('M j, Y H:i:s') }}</div>
-        </div>
-
-        <div class="topic-body">
-            <div class="author">
-                {% set author = clientprofile(topic.author) %}
-                {% if author is not empty %}
-                    <div><img src="{{ author.avatar }}" alt="{{ author.username }}" class="avatar"></div>
-                    <div>{{ author.username }}</div>
-                    <div>{{ topic.authorip }}</div>
-                {% endif %}
-            </div>
-
-            <div class="body">
-                {{ topic.body }}
-            </div>
-        </div>
-
-        <div class="topic-footer">
-        </div>
+<div class="row topic-title">
+    <div class="small-12 columns">
+        <h4>{{ topic.title }}</h4>
     </div>
-    <hr>
-    {% endif %}
 
-    {% for reply in replies %}
-    <div class="reply" id="reply-{{ forum.id }}-{{ topic.id }}-{{ reply['id'] }}">
-        <div class="reply-header">
-            {{ reply['datecreated']|date('M j, Y H:i:s') }}
-        </div>
-
-        <div class="reply-body">
-            <div class="author">
-                {% set author = clientprofile(reply.author) %}
-                {% if author is not empty %}
-                    <div><img src="{{ author.avatar }}" alt="{{ author.username }}" class="avatar"></div>
-                    <div>{{ author.username }}</div>
-                    <div>{{ reply.authorip }}</div>
-                {% endif %}
-            </div>
-
-            <div class="body">
-                {{ reply.body }}
-            </div>
-        </div>
-
-        <div class="reply-footer">
-        </div>
+    <div class="small-12 columns">
+        {{ forumsbreadcrumbs(forum.id) }}
     </div>
-    {% endfor %}
-
-    <hr>
-    {{ pager() }}
-    <hr>
-
 </div>
 
+{# Only show the topic text if we're on the first page #}
+{% if (request('page') == 1) or (request('page') is empty) %}
+{# Topic #}
+<div class="row topic" id="topic-{{ forum.id }}-{{ topic.id }}">
+    <div class="small-12 columns">
+
+        {# Topic Header #}
+        <div class="row topic-header">
+            <div class="small-12 columns">
+                <div>Posted on {{ topic.datecreated|date('M j, Y H:i:s') }}</div>
+            </div>
+        </div>
+
+        {# Topic content #}
+        <div class="row topic-body">
+            <div class="small-3 columns author">
+                {% set author = clientprofile(topic.author) %}
+                {% if author is not empty %}
+                <div class="small-12 columns"><img src="{{ author.avatar }}" alt="{{ author.username }}" class="avatar"></div>
+                <div class="small-12 columns">{{ author.username }}</div>
+                {% endif %}
+                <div class="small-12 columns">{{ topic.authorip }}</div>
+            </div>
+
+            <div class="small-9 columns body">
+                <div>{{ topic.body }}</div>
+            </div>
+        </div>
+
+        {# Topic footer #}
+        <div class="row topic-footer">
+            <div class="small-12 columns"></div>
+        </div>
+
+    </div>
+</div>
+
+{% endif %}
+
+{# Replies #}
+{% for reply in replies %}
+<div class="row reply" id="reply-{{ forum.id }}-{{ topic.id }}-{{ reply['id'] }}">
+    <div class="small-12 columns">
+
+        {# Reply Header #}
+        <div class="row reply-header">
+            <div class="small-12 columns">
+                <div>Posted on {{ reply.datecreated|date('M j, Y H:i:s') }}</div>
+            </div>
+        </div>
+
+        {# Reply content #}
+        <div class="row reply-body">
+            <div class="small-3 columns author">
+                {% set author = clientprofile(reply.author) %}
+                {% if author is not empty %}
+                <div class="small-12 columns"><img src="{{ author.avatar }}" alt="{{ author.username }}" class="avatar"></div>
+                <div class="small-12 columns">{{ author.username }}</div>
+                {% endif %}
+                <div class="small-12 columns">{{ reply.authorip }}</div>
+            </div>
+
+            <div class="small-9 columns body">
+                <div>{{ reply.body }}</div>
+            </div>
+        </div>
+
+        {# Reply footer #}
+        <div class="row reply-footer">
+            <div class="small-12 columns"></div>
+        </div>
+    </div>
+</div>
+{% endfor %}
+
+<hr>
+{{ pager() }}
 <hr>
 
 <div class="panel callout">
@@ -97,5 +117,7 @@
 
 <script src="{{ app['paths']['app'] }}view/lib/ckeditor/ckeditor.js"></script>
 <script src="{{ js }}"></script>
+
+<hr>
 
 {% endblock %}
