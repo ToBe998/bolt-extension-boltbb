@@ -1,1 +1,6 @@
 config.yml
+twig/boltbb-custom.twig
+node_modules/
+scss/boltbb.custom.scss
+scss/foundation/
+css/boltbb.custom.*
