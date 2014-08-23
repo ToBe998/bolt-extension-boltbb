@@ -1,95 +1,88 @@
 {% extends twigparent %}
 
-{% block css %}
-<link rel="stylesheet" href="{{ css }}">
-{% endblock css %}
-
 {% block forums %}
 
-{% include '_messages.twig' %}
+    {% include '_messages.twig' %}
 
-{% set query = contenttypes.topics~'/latest/'~pagercount %}
-{% setcontent topics = query where { forum: forum.id } orderby '-datecreated' allowpaging %}
+    {% set query = contenttypes.topics~'/latest/'~pagercount %}
+    {% setcontent topics = query where { forum: forum.id } orderby '-datecreated' allowpaging %}
 
-<div class="row forum-title">
-    <div class="small-12 columns">
-        <h4>{{ forum.title }} Forum</h4>
-        <h6>{{ forum.description }}</h6>
-    </div>
-
-    <div class="small-12 columns">
-        {{ forumsbreadcrumbs(forum.id) }}
-    </div>
-</div>
-
-<div class="row forum">
-    <div class="small-12 columns">
-
-        <div class="row forum-header">
-            <div class="small-6 columns topic-title">Topic</div>
-            <div class="small-2 columns topic-replies">Replies</div>
-            <div class="small-4 columns topic-last-post">Last Post</div>
+    <div class="row forum-title">
+        <div class="small-12 columns">
+            <h4>{{ forum.title }} Forum</h4>
+            <h6>{{ forum.description }}</h6>
         </div>
 
-        {% for topic in topics %}
-        {# Topic #}
-        <div class="row topic {{ topic.state }}" id="topic-{{ topic.forum }}-{{ topic.id }}">
+        <div class="small-12 columns">
+            {{ forumsbreadcrumbs(forum.id) }}
+        </div>
+    </div>
 
-                <div class="small-6 columns topic-title">
-                    <p><a href="/{{ boltbb.base_uri }}/{{ forum.slug }}/{{ topic.slug }}">{{ topic.title }}</a></p>
-                    {% set author = clientprofile(topic.author) %}
-                    <div>Posted by {{ author.username }}</div>
-                    <div>{{ topic.datecreated|date('M j, Y H:i:s') }}</div>
-                </div>
+    <div class="row forum">
+        <div class="small-12 columns">
 
-                <div class="small-2 columns topic-replies">
-                    {{ topicreplycount(forum.id, topic.id) }}
-                </div>
+            <div class="row forum-header">
+                <div class="small-6 columns topic-title">Topic</div>
+                <div class="small-2 columns topic-replies">Replies</div>
+                <div class="small-4 columns topic-last-post">Last Post</div>
+            </div>
 
-                <div class="small-4 columns topic-last-post">
-                    {% setcontent lastpost = contenttypes.topics where { topic: topic.id } orderby '-datecreated' returnsingle %}
-                    {% if lastpost is not empty %}
-                        <div>{{ lastpost.datecreated|date('M j, Y H:i:s') }}</div>
+            {% for topic in topics %}
+            {# Topic #}
+            <div class="row topic {{ topic.state }}" id="topic-{{ topic.forum }}-{{ topic.id }}">
 
-                        {% set author = clientprofile(lastpost.author) %}
-                        {% if author is not empty %}
-                            <div><img src="{{ author.avatar }}" alt="{{ author.username }}" class="avatar">&nbsp;{{ author.username }}</div>
+                    <div class="small-6 columns topic-title">
+                        <p><a href="/{{ boltbb.base_uri }}/{{ forum.slug }}/{{ topic.slug }}">{{ topic.title }}</a></p>
+                        {% set author = clientprofile(topic.author) %}
+                        <div>Posted by {{ author.username }}</div>
+                        <div>{{ topic.datecreated|date('M j, Y H:i:s') }}</div>
+                    </div>
+
+                    <div class="small-2 columns topic-replies">
+                        {{ topicreplycount(forum.id, topic.id) }}
+                    </div>
+
+                    <div class="small-4 columns topic-last-post">
+                        {% setcontent lastpost = contenttypes.topics where { topic: topic.id } orderby '-datecreated' returnsingle %}
+                        {% if lastpost is not empty %}
+                            <div>{{ lastpost.datecreated|date('M j, Y H:i:s') }}</div>
+
+                            {% set author = clientprofile(lastpost.author) %}
+                            {% if author is not empty %}
+                                <div><img src="{{ author.avatar }}" alt="{{ author.username }}" class="avatar">&nbsp;{{ author.username }}</div>
+                            {% endif %}
                         {% endif %}
-                    {% endif %}
-                </div>
+                    </div>
+
+            </div>
+
+            {# Topic footer #}
+            <div class="row topic-footer">
+                <div class="small-12 columns"></div>
+            </div>
+            {% endfor %}
+
+            <hr>
+            {{ pager() }}
+            <hr>
 
         </div>
-
-        {# Topic footer #}
-        <div class="row topic-footer">
-            <div class="small-12 columns"></div>
-        </div>
-        {% endfor %}
-
-        <hr>
-        {{ pager() }}
-        <hr>
-
     </div>
-</div>
 
-<div class="panel callout">
-    <h4>Create a new topic in {{ forum.title }}</h4>
+    <div class="panel callout">
+        <h4>Create a new topic in {{ forum.title }}</h4>
 
-    {% if hasauth() %}
-        {{ form_start(form) }}
-            {{ form_row(form.title) }}
-            {{ form_row(form.editor) }}
-            {{ form_row(form.author, {value : visitor.id}) }}
-            <br>
-            {{ form_row(form.post) }}
-        {{ form_end(form) }}
-    {% else %}
-        {{ displayauth(true) }}
-    {% endif %}
-</div>
-
-<script src="{{ app['paths']['app'] }}view/lib/ckeditor/ckeditor.js"></script>
-<script src="{{ js }}"></script>
+        {% if hasauth() %}
+            {{ form_start(form) }}
+                {{ form_row(form.title) }}
+                {{ form_row(form.editor) }}
+                {{ form_row(form.author, {value : visitor.id}) }}
+                <br>
+                {{ form_row(form.post) }}
+            {{ form_end(form) }}
+        {% else %}
+            {{ displayauth(true) }}
+        {% endif %}
+    </div>
 
 {% endblock %}

@@ -1,89 +1,83 @@
 {% extends twigparent %}
 
-{% block css %}
-<link rel="stylesheet" href="{{ css }}">
-{% endblock css %}
-
 {% block forums %}
 
-<div class="forum-title">
-    <h4>All Forum Topics</h4>
-    <h6>The firehose</h6>
+    {% include '_messages.twig' %}
+    {% setcontent topics = 'topics/latest/'~pagercount allowpaging %}
 
-    {{ forumsbreadcrumbs(forum.id) }}
-</div>
+    <div class="forum-title">
+        <h4>All Forum Topics</h4>
+        <h6>The firehose</h6>
 
-{% include '_messages.twig' %}
-{% setcontent topics = 'topics/latest/'~pagercount allowpaging %}
+        {{ forumsbreadcrumbs(forum.id) }}
+    </div>
 
-<div class="forums">
 
-    <div class="forum-topics">
+    <div class="forums">
 
-        <div class="topic-header">
-            <div class="topic-title">Topic</div>
-            <div class="topic-replies">Replies</div>
-            <div class="topic-last-post">Last Post</div>
-        </div>
+        <div class="forum-topics">
 
-        <div class="topic-body">
-            {% for topic in topics %}
-
-            <div class="topic {{ topic.state }}" id="topic-{{ topic.forum }}-{{ topic.id }}">
-
-                <div class="topic-title">
-                    <p><a href="/{{ boltbb.base_uri }}/{{ forum.slug }}/{{ topic.slug }}">{{ topic.title }}</a></p>
-                    {% set author = clientprofile(topic.author) %}
-                    <div>Posted by {{ author.username }} on {{ topic.datecreated|date('M j, Y H:i:s') }}</div>
-                </div>
-
-                <div class="topic-replies">
-                    {{ topicreplycount(topic.forum, topic.id) }}
-                </div>
-
-                <div class="topic-last-post">
-                    {% setcontent lastpost = 'replies' where { forum: topic.forum, topic: topic.id } returnsingle %}
-                    {%  if lastpost is not empty %}
-                        {% set author = clientprofile(lastpost.author) %}
-
-                        <div>{{ lastpost.datecreated|date('M j, Y H:i:s') }}</div>
-                        <div><img src="{{ author.avatar }}" alt="{{ author.username }}" class="avatar">&nbsp;{{ author.username }}</div>
-                    {% endif %}
-                </div>
-
+            <div class="topic-header">
+                <div class="topic-title">Topic</div>
+                <div class="topic-replies">Replies</div>
+                <div class="topic-last-post">Last Post</div>
             </div>
 
-            {% endfor %}
-        </div>
+            <div class="topic-body">
+                {% for topic in topics %}
 
-        <div class="topic-footer">
-        </div>
+                <div class="topic {{ topic.state }}" id="topic-{{ topic.forum }}-{{ topic.id }}">
 
-        <hr>
-        {{ pager() }}
-        <hr>
+                    <div class="topic-title">
+                        <p><a href="/{{ boltbb.base_uri }}/{{ forum.slug }}/{{ topic.slug }}">{{ topic.title }}</a></p>
+                        {% set author = clientprofile(topic.author) %}
+                        <div>Posted by {{ author.username }} on {{ topic.datecreated|date('M j, Y H:i:s') }}</div>
+                    </div>
+
+                    <div class="topic-replies">
+                        {{ topicreplycount(topic.forum, topic.id) }}
+                    </div>
+
+                    <div class="topic-last-post">
+                        {% setcontent lastpost = 'replies' where { forum: topic.forum, topic: topic.id } returnsingle %}
+                        {%  if lastpost is not empty %}
+                            {% set author = clientprofile(lastpost.author) %}
+
+                            <div>{{ lastpost.datecreated|date('M j, Y H:i:s') }}</div>
+                            <div><img src="{{ author.avatar }}" alt="{{ author.username }}" class="avatar">&nbsp;{{ author.username }}</div>
+                        {% endif %}
+                    </div>
+
+                </div>
+
+                {% endfor %}
+            </div>
+
+            <div class="topic-footer">
+            </div>
+
+            <hr>
+            {{ pager() }}
+            <hr>
+
+        </div>
 
     </div>
 
-</div>
+    {#
+    <div class="panel callout">
+        <h4>Create a new reply</h4>
 
-{#
-<div class="panel callout">
-    <h4>Create a new reply</h4>
-
-    {% if hasauth() %}
-        {{ form_start(form) }}
-            {{ form_row(form.editor) }}
-            {{ form_row(form.author, {value : visitor.id}) }}
-            <br>
-            {{ form_row(form.post) }}
-        {{ form_end(form) }}
-    {% else %}
-        {{ displayauth(true) }}
-    {% endif %}
-</div>
-
-<script src="{{ app['paths']['app'] }}view/lib/ckeditor/ckeditor.js"></script>
-<script src="{{ js }}"></script>
-#}
+        {% if hasauth() %}
+            {{ form_start(form) }}
+                {{ form_row(form.editor) }}
+                {{ form_row(form.author, {value : visitor.id}) }}
+                <br>
+                {{ form_row(form.post) }}
+            {{ form_end(form) }}
+        {% else %}
+            {{ displayauth(true) }}
+        {% endif %}
+    </div>
+    #}
 {% endblock %}

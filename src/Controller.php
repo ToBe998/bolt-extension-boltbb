@@ -26,6 +26,10 @@ class Controller
     public function before()
     {
         $this->app['htmlsnippets'] = true;
+
+        $this->app['extensions.' . Extension::NAME]->addCSS($this->config['stylesheet'] , false);
+        $this->app['extensions']->addJavascript($this->app['paths']['app'] . 'view/lib/ckeditor/ckeditor.js', true);
+        $this->app['extensions.' . Extension::NAME]->addJavascript($this->config['javascript'], true);
     }
 
     /**
@@ -51,8 +55,6 @@ class Controller
                 'contenttypes' => $this->config['contenttypes'],
                 'pagercount' => $this->config['pagercount'],
                 'forums' => $forums,
-                'css' => $this->config['stylesheet'],
-                'js' => $this->config['javascript'],
                 'boltbb' => $this->config['boltbb']
         ));
 
@@ -74,8 +76,6 @@ class Controller
                 'twigparent' => $this->config['parent_template'],
                 'contenttypes' => $this->config['contenttypes'],
                 'pagercount' => $this->config['pagercount'],
-                'css' => $this->config['stylesheet'],
-                'js' => $this->config['javascript'],
                 'boltbb' => $this->config
         ));
 
@@ -130,8 +130,6 @@ class Controller
             'contenttypes' => $this->config['contenttypes'],
             'pagercount' => $this->config['pagercount'],
             'forum' => $forum,
-            'css' => $this->config['stylesheet'],
-            'js' => $this->config['javascript'],
             'boltbb' => $this->config
         ));
 
@@ -186,8 +184,6 @@ class Controller
             'forum' => $forum,
             'topic' => $topic,
             'topic_author' => $topic['author'],
-            'css' => $this->config['stylesheet'],
-            'js' => $this->config['javascript'],
             'boltbb' => $this->config
         ));
 

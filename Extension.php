@@ -29,13 +29,17 @@ class Extension extends \Bolt\BaseExtension
 
         // CSS
         if (isset($this->config['stylesheet'])) {
-            $this->config['stylesheet'] = substr(__DIR__, strlen($this->app['paths']['rootpath'])) . '/css/' . $this->config['stylesheet'];
+            $this->config['stylesheet'] = 'css/' . $this->config['stylesheet'];
         } else {
-            $this->config['stylesheet'] = substr(__DIR__, strlen($this->app['paths']['rootpath'])) . '/css/boltbb.min.css';
+            $this->config['stylesheet'] = 'css/boltbb.min.css';
         }
 
         // JS
-        $this->config['javascript'] = substr(__DIR__, strlen($this->app['paths']['rootpath'])) . '/js/boltbb.min.js';
+        if (isset($this->config['javascript'])) {
+            $this->config['javascript'] = 'js/' . $this->config['javascript'];
+        } else {
+            $this->config['javascript'] = 'js/boltbb.min.js';
+        }
 
         // Check the database table is up and working
         $this->dbRegister();
