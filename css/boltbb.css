@@ -960,7 +960,6 @@ select {
  */
 .forum .forum-header, .topic .topic-header, .reply .reply-header {
   background: #eaeaea;
-  height: 3em;
   border: solid 1px #cccccc; }
 
 /*
