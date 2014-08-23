@@ -163,6 +163,8 @@ class Controller
                                                               'label' => false,
                                                               'attr' => array('style' => 'height: 150px;')))
                             ->add('author', 'hidden',   array('data' => '-1'))
+                            ->add('notify', 'checkbox', array('label' => 'Notify me of updates to this topic',
+                                                              'data' => true))
                             ->add('post',   'submit',   array('label' => 'Post reply'))
                             ->getForm();
 

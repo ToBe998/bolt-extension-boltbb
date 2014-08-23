@@ -987,6 +987,9 @@ select {
 .forum .closed, .forum .closed a {
   color: #cccccc; }
 
+.forum .pinned, .forum .pinned-global {
+  background-color: lightyellow !important; }
+
 .forum .topic, .topic .topic-body, .reply .reply-body {
   border: solid 1px #cccccc; }
 

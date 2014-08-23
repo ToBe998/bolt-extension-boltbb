@@ -57,6 +57,11 @@
     color: rgb(204, 204, 204);
 }
 
+.forum .pinned,
+.forum .pinned-global {
+    background-color: rgb(255, 255, 224) !important;
+}
+
 .forum .topic,
 .topic .topic-body,
 .reply .reply-body {
