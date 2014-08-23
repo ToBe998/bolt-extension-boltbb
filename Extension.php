@@ -6,6 +6,9 @@ namespace Bolt\Extension\BoltBB;
 // Database access
 use Doctrine\DBAL\Schema\Schema;
 
+// Cron
+use Bolt\CronEvents;
+
 class Extension extends \Bolt\BaseExtension
 {
     /**
@@ -18,7 +21,55 @@ class Extension extends \Bolt\BaseExtension
         return Extension::NAME;
     }
 
+    /**
+     *
+     */
     public function initialize()
+    {
+        /*
+         * Config
+         */
+        $this->setConfig();
+
+        $this->functions = new Functions($this->app);
+
+        /*
+         * Backend
+         */
+        if ($this->app['config']->getWhichEnd() == 'backend') {
+            // Check the database table is up and working
+            $this->dbCheck();
+        }
+
+        /*
+         * Frontend
+         */
+        if ($this->app['config']->getWhichEnd() == 'frontend') {
+
+            // Set up routes
+            $this->setController();
+
+            // Twig functions
+            $this->app['twig']->addExtension(new ForumsTwigExtension($this->app));
+        }
+
+        /*
+         * Scheduled cron listener
+         */
+        $this->app['dispatcher']->addListener(CronEvents::CRON_DAILY, array($this, 'cronDaily'));
+    }
+
+    /**
+     * Cron jobs
+     */
+    public function cronDaily()
+    {
+    }
+
+    /**
+     * Set up config and defaults
+     */
+    private function setConfig()
     {
         if (empty($this->config['base_uri'])) {
             $this->config['base_uri'] = 'forums';
@@ -40,36 +91,35 @@ class Extension extends \Bolt\BaseExtension
         } else {
             $this->config['javascript'] = 'js/boltbb.min.js';
         }
+    }
 
-        // Check the database table is up and working
-        $this->dbRegister();
-
-        $this->functions = new Functions($this->app);
+    /**
+     * Create controller and define routes
+     */
+    private function setController()
+    {
         $this->controller = new Controller($this->app, $this->functions);
 
         /*
          * Routes for forum base, individual forums and individual topics
-         */
+        */
         $this->app->get("/{$this->config['base_uri']}/", array($this->controller, 'Index'))
-                  ->before(array($this->controller, 'before'))
-                  ->bind('Index');
+                    ->before(array($this->controller, 'before'))
+                    ->bind('Index');
         $this->app->get("/{$this->config['base_uri']}/all/", array($this->controller, 'Uncategorised'))
-                  ->before(array($this->controller, 'before'))
-                  ->bind('Uncategorised');
+                    ->before(array($this->controller, 'before'))
+                    ->bind('Uncategorised');
         $this->app->match("/{$this->config['base_uri']}/{forum}/", array($this->controller, 'Forum'))
-                  ->before(array($this->controller, 'before'))
-                  ->assert('forum', '[a-zA-Z0-9_\-]+')
-                  ->bind('Forum')
-                  ->method('GET|POST');
+                    ->before(array($this->controller, 'before'))
+                    ->assert('forum', '[a-zA-Z0-9_\-]+')
+                    ->bind('Forum')
+                    ->method('GET|POST');
         $this->app->match("/{$this->config['base_uri']}/{forum}/{topic}", array($this->controller, 'Topic'))
-                  ->before(array($this->controller, 'before'))
-                  ->assert('forum', '[a-zA-Z0-9_\-]+')
-                  ->assert('topic', '[a-zA-Z0-9_\-]+')
-                  ->bind('Topic')
-                  ->method('GET|POST');
-
-        // Twig functions
-        $this->app['twig']->addExtension(new ForumsTwigExtension($this->app));
+                    ->before(array($this->controller, 'before'))
+                    ->assert('forum', '[a-zA-Z0-9_\-]+')
+                    ->assert('topic', '[a-zA-Z0-9_\-]+')
+                    ->bind('Topic')
+                    ->method('GET|POST');
     }
 
     /**
@@ -78,7 +128,7 @@ class Extension extends \Bolt\BaseExtension
      * @since 1.0
      *
      */
-    private function dbRegister()
+    private function dbCheck()
     {
         $prefix = $this->app['config']->get('general/database/prefix', "bolt_");
         $me = $this;
