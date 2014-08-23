@@ -50,6 +50,8 @@ stylesheet: boltbb.min.css
 
 notifications:
   from_address: noreply@example.com
+  debug: true
+  debug_address: me@example.com
   
 # Enable CSRF protection for forms. You should leave this set to 'true', unless
 # you know what you're doing.
