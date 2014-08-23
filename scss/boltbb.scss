@@ -60,6 +60,9 @@
 .forum .pinned,
 .forum .pinned-global {
     background-color: rgb(255, 255, 224) !important;
+    background-image: url('../images/drawing-pin.png');
+    background-repeat: no-repeat;
+    background-position: center center;
 }
 
 .forum .topic,

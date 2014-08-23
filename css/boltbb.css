@@ -988,7 +988,10 @@ select {
   color: #cccccc; }
 
 .forum .pinned, .forum .pinned-global {
-  background-color: lightyellow !important; }
+  background-color: lightyellow !important;
+  background-image: url('../images/drawing-pin.png');
+  background-repeat: no-repeat;
+  background-position: center center; }
 
 .forum .topic, .topic .topic-body, .reply .reply-body {
   border: solid 1px #cccccc; }
