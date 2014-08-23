@@ -42,7 +42,7 @@
                     </div>
 
                     <div class="small-4 columns topic-last-post">
-                        {% setcontent lastpost = contenttypes.topics where { topic: topic.id } orderby '-datecreated' returnsingle %}
+                        {% setcontent lastpost = contenttypes.topics where { forum: topic.forum, topic: topic.id } orderby '-datecreated' returnsingle %}
                         {% if lastpost is not empty %}
                             <div>{{ lastpost.datecreated|date('M j, Y H:i:s') }}</div>
 
