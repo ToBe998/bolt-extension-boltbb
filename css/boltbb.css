@@ -996,14 +996,4 @@ select {
 .forum .topic-footer, .topic .topic-footer, .reply .reply-footer {
   background: #eaeaea;
   border: solid 1px #cccccc;
-  margin-bottom: 8px; }
-
-/*
- * Index
- */
-/*
- * Forum
- */
-/*
- * Topic
- */
+  margin-bottom: 8px !important; }
