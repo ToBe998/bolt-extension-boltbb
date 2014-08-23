@@ -14,21 +14,24 @@ topics:
             uses: title
         author:
             type: text
+            readonly: true
         authorip:
             type: text
+            label: "IP address"
+            readonly: true
         forum:
             type: integer
+            readonly: true
         state:
             type: text
         body:
             type: html
             height: 300px
-    record_template: topic.twig
-    listing_template: forum.twig
-    listing_records: 10
+        subscribers:
+            type: textarea
+            readonly: true
+            hidden: true
     default_status: published
-    sort: datepublish DESC
-    recordsperpage: 10
 
 replies:
     name: Replies
@@ -42,19 +45,19 @@ replies:
             uses: title
         author:
             type: text
+            readonly: true
         authorip:
             type: text
+            label: "IP address"
+            readonly: true
         forum:
             type: text
+            readonly: true
         topic:
             type: text
+            readonly: true
         body:
             type: html
             height: 300px
-    record_template: topic.twig
-    listing_template: forum.twig
-    listing_records: 10
     default_status: published
-    sort: datepublish DESC
-    recordsperpage: 10
 ```
