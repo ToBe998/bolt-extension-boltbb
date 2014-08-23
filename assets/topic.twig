@@ -7,13 +7,9 @@
     {% setcontent replies = contenttypes.replies where { forum: forum.id, topic: topic.id } limit pagercount orderby 'datecreated' allowpaging %}
 
     <div class="row topic-title">
-        <div class="small-12 columns">
-            <h4>{{ topic.title }}</h4>
-        </div>
+        <h4>{{ topic.title }}</h4>
 
-        <div class="small-12 columns">
-            {{ forumsbreadcrumbs(forum.id) }}
-        </div>
+        {{ forumsbreadcrumbs(forum.id) }}
     </div>
 
     {# Only show the topic text if we're on the first page #}

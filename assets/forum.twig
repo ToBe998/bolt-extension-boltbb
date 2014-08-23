@@ -11,14 +11,10 @@
     {% set topics = topics|merge(normal) %}
 
     <div class="row forum-title">
-        <div class="small-12 columns">
-            <h4>{{ forum.title }} Forum</h4>
-            <h6>{{ forum.description }}</h6>
-        </div>
+        <h4>{{ forum.title }} Forum</h4>
+        <h6>{{ forum.description }}</h6>
 
-        <div class="small-12 columns">
-            {{ forumsbreadcrumbs(forum.id) }}
-        </div>
+        {{ forumsbreadcrumbs(forum.id) }}
     </div>
 
     <div class="row forum">
