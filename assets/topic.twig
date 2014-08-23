@@ -4,8 +4,7 @@
 
     {% include '_messages.twig' %}
 
-    {% set query = contenttypes.replies~'/latest/'~pagercount %}
-    {% setcontent replies = query where { forum: forum.id, topic: topic.id } orderby 'datecreated' allowpaging %}
+    {% setcontent replies = contenttypes.replies where { forum: forum.id, topic: topic.id } limit pagercount orderby 'datecreated' allowpaging %}
 
     <div class="row topic-title">
         <div class="small-12 columns">
@@ -103,6 +102,9 @@
             {{ form_start(form) }}
                 {{ form_row(form.editor) }}
                 {{ form_row(form.author, {value : visitor.id}) }}
+                <br>
+                {{ form_widget(form.notify) }}
+                {{ form_label(form.notify) }}
                 <br>
                 {{ form_row(form.post) }}
             {{ form_end(form) }}

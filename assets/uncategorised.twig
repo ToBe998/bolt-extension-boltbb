@@ -3,7 +3,8 @@
 {% block forums %}
 
     {% include '_messages.twig' %}
-    {% setcontent topics = 'topics/latest/'~pagercount allowpaging %}
+
+    {% setcontent topics = contenttypes.topics where { forum: forum.id } limit pagercount orderby '-datecreated' allowpaging %}
 
     <div class="forum-title">
         <h4>All Forum Topics</h4>
@@ -39,7 +40,7 @@
                     </div>
 
                     <div class="topic-last-post">
-                        {% setcontent lastpost = 'replies' where { forum: topic.forum, topic: topic.id } returnsingle %}
+                        {% setcontent lastpost = contenttypes.replies where { forum: topic.forum, topic: topic.id } returnsingle %}
                         {%  if lastpost is not empty %}
                             {% set author = clientprofile(lastpost.author) %}
 

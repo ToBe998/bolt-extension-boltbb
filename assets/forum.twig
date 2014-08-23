@@ -4,8 +4,7 @@
 
     {% include '_messages.twig' %}
 
-    {% set query = contenttypes.topics~'/latest/'~pagercount %}
-    {% setcontent topics = query where { forum: forum.id } orderby '-datecreated' allowpaging %}
+    {% setcontent topics = contenttypes.topics where { forum: forum.id } limit pagercount orderby '-datecreated' allowpaging %}
 
     <div class="row forum-title">
         <div class="small-12 columns">
