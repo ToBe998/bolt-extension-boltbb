@@ -21,6 +21,14 @@ class Controller
     }
 
     /**
+     * Enable HTML snippets in our routes so that JS & CSS gets inserted
+     */
+    public function before()
+    {
+        $this->app['htmlsnippets'] = true;
+    }
+
+    /**
      * Default route callback for forums
      *
      * @since 1.0

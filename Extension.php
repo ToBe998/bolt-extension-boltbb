@@ -47,14 +47,18 @@ class Extension extends \Bolt\BaseExtension
          * Routes for forum base, individual forums and individual topics
          */
         $this->app->get("/{$this->config['base_uri']}/", array($this->controller, 'Index'))
+                  ->before(array($this->controller, 'before'))
                   ->bind('Index');
         $this->app->get("/{$this->config['base_uri']}/all/", array($this->controller, 'Uncategorised'))
+                  ->before(array($this->controller, 'before'))
                   ->bind('Uncategorised');
         $this->app->match("/{$this->config['base_uri']}/{forum}/", array($this->controller, 'Forum'))
+                  ->before(array($this->controller, 'before'))
                   ->assert('forum', '[a-zA-Z0-9_\-]+')
                   ->bind('Forum')
                   ->method('GET|POST');
         $this->app->match("/{$this->config['base_uri']}/{forum}/{topic}", array($this->controller, 'Topic'))
+                  ->before(array($this->controller, 'before'))
                   ->assert('forum', '[a-zA-Z0-9_\-]+')
                   ->assert('topic', '[a-zA-Z0-9_\-]+')
                   ->bind('Topic')
