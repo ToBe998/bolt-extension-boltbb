@@ -21,12 +21,14 @@ class Controller
     }
 
     /**
-     * Enable HTML snippets in our routes so that JS & CSS gets inserted
+     * Controller before render
      */
     public function before()
     {
+        // Enable HTML snippets in our routes so that JS & CSS gets inserted
         $this->app['htmlsnippets'] = true;
 
+        // Add our JS & CSS and CKeditor
         $this->app['extensions.' . Extension::NAME]->addCSS($this->config['stylesheet'] , false);
         $this->app['extensions']->addJavascript($this->app['paths']['app'] . 'view/lib/ckeditor/ckeditor.js', true);
         $this->app['extensions.' . Extension::NAME]->addJavascript($this->config['javascript'], true);
