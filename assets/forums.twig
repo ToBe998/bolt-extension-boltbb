@@ -37,7 +37,10 @@
             </div>
 
             <div class="forum-last-post">
-                {% setcontent lastpost = contenttypes.topics orderby '-datecreated' returnsingle %}
+                {% setcontent lastpost = contenttypes.replies orderby '-datecreated' returnsingle %}
+                {% if lastpost is empty %}
+                    {% setcontent lastpost = contenttypes.topics orderby '-datecreated' returnsingle %}
+                {% endif %}
                 {%  if lastpost is not empty %}
                     <div>{{ lastpost.datecreated|date('M j, Y H:i:s') }}</div>
 
@@ -68,7 +71,10 @@
             </div>
 
             <div class="forum-last-post">
-                {% setcontent lastpost = contenttypes.topics where { forum: forum.id } orderby '-datecreated' returnsingle %}
+                {% setcontent lastpost = contenttypes.replies where { forum: forum.id } orderby '-datecreated' returnsingle %}
+                {% if lastpost is empty %}
+                    {% setcontent lastpost = contenttypes.topics where { forum: forum.id } orderby '-datecreated' returnsingle %}
+                {% endif %}
                 {%  if lastpost is not empty %}
                     <div>{{ lastpost.datecreated|date('M j, Y H:i:s') }}</div>
 

@@ -41,7 +41,11 @@
                     </div>
 
                     <div class="topic-last-post">
-                        {% setcontent lastpost = contenttypes.replies where { forum: topic.forum, topic: topic.id } returnsingle %}
+                        {% setcontent lastpost = contenttypes.replies where { forum: topic.forum, topic: topic.id } orderby '-datecreated' returnsingle %}
+                        {% if lastpost is empty %}
+                            {% setcontent lastpost = contenttypes.topics where { forum: topic.forum, topic: topic.id } orderby '-datecreated' returnsingle %}
+                        {% endif %}
+
                         {%  if lastpost is not empty %}
                             {% set author = clientprofile(lastpost.author) %}
 

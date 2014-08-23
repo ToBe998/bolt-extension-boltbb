@@ -11,7 +11,7 @@
     {% set topics = topics|merge(normal) %}
 
     <div class="row forum-title">
-        <h4>{{ forum.title }} Forum</h4>
+        <h4>{{ forum.title }}</h4>
         <h6>{{ forum.description }}</h6>
 
         {{ forumsbreadcrumbs(forum.id) }}
@@ -27,6 +27,7 @@
             </div>
 
             {% for topic in topics %}
+
             {# Topic #}
             <div class="row topic {{ topic.state }}" id="topic-{{ topic.forum }}-{{ topic.id }}">
 
@@ -42,7 +43,10 @@
                     </div>
 
                     <div class="small-4 columns topic-last-post">
-                        {% setcontent lastpost = contenttypes.topics where { forum: topic.forum, topic: topic.id } orderby '-datecreated' returnsingle %}
+                        {% setcontent lastpost = contenttypes.replies where { forum: topic.forum, topic: topic.id } orderby '-datecreated' returnsingle %}
+                        {% if lastpost is empty %}
+                            {% setcontent lastpost = contenttypes.topics where { forum: topic.forum, topic: topic.id } orderby '-datecreated' returnsingle %}
+                        {% endif %}
                         {% if lastpost is not empty %}
                             <div>{{ lastpost.datecreated|date('M j, Y H:i:s') }}</div>
 
