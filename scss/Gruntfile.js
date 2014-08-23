@@ -37,6 +37,21 @@ module.exports = function(grunt) {
         }        
       }
     },
+    
+    uglify: {
+        options: {
+            includePaths: ['']
+        },
+        jquery: {
+            options: {
+                mangle: true,
+                sourceMap: true,
+                preserveComments: 'some'
+            },
+            src: '../js/boltbb.js',
+            dest: '../js/boltbb.min.js'
+        }
+    },
 
     watch: {
       grunt: { files: ['Gruntfile.js'] },
@@ -53,6 +68,7 @@ module.exports = function(grunt) {
   });
 
   grunt.loadNpmTasks('grunt-sass');
+  grunt.loadNpmTasks('grunt-contrib-uglify');
   grunt.loadNpmTasks('grunt-contrib-watch');
 
   grunt.registerTask('custom', ['sass:custom','sass:custom_min']);
