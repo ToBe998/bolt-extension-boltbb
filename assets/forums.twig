@@ -7,10 +7,10 @@
 {% block forums %}
 
 <div class="forum-title">
-    <h4>{{ boltbb.forum_title }}</h4>
-    <h6>{{ boltbb.forum_description }}</h6>
+    <h4>{{ boltbb.title }}</h4>
+    <h6>{{ boltbb.description }}</h6>
 
-    {{ forumsbreadcrumbs(forum.id) }}
+    {{ forumsbreadcrumbs() }}
 </div>
 
 {% include '_messages.twig' %}

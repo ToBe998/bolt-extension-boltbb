@@ -45,7 +45,7 @@ class Controller
                 'forums' => $forums,
                 'css' => $this->config['stylesheet'],
                 'js' => $this->config['javascript'],
-                'boltbb' => $this->config
+                'boltbb' => $this->config['boltbb']
         ));
 
         return new \Twig_Markup($html, 'UTF-8');
