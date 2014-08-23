@@ -1,0 +1,91 @@
+/*
+ * Foundation 5 imports
+ */
+
+@import "foundation/components/grid";
+@import "foundation/components/breadcrumbs";
+@import "foundation/components/alert-boxes";
+
+.forum,
+.topic,
+.reply {
+    
+}
+
+/*
+ * Headers
+ */
+ .forum .forum-header,
+ .topic .topic-header,
+ .reply .reply-header {
+    background: #EAEAEA;
+    height: 3em;
+    border: solid 1px #CCC;
+}
+
+/*
+ * Author
+ */
+
+.topic .author,
+.reply .author {
+	text-align: center;
+	margin-top: 4px;
+}
+
+.forum-last-post .avatar, 
+.topic-last-post .avatar {
+    width: 18px;
+    height: 18px;
+}
+
+.topic .author .avatar,
+.reply .author .avatar {
+    width: 80px;
+    height: 80px;
+}
+
+/*
+ * Bodies
+ */
+.topic .topic-body {
+    background: rgba(238, 238, 238, 0.3);
+}
+
+.forum .closed,
+.forum .closed a {
+    color: rgb(204, 204, 204);
+}
+
+.forum .topic,
+.topic .topic-body,
+.reply .reply-body {
+    border: solid 1px #CCC;
+}
+
+/*
+ * Footers
+ */ 
+.forum .topic-footer,
+.topic .topic-footer,
+.reply .reply-footer {
+    background: #EAEAEA;
+    border: solid 1px #CCC;
+    margin-bottom: 8px;
+}
+
+/*
+ * Index
+ */
+ 
+/*
+ * Forum
+ */
+ 
+/*
+ * Topic
+ */
+
+
+
+
