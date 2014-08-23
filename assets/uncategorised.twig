@@ -4,7 +4,9 @@
 
     {% include '_messages.twig' %}
 
-    {% setcontent topics = contenttypes.topics where { forum: forum.id } limit pagercount orderby '-datecreated' allowpaging %}
+    {% setcontent pinnedglobal = contenttypes.topics where { state: 'pinned-global' } orderby '-datecreated' %}
+    {% setcontent normal       = contenttypes.topics where { state: 'open || closed' } limit pagercount orderby '-datecreated' allowpaging %}
+    {% set topics = pinnedglobal|merge(normal) %}
 
     <div class="forum-title">
         <h4>All Forum Topics</h4>
