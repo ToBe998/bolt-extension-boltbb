@@ -15,6 +15,7 @@
 /*
  * Headers
  */
+ .forums .forum-header,
  .forum .forum-header,
  .topic .topic-header,
  .reply .reply-header {
@@ -64,6 +65,7 @@
     background-position: center center;
 }
 
+.forums .topic,
 .forum .topic,
 .topic .topic-body,
 .reply .reply-body {
@@ -73,6 +75,7 @@
 /*
  * Footers
  */ 
+.forums .forum-footer,
 .forum .topic-footer,
 .topic .topic-footer,
 .reply .reply-footer {

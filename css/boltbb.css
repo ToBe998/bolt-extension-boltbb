@@ -958,7 +958,7 @@ select {
 /*
  * Headers
  */
-.forum .forum-header, .topic .topic-header, .reply .reply-header {
+.forums .forum-header, .forum .forum-header, .topic .topic-header, .reply .reply-header {
   background: #eaeaea;
   border: solid 1px #cccccc; }
 
@@ -992,13 +992,13 @@ select {
   background-repeat: no-repeat;
   background-position: center center; }
 
-.forum .topic, .topic .topic-body, .reply .reply-body {
+.forums .topic, .forum .topic, .topic .topic-body, .reply .reply-body {
   border: solid 1px #cccccc; }
 
 /*
  * Footers
  */
-.forum .topic-footer, .topic .topic-footer, .reply .reply-footer {
+.forums .forum-footer, .forum .topic-footer, .topic .topic-footer, .reply .reply-footer {
   background: #eaeaea;
   border: solid 1px #cccccc;
   margin-bottom: 8px !important; }
