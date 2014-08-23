@@ -351,6 +351,7 @@ class Functions
     }
 
     /**
+     * Render the breadcrumbs
      *
      * @return \Twig_Markup
      */
