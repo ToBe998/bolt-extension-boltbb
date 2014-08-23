@@ -47,7 +47,7 @@ class ForumsTwigExtension extends \Twig_Extension
      * @param integer $forum_id The ID of the forum
      * @return \Twig_Markup
      */
-    public function forumsBreadcrumbs($forum_id)
+    public function forumsBreadcrumbs($forum_id = false)
     {
         $html = $this->functions->getBreadcrumbs($forum_id);
 
