@@ -31,11 +31,11 @@ class Extension extends \Bolt\BaseExtension
         if (isset($this->config['stylesheet'])) {
             $this->config['stylesheet'] = substr(__DIR__, strlen($this->app['paths']['rootpath'])) . '/css/' . $this->config['stylesheet'];
         } else {
-            $this->config['stylesheet'] = substr(__DIR__, strlen($this->app['paths']['rootpath'])) . '/css/BoltBB.css';
+            $this->config['stylesheet'] = substr(__DIR__, strlen($this->app['paths']['rootpath'])) . '/css/boltbb.min.css';
         }
 
         // JS
-        $this->config['javascript'] = substr(__DIR__, strlen($this->app['paths']['rootpath'])) . '/js/BoltBB.js';
+        $this->config['javascript'] = substr(__DIR__, strlen($this->app['paths']['rootpath'])) . '/js/boltbb.min.js';
 
         // Check the database table is up and working
         $this->dbRegister();
