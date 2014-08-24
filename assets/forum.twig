@@ -22,7 +22,7 @@
             <div class="row forum-header">
                 <div class="small-6 columns text-center topic-title">Topic</div>
                 <div class="small-2 columns text-center topic-replies">Replies</div>
-                <div class="small-4 columns text-center topic-last-post">Last Post</div>
+                <div class="small-4 columns text-left topic-last-post">Last Post</div>
             </div>
 
             {% for topic in topics %}
@@ -41,7 +41,7 @@
                         {{ topicreplycount(forum.id, topic.id) }}
                     </div>
 
-                    <div class="small-4 columns text-center topic-last-post">
+                    <div class="small-4 columns text-left topic-last-post">
                         {% setcontent lastpost = contenttypes.replies where { forum: topic.forum, topic: topic.id } orderby '-datecreated' returnsingle %}
                         {% if lastpost is empty %}
                             {% setcontent lastpost = contenttypes.topics where { forum: topic.forum, topic: topic.id } orderby '-datecreated' returnsingle %}
