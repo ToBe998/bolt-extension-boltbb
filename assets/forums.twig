@@ -22,7 +22,7 @@
             </div>
 
             {# Uncategorised Forum #}
-            <div class="row forum">
+            <div class="row forum-body">
 
                 <div class="small-4 columns forum-title">
                     <p><a href="/{{ boltbb.base_uri }}/all">All Discussions</a></p>
@@ -54,7 +54,6 @@
 
             </div>
 
-
             {# Forum footer #}
             <div class="row forum-footer">
                 <div class="small-12 columns"></div>
@@ -74,32 +73,42 @@
                     <div class="small-4 columns forum-last-post">Last Post</div>
                 </div>
 
-                <div class="small-4 columns forum-title">
-                    <p><a href="/{{ boltbb.base_uri }}/{{ slug }}">{{ forum.title }}</a></p>
-                    <p><em>{{ forum.description }}</em></p>
-                </div>
+                {# Forum #}
+                <div class="row forum-body">
 
-                <div class="small-2 columns forum-posts">
-                    {{ forumtopiccount(forum.id) }}
-                </div>
+                    <div class="small-4 columns forum-title">
+                        <p><a href="/{{ boltbb.base_uri }}/{{ slug }}">{{ forum.title }}</a></p>
+                        <p><em>{{ forum.description }}</em></p>
+                    </div>
 
-                <div class="small-2 columns forum-replies">
-                    {{ forumreplycount(forum.id) }}
-                </div>
+                    <div class="small-2 columns forum-posts">
+                        {{ forumtopiccount(forum.id) }}
+                    </div>
 
-                <div class="small-4 columns forum-last-post">
-                    {% setcontent lastpost = contenttypes.replies where { forum: forum.id } orderby '-datecreated' returnsingle %}
-                    {% if lastpost is empty %}
-                        {% setcontent lastpost = contenttypes.topics where { forum: forum.id } orderby '-datecreated' returnsingle %}
-                    {% endif %}
-                    {%  if lastpost is not empty %}
-                        <div>{{ lastpost.datecreated|date('M j, Y H:i:s') }}</div>
+                    <div class="small-2 columns forum-replies">
+                        {{ forumreplycount(forum.id) }}
+                    </div>
 
-                        {% set author = clientprofile(lastpost.author) %}
-                        {% if author is not empty %}
-                            <div><img src="{{ author.avatar }}" alt="{{ author.username }}" class="avatar">&nbsp;{{ author.username }}</div>
+                    <div class="small-4 columns forum-last-post">
+                        {% setcontent lastpost = contenttypes.replies where { forum: forum.id } orderby '-datecreated' returnsingle %}
+                        {% if lastpost is empty %}
+                            {% setcontent lastpost = contenttypes.topics where { forum: forum.id } orderby '-datecreated' returnsingle %}
                         {% endif %}
-                    {% endif %}
+                        {%  if lastpost is not empty %}
+                            <div>{{ lastpost.datecreated|date('M j, Y H:i:s') }}</div>
+
+                            {% set author = clientprofile(lastpost.author) %}
+                            {% if author is not empty %}
+                                <div><img src="{{ author.avatar }}" alt="{{ author.username }}" class="avatar">&nbsp;{{ author.username }}</div>
+                            {% endif %}
+                        {% endif %}
+                    </div>
+
+                </div>
+
+                {# Forum footer #}
+                <div class="row forum-footer">
+                    <div class="small-12 columns"></div>
                 </div>
 
             </div>

@@ -992,7 +992,7 @@ select {
   background-repeat: no-repeat;
   background-position: center center; }
 
-.forums .topic, .forum .topic, .topic .topic-body, .reply .reply-body {
+.forums .forum-body, .forum .topic, .topic .topic-body, .reply .reply-body {
   border: solid 1px #cccccc; }
 
 /*
