@@ -15,29 +15,29 @@
         <div class="small-12 columns">
 
             <div class="row forum-header">
-                <div class="small-4 columns forum-title">Forum</div>
-                <div class="small-2 columns forum-posts">Posts</div>
-                <div class="small-2 columns forum-replies">Replies</div>
-                <div class="small-4 columns forum-last-post">Last Post</div>
+                <div class="small-4 columns text-left forum-title">Forum</div>
+                <div class="small-2 columns text-center forum-posts">Posts</div>
+                <div class="small-2 columns text-center forum-replies">Replies</div>
+                <div class="small-4 columns text-center forum-last-post">Last Post</div>
             </div>
 
             {# Uncategorised Forum #}
             <div class="row forum-body">
 
-                <div class="small-4 columns forum-title">
+                <div class="small-4 columns text-left forum-title">
                     <p><a href="/{{ boltbb.base_uri }}/all">All Discussions</a></p>
                     <p><em>The uncategorized version</em></p>
                 </div>
 
-                <div class="small-2 columns forum-posts">
+                <div class="small-2 columns text-center forum-posts">
                     {{ forumtopiccount('') }}
                 </div>
 
-                <div class="small-2 columns forum-replies">
+                <div class="small-2 columns text-center forum-replies">
                     {{ forumreplycount('') }}
                 </div>
 
-                <div class="small-4 columns forum-last-post">
+                <div class="small-4 columns text-left forum-last-post">
                     {% setcontent lastpost = contenttypes.replies orderby '-datecreated' returnsingle %}
                     {% if lastpost is empty %}
                         {% setcontent lastpost = contenttypes.topics orderby '-datecreated' returnsingle %}
@@ -67,29 +67,29 @@
             <div class="small-12 columns">
 
                 <div class="row forum-header">
-                    <div class="small-4 columns forum-title">Forum</div>
-                    <div class="small-2 columns forum-posts">Posts</div>
-                    <div class="small-2 columns forum-replies">Replies</div>
-                    <div class="small-4 columns forum-last-post">Last Post</div>
+                    <div class="small-4 columns text-left forum-title">Forum</div>
+                    <div class="small-2 columns text-center forum-posts">Posts</div>
+                    <div class="small-2 columns text-center forum-replies">Replies</div>
+                    <div class="small-4 columns text-center forum-last-post">Last Post</div>
                 </div>
 
                 {# Forum #}
                 <div class="row forum-body">
 
-                    <div class="small-4 columns forum-title">
+                    <div class="small-4 columns text-left forum-title">
                         <p><a href="/{{ boltbb.base_uri }}/{{ slug }}">{{ forum.title }}</a></p>
                         <p><em>{{ forum.description }}</em></p>
                     </div>
 
-                    <div class="small-2 columns forum-posts">
+                    <div class="small-2 columns text-center forum-posts">
                         {{ forumtopiccount(forum.id) }}
                     </div>
 
-                    <div class="small-2 columns forum-replies">
+                    <div class="small-2 columns text-center forum-replies">
                         {{ forumreplycount(forum.id) }}
                     </div>
 
-                    <div class="small-4 columns forum-last-post">
+                    <div class="small-4 columns text-left forum-last-post">
                         {% setcontent lastpost = contenttypes.replies where { forum: forum.id } orderby '-datecreated' returnsingle %}
                         {% if lastpost is empty %}
                             {% setcontent lastpost = contenttypes.topics where { forum: forum.id } orderby '-datecreated' returnsingle %}

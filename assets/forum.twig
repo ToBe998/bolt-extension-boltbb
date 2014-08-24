@@ -20,9 +20,9 @@
         <div class="small-12 columns">
 
             <div class="row forum-header">
-                <div class="small-6 columns topic-title">Topic</div>
-                <div class="small-2 columns topic-replies">Replies</div>
-                <div class="small-4 columns topic-last-post">Last Post</div>
+                <div class="small-6 columns text-center topic-title">Topic</div>
+                <div class="small-2 columns text-center topic-replies">Replies</div>
+                <div class="small-4 columns text-center topic-last-post">Last Post</div>
             </div>
 
             {% for topic in topics %}
@@ -30,18 +30,18 @@
             {# Topic #}
             <div class="row topic {{ topic.state }}" id="topic-{{ topic.forum }}-{{ topic.id }}">
 
-                    <div class="small-6 columns topic-title">
+                    <div class="small-6 columns text-left topic-title">
                         <p><a href="/{{ boltbb.base_uri }}/{{ forum.slug }}/{{ topic.slug }}">{{ topic.title }}</a></p>
                         {% set author = clientprofile(topic.author) %}
                         <div>Posted by {{ author.username }}</div>
                         <div>{{ topic.datecreated|date('M j, Y H:i:s') }}</div>
                     </div>
 
-                    <div class="small-2 columns topic-replies">
+                    <div class="small-2 columns text-center topic-replies">
                         {{ topicreplycount(forum.id, topic.id) }}
                     </div>
 
-                    <div class="small-4 columns topic-last-post">
+                    <div class="small-4 columns text-center topic-last-post">
                         {% setcontent lastpost = contenttypes.replies where { forum: topic.forum, topic: topic.id } orderby '-datecreated' returnsingle %}
                         {% if lastpost is empty %}
                             {% setcontent lastpost = contenttypes.topics where { forum: topic.forum, topic: topic.id } orderby '-datecreated' returnsingle %}
