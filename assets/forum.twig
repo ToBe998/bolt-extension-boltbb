@@ -7,8 +7,7 @@
     {% setcontent pinnedglobal = contenttypes.topics where { state: 'pinned-global' } orderby '-datecreated' %}
     {% setcontent pinned       = contenttypes.topics where { forum: forum.id, state: 'pinned' } orderby '-datecreated' %}
     {% setcontent normal       = contenttypes.topics where { forum: forum.id, state: 'open || closed' } limit pagercount orderby '-datecreated' allowpaging %}
-    {% set topics = pinnedglobal|merge(pinned) %}
-    {% set topics = topics|merge(normal) %}
+    {% set topics = pinnedglobal|merge(pinned)|merge(normal) %}
 
     <div class="row forum-title">
         <h4>{{ forum.title }}</h4>
