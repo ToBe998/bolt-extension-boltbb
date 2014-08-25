@@ -9,24 +9,33 @@ topics:
         title:
             type: text
             class: large
-        slug:
-            type: slug
-            uses: title
+            group: topic
+        body:
+            type: html
+            height: 300px
         author:
             type: text
+            variant: inline
+            info: "Something, something, Dark Side"
             readonly: true
+            group: Info
         authorip:
             type: text
+            variant: inline
             label: "IP address"
             readonly: true
         forum:
             type: integer
+            variant: inline
             readonly: true
         state:
-            type: text
-        body:
-            type: html
-            height: 300px
+            type: select
+            values: [ open, closed ]
+            variant: inline
+        visibility:
+            type: select
+            values: [ nomal, pinned, global ]
+            variant: inline
         subscribers:
             type: textarea
             readonly: true
@@ -40,24 +49,27 @@ replies:
         title:
             type: text
             class: large
-        slug:
-            type: slug
-            uses: title
+            group: Reply        
+        body:
+            type: html
+            height: 300px
         author:
             type: text
+            variant: inline
             readonly: true
+            group: Info
         authorip:
             type: text
+            variant: inline
             label: "IP address"
             readonly: true
         forum:
             type: text
+            variant: inline
             readonly: true
         topic:
             type: text
+            variant: inline
             readonly: true
-        body:
-            type: html
-            height: 300px
     default_status: published
 ```
