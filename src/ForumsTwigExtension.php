@@ -1,6 +1,6 @@
 <?php
 
-namespace \Bolt\Extension\Bolt\BoltBB;
+namespace Bolt\Extension\Bolt\BoltBB;
 
 /**
  * Twig functions

@@ -1,7 +1,7 @@
 <?php
 // Simple Bulletin Board extension for Bolt
 
-namespace \Bolt\Extension\Bolt\BoltBB;
+namespace Bolt\Extension\Bolt\BoltBB;
 
 // Database access
 use Doctrine\DBAL\Schema\Schema;

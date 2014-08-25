@@ -21,7 +21,7 @@
 			"init.php"
 		],
 		"psr-4" : {
-			"\\Bolt\\Extension\\Bolt\\BoltBB\\" : [
+			"Bolt\\Extension\\Bolt\\BoltBB\\" : [
 				"",
 				"src/"
 			]
