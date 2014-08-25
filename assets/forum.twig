@@ -4,10 +4,10 @@
 
     {% include '_messages.twig' %}
 
-    {% setcontent pinnedglobal = contenttypes.topics where { state: 'pinned-global' } orderby '-datecreated' %}
-    {% setcontent pinned       = contenttypes.topics where { forum: forum.id, state: 'pinned' } orderby '-datecreated' %}
-    {% setcontent normal       = contenttypes.topics where { forum: forum.id, state: 'open || closed' } limit pagercount orderby '-datecreated' allowpaging %}
-    {% set topics = pinnedglobal|merge(pinned)|merge(normal) %}
+    {% setcontent global = contenttypes.topics where { visibility: 'global' } orderby '-datecreated' %}
+    {% setcontent pinned = contenttypes.topics where { visibility: 'pinned', forum: forum.id } orderby '-datecreated' %}
+    {% setcontent normal = contenttypes.topics where { visibility: 'normal', forum: forum.id, state: 'open || closed' } limit pagercount orderby '-datecreated' allowpaging %}
+    {% set topics = global|merge(pinned)|merge(normal) %}
 
     <div class="row forum-title">
         <h4>{{ forum.title }}</h4>
@@ -26,9 +26,14 @@
             </div>
 
             {% for topic in topics %}
+                {% if topic.visibility == 'normal' %}
+                    {% set class = topic.state %}
+                {% else %}
+                    {% set class = topic.visibility %}
+                {% endif %}
 
-            {# Topic #}
-            <div class="row topic {{ topic.state }}" id="topic-{{ topic.forum }}-{{ topic.id }}">
+                {# Topic #}
+                <div class="row topic {{ class }}" id="topic-{{ topic.forum }}-{{ topic.id }}">
 
                     <div class="small-6 columns text-left topic-title">
                         <p><a href="/{{ boltbb.base_uri }}/{{ forum.slug }}/{{ topic.slug }}">{{ topic.title }}</a></p>
@@ -56,12 +61,12 @@
                         {% endif %}
                     </div>
 
-            </div>
+                </div>
 
-            {# Topic footer #}
-            <div class="row topic-footer">
-                <div class="small-12 columns"></div>
-            </div>
+                {# Topic footer #}
+                <div class="row topic-footer">
+                    <div class="small-12 columns"></div>
+                </div>
             {% endfor %}
 
             <hr>
@@ -72,18 +77,22 @@
     </div>
 
     <div class="panel callout">
-        <h4>Create a new topic in {{ forum.title }}</h4>
+        {% if forum.state == 'open' %}
+            <h4>Create a new topic in {{ forum.title }}</h4>
 
-        {% if hasauth() %}
-            {{ form_start(form) }}
-                {{ form_row(form.title) }}
-                {{ form_row(form.editor) }}
-                {{ form_row(form.author, {value : visitor.id}) }}
-                <br>
-                {{ form_row(form.post) }}
-            {{ form_end(form) }}
+            {% if hasauth() %}
+                {{ form_start(form) }}
+                    {{ form_row(form.title) }}
+                    {{ form_row(form.editor) }}
+                    {{ form_row(form.author, {value : visitor.id}) }}
+                    <br>
+                    {{ form_row(form.post) }}
+                {{ form_end(form) }}
+            {% else %}
+                {{ displayauth(true) }}
+            {% endif %}
         {% else %}
-            {{ displayauth(true) }}
+            <p>Conversation has been closed in this forum</p>
         {% endif %}
     </div>
 

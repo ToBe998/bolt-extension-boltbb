@@ -986,7 +986,7 @@ select {
 .forum .closed, .forum .closed a {
   color: #cccccc; }
 
-.forum .pinned, .forum .pinned-global {
+.forum .pinned, .forum .global {
   background-color: lightyellow !important;
   background-image: url('../img/drawing-pin.png');
   background-repeat: no-repeat;

@@ -68,10 +68,16 @@
                 <div class="small-3 columns author">
                     {% set author = clientprofile(reply.author) %}
                     {% if author is not empty %}
-                    <div class="small-12 columns"><img src="{{ author.avatar }}" alt="{{ author.username }}" class="avatar"></div>
-                    <div class="small-12 columns">{{ author.username }}</div>
+                    <div class="row text-center">
+                        <img src="{{ author.avatar }}" alt="{{ author.username }}" class="avatar">
+                    </div>
+                    <div class="row text-center">
+                        {{ author.username }}
+                    </div>
                     {% endif %}
-                    <div class="small-12 columns">{{ reply.authorip }}</div>
+                    <div class="row text-center">
+                        {{ reply.authorip }}
+                    </div>
                 </div>
 
                 <div class="small-9 columns body">
@@ -92,20 +98,24 @@
     <hr>
 
     <div class="panel callout">
-        <h4>Create a new reply</h4>
+        {% if topic.state == 'open' %}
+            <h4>Create a new reply</h4>
 
-        {% if hasauth() %}
-            {{ form_start(form) }}
-                {{ form_row(form.editor) }}
-                {{ form_row(form.author, {value : visitor.id}) }}
-                <br>
-                {{ form_widget(form.notify) }}
-                {{ form_label(form.notify) }}
-                <br>
-                {{ form_row(form.post) }}
-            {{ form_end(form) }}
+            {% if hasauth() %}
+                {{ form_start(form) }}
+                    {{ form_row(form.editor) }}
+                    {{ form_row(form.author, {value : visitor.id}) }}
+                    <br>
+                    {{ form_widget(form.notify) }}
+                    {{ form_label(form.notify) }}
+                    <br>
+                    {{ form_row(form.post) }}
+                {{ form_end(form) }}
+            {% else %}
+                {{ displayauth(true) }}
+            {% endif %}
         {% else %}
-            {{ displayauth(true) }}
+            <p>Conversation has been closed for this topic</p>
         {% endif %}
     </div>
 
