@@ -3,6 +3,7 @@
 {% block forums %}
 
     {% include '_messages.twig' %}
+    {% import '_macro.twig' as element %}
 
     {% setcontent replies = contenttypes.replies where { forum: forum.id, topic: topic.id } limit pagercount orderby 'datecreated' allowpaging %}
 
@@ -27,18 +28,17 @@
 
             {# Topic content #}
             <div class="row topic-body">
+
+                {# Author box #}
                 <div class="small-3 columns author">
-                    {% set author = clientprofile(topic.author) %}
-                    {% if author is not empty %}
-                    <div class="small-12 columns"><img src="{{ author.avatar }}" alt="{{ author.username }}" class="avatar"></div>
-                    <div class="small-12 columns">{{ author.username }}</div>
-                    {% endif %}
-                    <div class="small-12 columns">{{ topic.authorip }}</div>
+                    {{ element.author(topic.author, topic.authorip) }}
                 </div>
 
+                {# Body #}
                 <div class="small-9 columns body">
-                    <div>{{ topic.body }}</div>
+                    {{ topic.body }}
                 </div>
+
             </div>
 
             {# Topic footer #}
@@ -65,24 +65,15 @@
 
             {# Reply content #}
             <div class="row reply-body">
+
                 <div class="small-3 columns author">
-                    {% set author = clientprofile(reply.author) %}
-                    {% if author is not empty %}
-                    <div class="row text-center">
-                        <img src="{{ author.avatar }}" alt="{{ author.username }}" class="avatar">
-                    </div>
-                    <div class="row text-center">
-                        {{ author.username }}
-                    </div>
-                    {% endif %}
-                    <div class="row text-center">
-                        {{ reply.authorip }}
-                    </div>
+                    {{ element.author(reply.author, reply.authorip) }}
                 </div>
 
                 <div class="small-9 columns body">
-                    <div>{{ reply.body }}</div>
+                    {{ reply.body }}
                 </div>
+
             </div>
 
             {# Reply footer #}
