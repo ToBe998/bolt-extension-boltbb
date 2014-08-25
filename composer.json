@@ -21,10 +21,10 @@
 			"init.php"
 		],
 		"psr-4" : {
-			"Bolt\\Extension\\BoltBB\\" : [
-                "",
-                "src/"
-            ]
+			"\\Bolt\\Extension\\Bolt\\BoltBB\\" : [
+				"",
+				"src/"
+			]
 		}
 	},
 	"extra" : {
