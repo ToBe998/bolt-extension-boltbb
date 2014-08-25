@@ -81,13 +81,18 @@
             <h4>Create a new topic in {{ forum.title }}</h4>
 
             {% if hasauth() %}
-                {{ form_start(form) }}
-                    {{ form_row(form.title) }}
-                    {{ form_row(form.editor) }}
-                    {{ form_row(form.author, {value : visitor.id}) }}
-                    <br>
-                    {{ form_row(form.post) }}
-                {{ form_end(form) }}
+                {% set client = clientprofile() %}
+                {% if client %}
+                    {{ form_start(form) }}
+                        {{ form_row(form.title) }}
+                        {{ form_row(form.editor) }}
+                        {{ form_row(form.author, {value : visitor.id}) }}
+                        <br>
+                        {{ form_row(form.post) }}
+                    {{ form_end(form) }}
+                {% else %}
+                    <p>Error loading your client profile</p>
+                {% endif %}
             {% else %}
                 {{ displayauth(true) }}
             {% endif %}

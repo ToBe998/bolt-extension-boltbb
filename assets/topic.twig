@@ -5,7 +5,7 @@
     {% include '_messages.twig' %}
     {% import '_macro.twig' as element %}
 
-    {% setcontent replies = contenttypes.replies where { forum: forum.id, topic: topic.id } limit pagercount orderby 'datecreated' allowpaging %}
+    {% setcontent replies = contenttypes.replies where { topic: topic.id } limit pagercount orderby 'datecreated' allowpaging %}
 
     <div class="row topic-title">
         <h4>{{ topic.title }}</h4>
@@ -53,7 +53,7 @@
 
     {# Replies #}
     {% for reply in replies %}
-    <div class="row reply" id="reply-{{ forum.id }}-{{ topic.id }}-{{ reply['id'] }}">
+    <div class="row reply" id="reply-{{ topic.id }}-{{ reply['id'] }}">
         <div class="small-12 columns">
 
             {# Reply Header #}
@@ -93,15 +93,20 @@
             <h4>Create a new reply</h4>
 
             {% if hasauth() %}
-                {{ form_start(form) }}
-                    {{ form_row(form.editor) }}
-                    {{ form_row(form.author, {value : visitor.id}) }}
-                    <br>
-                    {{ form_widget(form.notify) }}
-                    {{ form_label(form.notify) }}
-                    <br>
-                    {{ form_row(form.post) }}
-                {{ form_end(form) }}
+                {% set client = clientprofile() %}
+                {% if client %}
+                    {{ form_start(form) }}
+                        {{ form_row(form.editor) }}
+                        {{ form_row(form.author, {value : client.id}) }}
+                        <br>
+                        {{ form_widget(form.notify) }}
+                        {{ form_label(form.notify) }}
+                        <br>
+                        {{ form_row(form.post) }}
+                    {{ form_end(form) }}
+                {% else %}
+                    <p>Error loading your client profile</p>
+                {% endif %}
             {% else %}
                 {{ displayauth(true) }}
             {% endif %}
