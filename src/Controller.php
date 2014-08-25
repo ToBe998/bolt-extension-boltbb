@@ -1,6 +1,6 @@
 <?php
 
-namespace Bolt\Extension\BoltBB;
+namespace \Bolt\Extension\Bolt\BoltBB;
 
 use Silex;
 use Symfony\Component\HttpFoundation\Request;
@@ -57,7 +57,7 @@ class Controller
                 'contenttypes' => $this->config['contenttypes'],
                 'pagercount' => $this->config['pagercount'],
                 'forums' => $forums,
-                'boltbb' => $this->config['boltbb']
+                'boltbb' => $this->config
         ));
 
         return new \Twig_Markup($html, 'UTF-8');

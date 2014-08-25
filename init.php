@@ -1,5 +1,5 @@
 <?php
 
-use Bolt\Extension\BoltBB\Extension;
+use \Bolt\Extension\Bolt\BoltBB\Extension;
 
 $app['extensions']->register(new Extension($app));
