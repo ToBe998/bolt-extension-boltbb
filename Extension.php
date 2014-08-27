@@ -14,7 +14,7 @@ class Extension extends \Bolt\BaseExtension
     /**
      * @var Extension name
      */
-    const NAME = 'clientlogin';
+    const NAME = 'BoltBB';
 
     public function getName()
     {
