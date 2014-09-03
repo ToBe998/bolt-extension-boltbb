@@ -10,15 +10,28 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 class Functions
 {
+    /**
+     * @var Application
+     */
+    private $app;
+
+    /**
+     * @var array
+     */
+    private $config;
+
     public function __construct(Silex\Application $app)
     {
         $this->app = $app;
-        $this->config = $this->config = $this->app['extensions.' . Extension::NAME]->config;;
+        $this->config = $this->app['extensions.' . Extension::NAME]->config;
+
+        $prefix = $this->app['config']->get('general/database/prefix', "bolt_");
 
 // XXX
-        $this->forums_table_name = 'bolt_forums';
-        $this->topics_table_name = 'bolt_topics';
-        $this->replies_table_name = 'bolt_replies';
+// $this->app['storage']->getTablename($contenttype);  // Protected though
+        $this->forums_table_name = $prefix . 'forums';
+        $this->topics_table_name = $prefix . 'topics';
+        $this->replies_table_name = $prefix . 'replies';
     }
 
     /**
@@ -191,10 +204,9 @@ class Functions
      * @param integer $topic_id The ID of the topic to get replies for
      * @return array
      */
-    public function getTopicReplies($forum_id, $topic_id, &$pager = array())
+    public function getTopicReplies($topic_id, &$pager = array())
     {
         return $this->app['storage']->getContent('replies', array(
-            'forum' => $forum_id,
             'topic' => $topic_id,
             'order' => 'datecreated',
             'returnsingle' => false),
@@ -210,11 +222,10 @@ class Functions
      * @param integer $topic_id The ID of the forum to get replies for
      * @return array
      */
-    public function getTopicReplyCount($forum_id, $topic_id)
+    public function getTopicReplyCount($topic_id)
     {
-        $query = "SELECT * FROM {$this->replies_table_name} WHERE (forum = :forum AND topic = :topic)";
+        $query = "SELECT * FROM {$this->replies_table_name} WHERE topic = :topic";
         $map = array(
-            ':forum' => $forum_id,
             ':topic' => $topic_id
         );
 
@@ -304,7 +315,7 @@ class Functions
      * @since 1.0
      *
      */
-    public function doNewReply(Request $request, $forum, $topic)
+    public function doNewReply(Request $request, $topic)
     {
         // Get form
         $form = $request->get('form');
@@ -314,7 +325,6 @@ class Functions
             'title' => $topic['title'],
             'author' => $form['author'],
             'authorip' => $request->getClientIp(),
-            'forum' => $forum['id'],
             'topic' => $topic['id'],
             'body' => $form['editor']
         );
