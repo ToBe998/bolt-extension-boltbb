@@ -146,9 +146,18 @@ class Extension extends \Bolt\BaseExtension
             $this->controller = new Controllers\Backend($this->app);
 
             $this->path = $this->app['config']->get('general/branding/path') . '/extensions/boltbb';
-            $this->app->match($this->path, array($this->controller, 'adminBoltBB'))
+
+            // Admin page
+            $this->app->match($this->path, array($this->controller, 'admin'))
                       ->before(array($this->controller, 'before'))
-                      ->bind('adminBoltBB');
+                      ->bind('admin')
+                      ->method('GET');
+
+            // AJAX requests
+            $this->app->match($this->path . '/ajax', array($this->controller, 'ajax'))
+                      ->before(array($this->controller, 'before'))
+                      ->bind('ajax')
+                      ->method('POST');
 
             $this->addMenuOption(__('BoltBB'), $this->app['paths']['bolt'] . 'extensions/boltbb', "fa fa-cog");
         }

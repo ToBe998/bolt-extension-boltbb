@@ -5,6 +5,7 @@ namespace Bolt\Extension\Bolt\BoltBB\Controllers;
 use Silex;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\Validator\Constraints as Assert;
 use Bolt\Extension\Bolt\BoltBB\Extension;
@@ -36,9 +37,11 @@ class Backend
     }
 
     /**
+     * The main admin page
      *
+     * @return \Twig_Markup
      */
-    public function adminBoltBB()
+    public function admin(Application $app, Request $request)
     {
         $this->addTwigPath();
 
@@ -70,6 +73,38 @@ class Backend
         ));
 
         return new \Twig_Markup($html, 'UTF-8');
+    }
+
+    public function ajax(Application $app, Request $request)
+    {
+        if ($request->getMethod() == "POST") {
+            //
+            if (!$app['users']->checkAntiCSRFToken()) {
+                $app->abort(400, __("Something went wrong"));
+            }
+
+            //
+            $values = array(
+                'job' => $app['request']->get('task'),
+                'result' => true
+            );
+
+            //
+            if ($app['request']->get('task')) {
+                if ($app['request']->get('task') == 'dbRepair') {
+
+                    return new JsonResponse($values);
+                } elseif ($app['request']->get('task') == 'forumOpen') {
+
+                    //
+                    return new JsonResponse($values);
+                } elseif ($app['request']->get('task') == 'forumClose') {
+
+                    //
+                    return new JsonResponse($values);
+                }
+            }
+        }
     }
 
     private function addTwigPath()
