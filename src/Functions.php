@@ -406,7 +406,7 @@ class Functions
      */
     private function doCreateForumRecord($forum)
     {
-        if (empty(getForum($forum))){
+        if (empty($this->getForum($forum))){
             //
             $data = array(
                 'slug'  => $forum,
