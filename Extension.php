@@ -41,7 +41,7 @@ class Extension extends \Bolt\BaseExtension
             $this->dbCheck();
 
             // Create the admin page and routes
-            $this->setAdminController();
+            $this->setControllerBackend();
         }
 
         /*
@@ -50,7 +50,7 @@ class Extension extends \Bolt\BaseExtension
         if ($this->app['config']->getWhichEnd() == 'frontend') {
 
             // Set up routes
-            $this->setController();
+            $this->setControllerFrontend();
 
             // Twig functions
             $this->app['twig']->addExtension(new ForumsTwigExtension($this->app));
@@ -99,9 +99,9 @@ class Extension extends \Bolt\BaseExtension
     /**
      * Create controller and define routes
      */
-    private function setController()
+    private function setControllerFrontend()
     {
-        $this->controller = new Controller($this->app);
+        $this->controller = new Controllers\Frontend($this->app);
 
         /*
          * Routes for forum base, individual forums and individual topics
@@ -128,7 +128,7 @@ class Extension extends \Bolt\BaseExtension
     /**
      * Create admin controller and define routes
      */
-    private function setAdminController()
+    private function setControllerBackend()
     {
         // check if user has allowed role(s)
         $user    = $this->app['users']->getCurrentUser();
@@ -143,7 +143,7 @@ class Extension extends \Bolt\BaseExtension
 
         if ($this->authorized)
         {
-            $this->admin = new ForumsAdmin($this->app);
+            $this->admin = new Controllers\Backend($this->app);
 
             $this->path = $this->app['config']->get('general/branding/path') . '/extensions/boltbb';
             $this->app->match($this->path, array($this->admin, 'adminBoltBB'));

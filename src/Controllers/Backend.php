@@ -1,6 +1,6 @@
 <?php
 
-namespace Bolt\Extension\Bolt\BoltBB;
+namespace Bolt\Extension\Bolt\BoltBB\Controllers;
 
 use Silex;
 use Symfony\Component\HttpFoundation\Request;
@@ -8,7 +8,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\Validator\Constraints as Assert;
 
-class ForumsAdmin
+class Backend
 {
     private $app;
     private $functions;
