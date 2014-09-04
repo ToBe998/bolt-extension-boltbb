@@ -69,7 +69,7 @@ var BoltBBAdmin = Object.extend(Object, {
         
         console.debug("Running the DB check/update");
         
-        jQuery.get(baseurl + '/ajax?task=dbRepair', function(data){})
+        jQuery.get(baseurl + '/ajax?task=forumRepair', function(data){})
             .done(function() {
                 alert( "Repair done" );
                 })

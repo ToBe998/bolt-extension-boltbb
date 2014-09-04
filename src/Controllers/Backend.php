@@ -104,7 +104,7 @@ class Backend
             }
         } elseif ($request->getMethod() == "GET") {
             if ($app['request']->get('task')) {
-                if ($app['request']->get('task') == 'dbRepair') {
+                if ($app['request']->get('task') == 'forumRepair') {
 
                     return new JsonResponse($values);
                 }
