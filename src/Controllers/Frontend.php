@@ -198,7 +198,7 @@ class Frontend
 
     private function addTwigPath()
     {
-        $this->app['twig.loader.filesystem']->addPath(dirname(__DIR__) . '/assets');
+        $this->app['twig.loader.filesystem']->addPath(dirname(dirname(__DIR__)) . '/assets');
     }
 
 }

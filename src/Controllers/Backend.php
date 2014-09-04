@@ -41,11 +41,18 @@ class Backend
      */
     public function adminBoltBB()
     {
+        $this->addTwigPath();
+
+        $html = $this->app['render']->render('boltbb_admin.twig', array(
+                'boltbb' => $this->config
+        ));
+
+        return new \Twig_Markup($html, 'UTF-8');
     }
 
     private function addTwigPath()
     {
-        $this->app['twig.loader.filesystem']->addPath(dirname(__DIR__) . '/assets');
+        $this->app['twig.loader.filesystem']->addPath(dirname(dirname(__DIR__)) . '/assets');
     }
 
 }
