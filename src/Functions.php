@@ -346,6 +346,22 @@ class Functions
     }
 
     /**
+     * Check and create forum table records to match the configuration
+     *
+     * TODO: expand to (maybe) do removes too...  think more first
+     *
+     * @return void
+     */
+    public function syncForumDbTables()
+    {
+        foreach ($this->config['forums'] as $key => $values) {
+            // doCreateForumRecord() will only create a forum record if it
+            // currently doesn't exist, so just call it
+            $this->doCreateForumRecord($key);
+        }
+    }
+
+    /**
      * Return an array of recent entries, either topics or replies
      *
      * @since 1.0
@@ -381,5 +397,24 @@ class Functions
         ));
 
         return new \Twig_Markup($html, 'UTF-8');
+    }
+
+    /**
+     * Create a forum database entry
+     *
+     * @param string $forum The YAML key for the new forum
+     */
+    private function doCreateForumRecord($forum)
+    {
+        if (empty(getForum($forum))){
+            //
+            $data = array(
+                'slug'  => $forum,
+                'stage' => 'open'
+            );
+
+            $this->app['db']->insert($this->forums_table_name, $data);
+        }
+
     }
 }

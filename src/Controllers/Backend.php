@@ -106,7 +106,9 @@ class Backend
             if ($app['request']->get('task')) {
                 if ($app['request']->get('task') == 'forumRepair') {
 
-                    return new JsonResponse($values);
+                    $this->functions->syncForumDbTables();
+
+                    return new JsonResponse('ok');
                 }
             }
         }
