@@ -62,6 +62,13 @@
             <div class="panel panel-default">
                 <div class="panel-heading"><i class="fa fa-cog fa-fw"></i>Admin Options</div>
                 <div class="panel-body">
+                    {% if missing %}
+                        <div class="btn-group">
+                            <a class="btn btn-tertiary" action="dbrepair">
+                                <i class="fa fa-wrench"></i> {{ __('Repair Database') }}
+                            </a>
+                        </div>
+                    {% endif %}
                         <p><strong>{{ __('Close forum') }}</strong></p>
                         <div class="btn-group">
                             <a class="btn btn-tertiary" data-action="update-check">

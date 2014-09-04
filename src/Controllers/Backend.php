@@ -43,6 +43,7 @@ class Backend
         $this->addTwigPath();
 
         $forums = array();
+        $missing = false;
 
         foreach ($this->config['forums'] as $key => $values) {
             //
@@ -55,11 +56,17 @@ class Backend
                 'topics' => empty($record) ? '-' : $this->functions->getForumTopicCount($record['id']),
                 'replies' => empty($record) ? '-' : $this->functions->getForumReplyCount($record['id'])
             );
+
+            // If any of the forums are missing from the database, set a flag
+            if (empty($record)) {
+                $missing = true;
+            }
         }
 
         $html = $this->app['render']->render('boltbb_admin.twig', array(
             'forums' => $forums,
-            'boltbb' => $this->config['boltbb']
+            'boltbb' => $this->config['boltbb'],
+            'missing' => $missing
         ));
 
         return new \Twig_Markup($html, 'UTF-8');
