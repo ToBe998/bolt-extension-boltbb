@@ -1,0 +1,65 @@
+{# Page: NavSecondary > Extensions > BoltBB #}
+
+{% extends "_base/_page-nav.twig" %}
+
+{% block page_nav 'Extensions' %}
+
+{% block page_title __('BoltBB') %}
+
+{% block page_main %}
+
+    <div class="row boltbb-bolt-container">
+        <div class="col-md-9">
+
+            {% include '_sub/_messages.twig' %}
+
+            <section class="forums-container">
+                <h3>{{ __('Forums') }}</h3>
+                <div class="installed-list hide-block">
+                    <table class="dashboardlisting table">
+                        <thead>
+                            <tr>
+                                <th>{{ __('Forum') }}</th>
+                                <th>{{ __('Description') }}</th>
+                                <th>{{ __('State') }}</th>
+                                <th>{{ __('Topics') }}</th>
+                                <th>{{ __('Replies') }}</th>
+                            </tr>
+                        </thead>
+                        <tbody class="installed-list-items">
+                        {% for forum in forums %}
+                            <tr>
+                                <th>{{ forum.name }}</th>
+                                <th>{{ forum.description }}</th>
+                                <th>{{ forum.state }}</th>
+                                <th>{{ forum.topics }}</th>
+                                <th>{{ forum.replies }}</th>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+            <hr />
+        </div>
+
+        <aside class="col-md-3">
+            <div class="panel panel-default">
+                <div class="panel-heading"><i class="fa fa-cog fa-fw"></i>Admin Options</div>
+                <div class="panel-body">
+                        <p><strong>{{ __('Close forum') }}</strong></p>
+                        <div class="btn-group">
+                            <a class="btn btn-tertiary" data-action="update-check">
+                                <i class="fa fa-refresh"></i> {{ __('Do something') }}
+                            </a>
+                        </div>
+                </div>
+            </div>
+        </aside>
+
+    </div>
+
+    <script>
+    </script>
+
+{% endblock page_main %}
