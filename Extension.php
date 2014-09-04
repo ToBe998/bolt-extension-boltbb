@@ -134,7 +134,7 @@ class Extension extends \Bolt\BaseExtension
         $user    = $this->app['users']->getCurrentUser();
         $userid  = $user['id'];
 
-        foreach ($this->config['permissions'] as $role) {
+        foreach ($this->config['admin_roles'] as $role) {
             if ($this->app['users']->hasRole($userid, $role)) {
                 $this->authorized = true;
                 break;
@@ -185,4 +185,10 @@ class Extension extends \Bolt\BaseExtension
             });
     }
 
+    protected function getDefaultConfig()
+    {
+        return array(
+            'admin_roles' => array('root', 'admin', 'developer', 'chief-editor')
+        );
+    }
 }
