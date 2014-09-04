@@ -28,8 +28,8 @@
                                 <th>{{ __('Forum') }}</th>
                                 <th>{{ __('Description') }}</th>
                                 <th>{{ __('State') }}</th>
-                                <th>{{ __('Topics') }}</th>
-                                <th>{{ __('Replies') }}</th>
+                                <th align="center">{{ __('Topics') }}</th>
+                                <th align="center">{{ __('Replies') }}</th>
                             </tr>
                         </thead>
                         <tbody class="forums-list-items">
@@ -38,8 +38,8 @@
                                 <td>{{ forum.name }}</td>
                                 <td>{{ forum.description }}</td>
                                 <td>{{ forum.state }}</td>
-                                <td>{{ forum.topics }}</td>
-                                <td>{{ forum.replies }}</td>
+                                <td align="center">{{ forum.topics }}</td>
+                                <td align="center">{{ forum.replies }}</td>
                             </tr>
                         {% endfor %}
                         </tbody>
