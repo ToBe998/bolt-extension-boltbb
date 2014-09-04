@@ -145,7 +145,7 @@ class Extension extends \Bolt\BaseExtension
         {
             $this->admin = new ForumsAdmin($this->app);
 
-            $this->path = $this->app['config']->get('general/branding/path') . '/extensions/menu-editor';
+            $this->path = $this->app['config']->get('general/branding/path') . '/extensions/boltbb';
             $this->app->match($this->path, array($this->admin, 'adminBoltBB'));
 
             $this->addMenuOption(__('BoltBB'), $this->app['paths']['bolt'] . 'extensions/boltbb', "icon-list");
