@@ -157,7 +157,7 @@ class Extension extends \Bolt\BaseExtension
             $this->app->match($this->path . '/ajax', array($this->controller, 'ajax'))
                       ->before(array($this->controller, 'before'))
                       ->bind('ajax')
-                      ->method('POST');
+                      ->method('GET|POST');
 
             $this->addMenuOption(__('BoltBB'), $this->app['paths']['bolt'] . 'extensions/boltbb', "fa fa-cog");
         }
