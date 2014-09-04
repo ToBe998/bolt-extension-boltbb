@@ -54,8 +54,10 @@ class Functions
             $forum = $this->app['db']->fetchAssoc($query, array(':slug' => $forum));
         }
 
-        $forum['title'] = $this->config['forums'][$forum['slug']]['title'];
-        $forum['description'] = $this->config['forums'][$forum['slug']]['description'];
+        if ($forum) {
+            $forum['title'] = $this->config['forums'][$forum['slug']]['title'];
+            $forum['description'] = $this->config['forums'][$forum['slug']]['description'];
+        }
 
         return $forum;
     }
