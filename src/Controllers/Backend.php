@@ -42,11 +42,18 @@ class Backend
     {
         $this->addTwigPath();
 
+        $forums = array();
+
         foreach ($this->config['forums'] as $key => $values) {
             //
+            $record = $this->functions->getForum($key);
+
             $forums[$key] = array(
                 'name' => $values['title'],
                 'description' => $values['description'],
+                'state' => empty($record) ? 'missing' : $record['state'],
+                'topics' => empty($record) ? '-' : $this->functions->getForumTopicCount($record['id']),
+                'replies' => empty($record) ? '-' : $this->functions->getForumReplyCount($record['id'])
             );
         }
 
