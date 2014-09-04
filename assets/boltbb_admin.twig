@@ -25,6 +25,7 @@
                     <table class="dashboardlisting table">
                         <thead>
                             <tr>
+                                <th></th>
                                 <th>{{ __('Forum') }}</th>
                                 <th>{{ __('Description') }}</th>
                                 <th>{{ __('State') }}</th>
@@ -35,6 +36,14 @@
                         <tbody class="forums-list-items">
                         {% for forum in forums %}
                             <tr>
+                                <td>
+                                    <label>
+                                        <input type="checkbox"
+                                               id="form_forums_{{ loop.index0 }}"
+                                               name="form[forums][]"
+                                               value="{{ forum.name }}">
+                                    </label>
+                                </td>
                                 <td>{{ forum.name }}</td>
                                 <td>{{ forum.description }}</td>
                                 <td>{{ forum.state }}</td>
