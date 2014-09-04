@@ -62,17 +62,25 @@
             <div class="panel panel-default">
                 <div class="panel-heading"><i class="fa fa-cog fa-fw"></i>Admin Options</div>
                 <div class="panel-body">
+
                     {% if missing %}
                         <div class="btn-group">
-                            <a class="btn btn-tertiary" action="dbrepair">
+                            <a class="btn btn-tertiary" data-action="boltbb-forum-repair">
                                 <i class="fa fa-wrench"></i> {{ __('Repair Database') }}
                             </a>
                         </div>
                     {% endif %}
-                        <p><strong>{{ __('Close forum') }}</strong></p>
+
+                        <h4><strong>{{ __('Forum Maintenance') }}</strong></h4>
                         <div class="btn-group">
-                            <a class="btn btn-tertiary" data-action="update-check">
-                                <i class="fa fa-refresh"></i> {{ __('Do something') }}
+                            <a class="btn btn-tertiary" data-action="boltbb-forum-open">
+                                <i class="fa fa-refresh"></i> {{ __('Open Selected Forums') }}
+                            </a>
+                        </div>
+
+                        <div class="btn-group">
+                            <a class="btn btn-tertiary" data-action="boltbb-forum-close">
+                                <i class="fa fa-refresh"></i> {{ __('Close Selected Forums') }}
                             </a>
                         </div>
                 </div>
@@ -82,6 +90,18 @@
     </div>
 
     <script>
+        //var site = '{{site}}';
+        var baseurl = "{{paths.bolt}}extensions/boltbb/";
+
+        var active_console;
+        var active_interval;
+
+        jQuery(document).ready(function($) {
+            var boltExt = new BoltBBAdmin();
+            boltExt.setMessage('repair', '{{__('Repairing forums database table...')}}' );
+            boltExt.setMessage('open',   '{{__('Opening selected forums...')}}');
+            boltExt.setMessage('close',  '{{__('Closing selected forums...')}}');
+        });
     </script>
 
 {% endblock page_main %}
