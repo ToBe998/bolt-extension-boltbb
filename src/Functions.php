@@ -410,7 +410,7 @@ class Functions
             //
             $data = array(
                 'slug'  => $forum,
-                'stage' => 'open'
+                'state' => 'open'
             );
 
             $this->app['db']->insert($this->forums_table_name, $data);
