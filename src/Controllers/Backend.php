@@ -81,7 +81,7 @@ class Backend
         if ($request->getMethod() == "POST") {
             //
             //if (!$this->app['users']->checkAntiCSRFToken()) {
-            //    $app->abort(400, __("Something went wrong"));
+            //    $this->app->abort(400, __("Something went wrong"));
             //}
 
             //
@@ -92,16 +92,20 @@ class Backend
 
             //
             if ($app['request']->get('task')) {
-                if ($app['request']->get('task') == 'dbRepair') {
-
-                    return new JsonResponse($values);
-                } elseif ($app['request']->get('task') == 'forumOpen') {
+                if ($app['request']->get('task') == 'forumOpen') {
 
                     //
                     return new JsonResponse($values);
                 } elseif ($app['request']->get('task') == 'forumClose') {
 
                     //
+                    return new JsonResponse($values);
+                }
+            }
+        } elseif ($request->getMethod() == "GET") {
+            if ($app['request']->get('task')) {
+                if ($app['request']->get('task') == 'dbRepair') {
+
                     return new JsonResponse($values);
                 }
             }
