@@ -32,7 +32,7 @@ class Backend
 
         // Add our JS & CSS and CKeditor
 //         $this->app['extensions.' . Extension::NAME]->addCSS($this->config['stylesheet'] , false);
-//         $this->app['extensions.' . Extension::NAME]->addJavascript($this->config['javascript'], true);
+        $this->app['extensions.' . Extension::NAME]->addJavascript('js/boltbb.js', true);
     }
 
     /**
