@@ -32,7 +32,6 @@ class Backend
 
         // Add our JS & CSS and CKeditor
 //         $this->app['extensions.' . Extension::NAME]->addCSS($this->config['stylesheet'] , false);
-//         $this->app['extensions']->addJavascript($this->app['paths']['app'] . 'view/lib/ckeditor/ckeditor.js', true);
 //         $this->app['extensions.' . Extension::NAME]->addJavascript($this->config['javascript'], true);
     }
 
@@ -43,8 +42,17 @@ class Backend
     {
         $this->addTwigPath();
 
+        foreach ($this->config['forums'] as $key => $values) {
+            //
+            $forums[$key] = array(
+                'name' => $values['title'],
+                'description' => $values['description'],
+            );
+        }
+
         $html = $this->app['render']->render('boltbb_admin.twig', array(
-                'boltbb' => $this->config
+            'forums' => $forums,
+            'boltbb' => $this->config['boltbb']
         ));
 
         return new \Twig_Markup($html, 'UTF-8');

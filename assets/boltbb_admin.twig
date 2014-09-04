@@ -4,7 +4,13 @@
 
 {% block page_nav 'Extensions' %}
 
-{% block page_title __('BoltBB') %}
+{% block page_title %}
+{{ __('BoltBB') }}{% if boltbb %} — {{ boltbb.title }}{% endif %}
+{% endblock page_title %}
+
+{% block page_subtitle %}
+{% if boltbb %}{{ boltbb.description }}{% endif %}
+{% endblock page_subtitle %}
 
 {% block page_main %}
 
@@ -15,7 +21,7 @@
 
             <section class="forums-container">
                 <h3>{{ __('Forums') }}</h3>
-                <div class="installed-list hide-block">
+                <div class="forums-list">
                     <table class="dashboardlisting table">
                         <thead>
                             <tr>
@@ -26,14 +32,14 @@
                                 <th>{{ __('Replies') }}</th>
                             </tr>
                         </thead>
-                        <tbody class="installed-list-items">
+                        <tbody class="forums-list-items">
                         {% for forum in forums %}
                             <tr>
-                                <th>{{ forum.name }}</th>
-                                <th>{{ forum.description }}</th>
-                                <th>{{ forum.state }}</th>
-                                <th>{{ forum.topics }}</th>
-                                <th>{{ forum.replies }}</th>
+                                <td>{{ forum.name }}</td>
+                                <td>{{ forum.description }}</td>
+                                <td>{{ forum.state }}</td>
+                                <td>{{ forum.topics }}</td>
+                                <td>{{ forum.replies }}</td>
                             </tr>
                         {% endfor %}
                         </tbody>
