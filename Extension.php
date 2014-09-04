@@ -148,7 +148,7 @@ class Extension extends \Bolt\BaseExtension
             $this->path = $this->app['config']->get('general/branding/path') . '/extensions/boltbb';
             $this->app->match($this->path, array($this->admin, 'adminBoltBB'));
 
-            $this->addMenuOption(__('BoltBB'), $this->app['paths']['bolt'] . 'extensions/boltbb', "icon-list");
+            $this->addMenuOption(__('BoltBB'), $this->app['paths']['bolt'] . 'extensions/boltbb', "fa fa-cog");
         }
     }
 
