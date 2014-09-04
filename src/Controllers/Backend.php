@@ -80,9 +80,9 @@ class Backend
     {
         if ($request->getMethod() == "POST") {
             //
-            if (!$app['users']->checkAntiCSRFToken()) {
-                $app->abort(400, __("Something went wrong"));
-            }
+            //if (!$this->app['users']->checkAntiCSRFToken()) {
+            //    $app->abort(400, __("Something went wrong"));
+            //}
 
             //
             $values = array(
