@@ -185,6 +185,11 @@ class Extension extends \Bolt\BaseExtension
             });
     }
 
+    /**
+     * Default config options
+     *
+     * @return array
+     */
     protected function getDefaultConfig()
     {
         return array(
