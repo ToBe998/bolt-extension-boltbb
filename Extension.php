@@ -39,6 +39,9 @@ class Extension extends \Bolt\BaseExtension
         if ($this->app['config']->getWhichEnd() == 'backend') {
             // Check the database table is up and working
             $this->dbCheck();
+
+            // Create the admin page and routes
+            $this->setAdminController();
         }
 
         /*
@@ -98,7 +101,7 @@ class Extension extends \Bolt\BaseExtension
      */
     private function setController()
     {
-        $this->controller = new Controller($this->app, $this->functions);
+        $this->controller = new Controller($this->app);
 
         /*
          * Routes for forum base, individual forums and individual topics
@@ -120,6 +123,33 @@ class Extension extends \Bolt\BaseExtension
                     ->assert('topic', '[a-zA-Z0-9_\-]+')
                     ->bind('Topic')
                     ->method('GET|POST');
+    }
+
+    /**
+     * Create admin controller and define routes
+     */
+    private function setAdminController()
+    {
+        // check if user has allowed role(s)
+        $user    = $this->app['users']->getCurrentUser();
+        $userid  = $user['id'];
+
+        foreach ($this->config['permissions'] as $role) {
+            if ($this->app['users']->hasRole($userid, $role)) {
+                $this->authorized = true;
+                break;
+            }
+        }
+
+        if ($this->authorized)
+        {
+            $this->admin = new ForumsAdmin($this->app);
+
+            $this->path = $this->app['config']->get('general/branding/path') . '/extensions/menu-editor';
+            $this->app->match($this->path, array($this->admin, 'adminBoltBB'));
+
+            $this->addMenuOption(__('BoltBB'), $this->app['paths']['bolt'] . 'extensions/boltbb', "icon-list");
+        }
     }
 
     /**
