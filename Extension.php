@@ -143,10 +143,12 @@ class Extension extends \Bolt\BaseExtension
 
         if ($this->authorized)
         {
-            $this->admin = new Controllers\Backend($this->app);
+            $this->controller = new Controllers\Backend($this->app);
 
             $this->path = $this->app['config']->get('general/branding/path') . '/extensions/boltbb';
-            $this->app->match($this->path, array($this->admin, 'adminBoltBB'));
+            $this->app->match($this->path, array($this->controller, 'adminBoltBB'))
+                      ->before(array($this->controller, 'before'))
+                      ->bind('adminBoltBB');
 
             $this->addMenuOption(__('BoltBB'), $this->app['paths']['bolt'] . 'extensions/boltbb', "fa fa-cog");
         }
