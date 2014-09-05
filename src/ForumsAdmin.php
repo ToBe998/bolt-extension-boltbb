@@ -91,7 +91,9 @@ class ForumsAdmin
      */
     private function doCreateForumRecord($forum)
     {
-        if (empty($this->getForum($forum))) {
+        $forums = new Forums($this->app);
+
+        if (empty($forums->getForum($forum))) {
             //
             $data = array(
                 'slug'  => $forum,
