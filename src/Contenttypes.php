@@ -88,6 +88,8 @@ class Contenttypes
 
         if (is_readable($filename)) {
             $this->contenttypes = $this->parser->parse(file_get_contents($filename) . "\n");
+        } else {
+            throw new \Exception($filename . ' is not readable!');
         }
     }
 
@@ -125,7 +127,11 @@ class Contenttypes
             $data .= "{$type}:\n";
             $data .= $this->getYaml($output);
 
-            file_put_contents($filename, $data . "\n");
+            if (! file_put_contents($filename, $data . "\n")) {
+                throw new \Exception($filename . ' is not writeable!');
+            }
+        } else {
+            throw new \Exception($filename . ' is not readable!');
         }
     }
 
