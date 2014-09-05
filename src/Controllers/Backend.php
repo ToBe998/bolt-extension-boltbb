@@ -104,7 +104,7 @@ class Backend
             }
         } elseif ($request->getMethod() == "GET") {
             if ($app['request']->get('task')) {
-                if ($app['request']->get('task') == 'forumRepair') {
+                if ($app['request']->get('task') == 'forumSync') {
 
                     $this->functions->syncForumDbTables();
 

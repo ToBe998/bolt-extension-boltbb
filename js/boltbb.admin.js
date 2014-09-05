@@ -69,7 +69,7 @@ var BoltBBAdmin = Object.extend(Object, {
         
         console.debug("Running forum DB table sync");
         
-        jQuery.get(baseurl + '/ajax?task=forumRepair', function(data){})
+        jQuery.get(baseurl + '/ajax?task=forumSync', function(data){})
             .done(function() {
                 alert( "Repair done" );
                 })
