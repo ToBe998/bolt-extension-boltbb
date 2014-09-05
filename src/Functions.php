@@ -75,8 +75,8 @@ class Functions
 
         foreach ($rows as $row) {
             $forums[$row['slug']] = array(
-                'title' => $this->config['forums'][$forum['slug']]['title'],
-                'description' => $this->config['forums'][$forum['slug']]['description'],
+                'title' => $this->config['forums'][$row['slug']]['title'],
+                'description' => $this->config['forums'][$row['slug']]['description'],
                 'subscribers' => empty($row['subscribers']) ? '' : json_decode($row['subscribers'], true),
                 'state' => $row['state']
             );
