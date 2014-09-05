@@ -204,6 +204,11 @@ class Extension extends \Bolt\BaseExtension
     protected function getDefaultConfig()
     {
         return array(
+            'base_uri' => 'forums',
+            'contenttypes' => array(
+                'topics' => 'topics',
+                'replies' => 'replies'
+            ),
             'admin_roles' => array('root', 'admin', 'developer', 'chief-editor')
         );
     }
