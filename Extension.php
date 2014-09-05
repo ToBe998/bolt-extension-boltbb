@@ -31,8 +31,6 @@ class Extension extends \Bolt\BaseExtension
          */
         $this->setConfig();
 
-        $this->functions = new Functions($this->app);
-
         /*
          * Backend
          */
