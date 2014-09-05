@@ -10,7 +10,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\Validator\Constraints as Assert;
 use Bolt\Extension\Bolt\BoltBB\Extension;
-use Bolt\Extension\Bolt\BoltBB\Functions;
+use Bolt\Extension\Bolt\BoltBB\ForumsAdmin;
 use Bolt\Extension\Bolt\BoltBB\Contenttypes;
 
 class Backend
