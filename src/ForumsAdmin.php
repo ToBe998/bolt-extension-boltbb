@@ -40,7 +40,7 @@ class ForumsAdmin
         $rows = $this->app['db']->fetchAll('SELECT * FROM ' . $this->forums_table_name);
         $return = array(
             'needsync' => false,
-            'forums' => array()
+            'forums' => $conf
         );
 
         // Format an array of return values with details fo the forums
@@ -60,7 +60,7 @@ class ForumsAdmin
         // If any of the forums in the config file are not in the database, set
         // a flag in the return parameters
         foreach ($conf as $key => $value) {
-            if (! isset($return['forums'][$key])) {
+            if (! isset($return['forums'][$key]['state'])) {
                 $return['needsync'] = true;
             }
         }

@@ -70,11 +70,11 @@ class Backend
         }
 
         // Set a flashbag if there is missing data
-        if ($needsync) {
-            $this->app['session']->getFlashBag()->add('error', "BoltBB configured forums are missing from the database table.  Run 'Sync Table' to resolve." );
+        if ($forums['needsync']) {
+            $this->app['session']->getFlashBag()->add('error', "Configured forums are missing from the database table.  Run 'Sync Table' to resolve.<br>" );
         }
         if ($needtypes) {
-            $this->app['session']->getFlashBag()->add('error', "BoltBB contenttypes haven't been added to contenttypes.yml.  Run 'Setup Contenttypes' to resolve." );
+            $this->app['session']->getFlashBag()->add('error', "BoltBB contenttypes are missing from contenttypes.yml.  Run 'Setup Contenttypes' to resolve.<br>" );
         }
 
         $html = $this->app['render']->render('boltbb_admin.twig', array(
@@ -143,7 +143,7 @@ class Backend
             }
 
             // Yeah, nah
-            return new Response($e->getMessage(), Response::HTTP_BAD_REQUEST);
+            return new Response('Invalid request parameters', Response::HTTP_BAD_REQUEST);
         }
     }
 
