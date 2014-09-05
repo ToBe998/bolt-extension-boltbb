@@ -88,7 +88,7 @@ var BoltBBAdmin = Object.extend(Object, {
                 location.reload(true);
                 })
             .fail(function() {
-                alert( "There was some error" );
+                alert( "There was an error" );
                 })
             .always(function() {
                 //alert( "This always get called" );
@@ -97,14 +97,46 @@ var BoltBBAdmin = Object.extend(Object, {
     
     doOpen: function(e) {
         var controller = this;
+        var data = new Array();
         
-        console.debug("Opening forum: ");
+        $.each($("input[name='form[forums][]']:checked"), function () {
+            data.push($(this).val());
+        });
+        
+        console.debug("Opening forums: " + data);
+        
+        jQuery.post(baseurl + '/ajax?task=forumOpen', function(data){})
+            .done(function() {
+                location.reload(true);
+                })
+            .fail(function() {
+                alert( "There was an error" );
+                })
+            .always(function() {
+                //alert( "This always get called" );
+                });
     },
     
     doClose: function(e) {
         var controller = this;
+        var data = new Array();
         
-        console.debug("Closing forum: ");
+        $.each($("input[name='form[forums][]']:checked"), function () {
+            data.push($(this).val());
+        });
+        
+        console.debug("Closing forums: " + data);
+        
+        jQuery.post(baseurl + '/ajax?task=forumClose', function(data){})
+            .done(function() {
+                location.reload(true);
+                })
+            .fail(function() {
+                alert( "There was an error" );
+                })
+            .always(function() {
+                //alert( "This always get called" );
+                });
     },
         
     events: {
