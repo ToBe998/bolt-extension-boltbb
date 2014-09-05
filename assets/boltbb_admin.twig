@@ -67,18 +67,22 @@
                         <h4><strong>{{ __('Forum Setup') }}</strong></h4>
 
                         {% if needsync %}
-                        <div class="btn-group">
-                            <a class="btn btn-tertiary" data-action="boltbb-forum-sync">
-                                <i class="fa fa-wrench"></i> {{ __('Sync Table') }}
-                            </a>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <a class="btn btn-tertiary" data-action="boltbb-forum-sync">
+                                    <i class="fa fa-wrench"></i> {{ __('Sync Table') }}
+                                </a>
+                            </div>
                         </div>
                         {% endif %}
 
                         {% if needtypes %}
-                        <div class="btn-group">
-                            <a class="btn btn-tertiary" data-action="boltbb-forum-contenttypes">
-                                <i class="fa fa-wrench"></i> {{ __('Setup Contenttypes') }}
-                            </a>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <a class="btn btn-tertiary" data-action="boltbb-forum-contenttypes">
+                                    <i class="fa fa-wrench"></i> {{ __('Setup Contenttypes') }}
+                                </a>
+                            </div>
                         </div>
                         {% endif %}
 
@@ -86,16 +90,20 @@
                     {% endif %}
 
                         <h4><strong>{{ __('Forum Maintenance') }}</strong></h4>
-                        <div class="btn-group">
-                            <a class="btn btn-tertiary" data-action="boltbb-forum-open">
-                                <i class="fa fa-refresh"></i> {{ __('Open Selected Forums') }}
-                            </a>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <a class="btn btn-tertiary" data-action="boltbb-forum-open">
+                                    <i class="fa fa-refresh"></i> {{ __('Open Selected Forums') }}
+                                </a>
+                            </div>
                         </div>
 
-                        <div class="btn-group">
-                            <a class="btn btn-tertiary" data-action="boltbb-forum-close">
-                                <i class="fa fa-refresh"></i> {{ __('Close Selected Forums') }}
-                            </a>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <a class="btn btn-tertiary" data-action="boltbb-forum-close">
+                                    <i class="fa fa-refresh"></i> {{ __('Close Selected Forums') }}
+                                </a>
+                            </div>
                         </div>
                 </div>
             </div>
