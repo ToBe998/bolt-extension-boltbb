@@ -102,8 +102,16 @@ class Backend
             );
 
             if ($app['request']->get('task') == 'forumOpen') {
+                /*
+                 * Open a forum
+                 */
+
                 return new JsonResponse($values);
             } elseif ($app['request']->get('task') == 'forumClose') {
+                /*
+                 * Close a forum
+                 */
+
                 return new JsonResponse($values);
             }
 
@@ -113,7 +121,9 @@ class Backend
         } elseif ($request->getMethod() == "GET" && $app['request']->get('task')) {
             if ($app['request']->get('task') == 'forumSync') {
 
-                // Sync our database table with the configuration files defined forums
+                /*
+                 * Sync our database table with the configuration files defined forums
+                 */
                 try {
                     $this->admin->syncForumDbTables();
 
@@ -125,7 +135,9 @@ class Backend
                 }
             } elseif ($app['request']->get('task') == 'forumContenttypes') {
 
-                // Write our missing contenttypes into contentypes.yml
+                /*
+                 * Write our missing contenttypes into contentypes.yml
+                 */
                 $bbct = new Contenttypes($this->app);
 
                 foreach ($this->config['contenttypes'] as $type => $values) {
@@ -133,13 +145,13 @@ class Backend
                         try {
                             $bbct->insertContenttype($type);
 
-                            return new Response('', Response::HTTP_OK, array('content-type' => 'text/html'));
                         } catch (Exception $e) {
                             return new Response($e->getMessage(), Response::HTTP_INTERNAL_SERVER_ERROR, array('content-type' => 'text/html'));
                         }
-
                     }
                 }
+
+                return new Response('', Response::HTTP_OK, array('content-type' => 'text/html'));
             }
 
             // Yeah, nah
