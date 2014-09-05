@@ -64,10 +64,10 @@ var BoltBBAdmin = Object.extend(Object, {
         this.paths[key]=value;
     },
     
-    doRepair: function(e) {
+    doSync: function(e) {
         var controller = this;
         
-        console.debug("Running the DB check/update");
+        console.debug("Running forum DB table sync");
         
         jQuery.get(baseurl + '/ajax?task=forumRepair', function(data){})
             .done(function() {
@@ -102,9 +102,9 @@ var BoltBBAdmin = Object.extend(Object, {
         click: function(e, t){
             var controller = e.data;
             switch(jQuery(e.target).data('action')) {
-                case "boltbb-forum-repair" : controller.doRepair(e.originalEvent); break;
-                case "boltbb-forum-open"   : controller.doOpen(e.originalEvent); break;
-                case "boltbb-forum-close"  : controller.doClose(e.originalEvent); break;
+                case "boltbb-forum-sync"  : controller.doSync(e.originalEvent); break;
+                case "boltbb-forum-open"  : controller.doOpen(e.originalEvent); break;
+                case "boltbb-forum-close" : controller.doClose(e.originalEvent); break;
             }
         }
 
