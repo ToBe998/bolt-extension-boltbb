@@ -84,6 +84,24 @@ class ForumsAdmin
         }
     }
 
+    public function doForumOpen($forum)
+    {
+        $this->app['db']->update(
+            $this->forums_table_name,
+            array('state' => 'open'),
+            array('slug' => $forum)
+        );
+    }
+
+    public function doForumClose($forum)
+    {
+        $this->app['db']->update(
+            $this->forums_table_name,
+            array('state' => 'closed'),
+            array('slug' => $forum)
+        );
+    }
+
     /**
      * Create a forum database entry
      *

@@ -69,7 +69,7 @@ var BoltBBAdmin = Object.extend(Object, {
         
         console.debug("Running forum DB table sync");
         
-        jQuery.get(baseurl + '/ajax?task=forumSync', function(data){})
+        $.get(baseurl + '/ajax?task=forumSync', function(data){})
             .done(function() {
                 location.reload(true);
                 })
@@ -83,7 +83,7 @@ var BoltBBAdmin = Object.extend(Object, {
         
         console.debug("Setting up BoltBB contenttypes");
         
-        jQuery.get(baseurl + '/ajax?task=forumContenttypes', function(data){})
+        $.get(baseurl + '/ajax?task=forumContenttypes', function(data){})
             .done(function() {
                 location.reload(true);
                 })
@@ -105,7 +105,7 @@ var BoltBBAdmin = Object.extend(Object, {
         
         console.debug("Opening forums: " + data);
         
-        jQuery.post(baseurl + '/ajax?task=forumOpen', function(data){})
+        $.post(baseurl + '/ajax?task=forumOpen', {forums: data} , function(data){})
             .done(function() {
                 location.reload(true);
                 })
@@ -127,7 +127,7 @@ var BoltBBAdmin = Object.extend(Object, {
         
         console.debug("Closing forums: " + data);
         
-        jQuery.post(baseurl + '/ajax?task=forumClose', function(data){})
+        $.post(baseurl + '/ajax?task=forumClose', {forums: data} , function(data){})
             .done(function() {
                 location.reload(true);
                 })

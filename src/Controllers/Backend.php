@@ -103,12 +103,30 @@ class Backend
                 /*
                  * Open a forum
                  */
+                if (! empty($request->request->get('forums'))) {
+                    foreach ($request->request->get('forums') as $forum) {
+                        try {
+                            $this->admin->doForumOpen($forum);
+                        } catch (Exception $e) {
+                            return new Response($e->getMessage(), Response::HTTP_INTERNAL_SERVER_ERROR, array('content-type' => 'text/html'));
+                        }
+                    }
+                }
 
                 return new JsonResponse($values);
             } elseif ($app['request']->get('task') == 'forumClose') {
                 /*
                  * Close a forum
                  */
+                if (! empty($request->request->get('forums'))) {
+                    foreach ($request->request->get('forums') as $forum) {
+                        try {
+                            $this->admin->doForumClose($forum);
+                        } catch (Exception $e) {
+                            return new Response($e->getMessage(), Response::HTTP_INTERNAL_SERVER_ERROR, array('content-type' => 'text/html'));
+                        }
+                    }
+                }
 
                 return new JsonResponse($values);
             }
