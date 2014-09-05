@@ -65,7 +65,7 @@ class Frontend
 
         // Combine YAML and database information about each forum
         foreach ($this->config['forums'] as $key => $forum) {
-            $forums[$key] = $func->getForum($key);
+            $forums[$key] = $this->forums->getForum($key);
         }
 
         $html = $this->app['render']->render(
