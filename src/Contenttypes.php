@@ -3,6 +3,9 @@
 /**
  * Default Contenttypes definitions
  *
+ * Yes this is over-engineered!  It is a placeholder until Bolt catches up with
+ * extension defined contenttypes
+ *
  * @author Gawain Lynch <gawain.lynch@gmail.com>
  */
 
