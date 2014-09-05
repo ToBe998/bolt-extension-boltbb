@@ -71,14 +71,11 @@ var BoltBBAdmin = Object.extend(Object, {
         
         jQuery.get(baseurl + '/ajax?task=forumSync', function(data){})
             .done(function() {
-                alert( "Repair done" );
+                location.reload(true);
                 })
             .fail(function() {
-                alert( "There was some error" );
+                alert( "There was an error" );
                 })
-            .always(function() {
-                alert( "This always get called" );
-                });
     },
     
     doContenttypes: function(e) {
@@ -88,13 +85,13 @@ var BoltBBAdmin = Object.extend(Object, {
         
         jQuery.get(baseurl + '/ajax?task=forumContenttypes', function(data){})
             .done(function() {
-                alert( "Contenttypes updated" );
+                location.reload(true);
                 })
             .fail(function() {
                 alert( "There was some error" );
                 })
             .always(function() {
-                alert( "This always get called" );
+                //alert( "This always get called" );
                 });
     },
     
