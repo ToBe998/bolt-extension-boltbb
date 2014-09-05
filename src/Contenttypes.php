@@ -11,6 +11,7 @@ namespace Bolt\Extension\Bolt\BoltBB;
 use Silex;
 use Silex\Application;
 use Symfony\Component\Yaml\Parser;
+use Symfony\Component\Yaml\Dumper;
 
 /**
  * Content override class
@@ -110,7 +111,9 @@ class Contenttypes
             $data .= "##\n";
             $data .= "## Automatically generated BoltBB contenttype for {$type}\n";
             $data .= "##\n";
-            $data .= $this->parser->dump($output);
+
+            $dumper = new Dumper();
+            $dumper->dump($output);
         }
 
         file_put_contents($filename, $data);
