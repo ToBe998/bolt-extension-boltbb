@@ -89,7 +89,7 @@ class Backend
 
     public function ajax(Application $app, Request $request)
     {
-        if ($request->getMethod() == "POST") {
+        if ($request->getMethod() == "POST" && $app['request']->get('task')) {
             //
             //if (!$this->app['users']->checkAntiCSRFToken()) {
             //    $this->app->abort(400, __("Something went wrong"));
@@ -101,39 +101,49 @@ class Backend
                 'result' => true
             );
 
-            //
-            if ($app['request']->get('task')) {
-                if ($app['request']->get('task') == 'forumOpen') {
-
-                    //
-                    return new JsonResponse($values);
-                } elseif ($app['request']->get('task') == 'forumClose') {
-
-                    //
-                    return new JsonResponse($values);
-                }
+            if ($app['request']->get('task') == 'forumOpen') {
+                return new JsonResponse($values);
+            } elseif ($app['request']->get('task') == 'forumClose') {
+                return new JsonResponse($values);
             }
-        } elseif ($request->getMethod() == "GET") {
-            if ($app['request']->get('task')) {
-                if ($app['request']->get('task') == 'forumSync') {
 
+            // Yeah, nah
+            return new Response($e->getMessage(), Response::HTTP_BAD_REQUEST);
+
+        } elseif ($request->getMethod() == "GET" && $app['request']->get('task')) {
+            if ($app['request']->get('task') == 'forumSync') {
+
+                // Sync our database table with the configuration files defined forums
+                try {
                     $this->functions->syncForumDbTables();
 
-                    return new JsonResponse('ok');
-                } elseif ($app['request']->get('task') == 'forumContenttypes') {
+                    $values = $this->functions->getForums();
 
-                    //
-                    $bbct = new Contenttypes($this->app);
+                    return new JsonResponse($values);
+                } catch (Exception $e) {
+                    return new Response($e->getMessage(), Response::HTTP_INTERNAL_SERVER_ERROR, array('content-type' => 'text/html'));
+                }
+            } elseif ($app['request']->get('task') == 'forumContenttypes') {
 
-                    foreach ($this->config['contenttypes'] as $type => $values) {
-                        if (! $bbct->isContenttype($type)) {
+                // Write our missing contenttypes into contentypes.yml
+                $bbct = new Contenttypes($this->app);
+
+                foreach ($this->config['contenttypes'] as $type => $values) {
+                    if (! $bbct->isContenttype($type)) {
+                        try {
                             $bbct->insertContenttype($type);
-                        }
-                    }
 
-                    return new JsonResponse('ok');
+                            return new Response('', Response::HTTP_OK, array('content-type' => 'text/html'));
+                        } catch (Exception $e) {
+                            return new Response($e->getMessage(), Response::HTTP_INTERNAL_SERVER_ERROR, array('content-type' => 'text/html'));
+                        }
+
+                    }
                 }
             }
+
+            // Yeah, nah
+            return new Response($e->getMessage(), Response::HTTP_BAD_REQUEST);
         }
     }
 

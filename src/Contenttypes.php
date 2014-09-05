@@ -127,7 +127,9 @@ class Contenttypes
             $data .= "{$type}:\n";
             $data .= $this->getYaml($output);
 
-            if (! file_put_contents($filename, $data . "\n")) {
+            try {
+                file_put_contents($filename, $data . "\n");
+            } catch (\Exception $e) {
                 throw new \Exception($filename . ' is not writeable!');
             }
         } else {
