@@ -81,6 +81,12 @@ var BoltBBAdmin = Object.extend(Object, {
                 });            
     },
     
+    doContenttypes: function(e) {
+        var controller = this;
+        
+        console.debug("Setting up BoltBB contenttypes");
+    },
+    
     doOpen: function(e) {
         var controller = this;
         
@@ -103,6 +109,7 @@ var BoltBBAdmin = Object.extend(Object, {
             var controller = e.data;
             switch(jQuery(e.target).data('action')) {
                 case "boltbb-forum-sync"  : controller.doSync(e.originalEvent); break;
+                case "boltbb-forum-contenttypes" : controller.doContenttypes(e.originalEvent); break;
                 case "boltbb-forum-open"  : controller.doOpen(e.originalEvent); break;
                 case "boltbb-forum-close" : controller.doClose(e.originalEvent); break;
             }
