@@ -11,7 +11,7 @@ class ForumsTwigExtension extends \Twig_Extension
 
     public function __construct(\Silex\Application $app)
     {
-        $this->functions = new Functions($app);
+        $this->forums = new Forums($app);
     }
 
     public function initRuntime(\Twig_Environment $environment)
@@ -49,7 +49,7 @@ class ForumsTwigExtension extends \Twig_Extension
      */
     public function forumsBreadcrumbs($forum_id = false)
     {
-        $html = $this->functions->getBreadcrumbs($forum_id);
+        $html = $this->forums->getBreadcrumbs($forum_id);
 
         return new \Twig_Markup($html, 'UTF-8');
     }
@@ -64,7 +64,7 @@ class ForumsTwigExtension extends \Twig_Extension
      */
     public function forumSlug($forum_id)
     {
-        $html = $this->functions->getForumSlug($forum_id);
+        $html = $this->forums->getForumSlug($forum_id);
 
         return new \Twig_Markup($html, 'UTF-8');
     }
@@ -79,7 +79,7 @@ class ForumsTwigExtension extends \Twig_Extension
      */
     public function forumTopicCount($forum_id)
     {
-        $html = $this->functions->getForumTopicCount($forum_id);
+        $html = $this->forums->getForumTopicCount($forum_id);
 
         return new \Twig_Markup($html, 'UTF-8');
     }
@@ -94,7 +94,7 @@ class ForumsTwigExtension extends \Twig_Extension
      */
     public function forumReplyCount($forum_id)
     {
-        $html = $this->functions->getForumReplyCount($forum_id);
+        $html = $this->forums->getForumReplyCount($forum_id);
 
         return new \Twig_Markup($html, 'UTF-8');
     }
@@ -109,7 +109,7 @@ class ForumsTwigExtension extends \Twig_Extension
      */
     public function topicReplyCount($forum_id, $topic_id)
     {
-        $html = $this->functions->getTopicReplyCount($forum_id, $topic_id);
+        $html = $this->forums->getTopicReplyCount($forum_id, $topic_id);
 
         return new \Twig_Markup($html, 'UTF-8');
     }
