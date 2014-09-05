@@ -34,9 +34,9 @@
                             </tr>
                         </thead>
                         <tbody class="forums-list-items">
-                        {% for forum in forums %}
-                            <tr>
-                                <td>
+                        {% for slug, forum in forums %}
+                            <tr id="boltbb-forum[{{ slug }}]">
+                                <td class="boltbb-forum-cb">
                                     <label>
                                         <input type="checkbox"
                                                id="form_forums_{{ loop.index0 }}"
@@ -44,11 +44,11 @@
                                                value="{{ forum.name }}">
                                     </label>
                                 </td>
-                                <td>{{ forum.name }}</td>
-                                <td>{{ forum.description }}</td>
-                                <td>{{ forum.state }}</td>
-                                <td align="center">{{ forum.topics }}</td>
-                                <td align="center">{{ forum.replies }}</td>
+                                <td class="boltbb-forum-name">{{ forum.name }}</td>
+                                <td class="boltbb-forum-desc">{{ forum.description }}</td>
+                                <td class="boltbb-forum-state">{{ forum.state }}</td>
+                                <td class="boltbb-forum-topics" align="center">{{ forum.topics }}</td>
+                                <td class="boltbb-forum-replies" align="center">{{ forum.replies }}</td>
                             </tr>
                         {% endfor %}
                         </tbody>
