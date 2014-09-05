@@ -30,8 +30,8 @@ class Functions
 // XXX
 // $this->app['storage']->getTablename($contenttype);  // Protected though
         $this->forums_table_name = $prefix . 'forums';
-        $this->topics_table_name = $prefix . 'topics';
-        $this->replies_table_name = $prefix . 'replies';
+        $this->topics_table_name = $prefix . $this->config['contenttypes']['topics'];
+        $this->replies_table_name = $prefix . $this->config['contenttypes']['replies'];
     }
 
     /**
@@ -60,6 +60,29 @@ class Functions
         }
 
         return $forum;
+    }
+
+
+
+    /**
+     * Return an associative array of all of our forums in the database
+     *
+     * @return mixed
+     */
+    public function getForums($forums = false)
+    {
+        $rows = $this->app['db']->fetchAll('SELECT * FROM ' . $this->forums_table_name);
+
+        foreach ($rows as $row) {
+            $forums[$row['slug']] = array(
+                'title' => $this->config['forums'][$forum['slug']]['title'],
+                'description' => $this->config['forums'][$forum['slug']]['description'],
+                'subscribers' => empty($row['subscribers']) ? '' : json_decode($row['subscribers'], true),
+                'state' => $row['state']
+            );
+        }
+
+        return $forums;
     }
 
     /**
