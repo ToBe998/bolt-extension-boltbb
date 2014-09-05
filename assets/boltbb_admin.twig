@@ -25,7 +25,7 @@
             <section class="forums-container">
                 <h3>{{ __('Forums') }}</h3>
                 <div class="forums-list">
-                    <table class="dashboardlisting table">
+                    <table class="dashboardlisting table" id="boltbb-forums-table">
                         <thead>
                             <tr>
                                 <th></th>
@@ -44,7 +44,7 @@
                                         <input type="checkbox"
                                                id="form_forums_{{ loop.index0 }}"
                                                name="form[forums][]"
-                                               value="{{ forum.name }}">
+                                               value="{{ forum.title }}">
                                     </label>
                                 </td>
                                 <td class="boltbb-forum-name">{{ forum.title }}</td>
