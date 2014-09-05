@@ -63,8 +63,6 @@ class Frontend
         // Add assets to Twig path
         $this->addTwigPath();
 
-        $func = new Functions($this->app, $this->config);
-
         // Combine YAML and database information about each forum
         foreach ($this->config['forums'] as $key => $forum) {
             $forums[$key] = $func->getForum($key);
