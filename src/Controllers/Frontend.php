@@ -4,8 +4,6 @@ namespace Bolt\Extension\Bolt\BoltBB\Controllers;
 
 use Silex;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\Validator\Constraints as Assert;
 use Bolt\Extension\Bolt\BoltBB\Extension;
 use Bolt\Extension\Bolt\BoltBB\Forums;
@@ -111,7 +109,7 @@ class Frontend
      * @since 1.0
      *
      * @param object $request The Symonfy request object
-     * @param mixed $forum Either ID or slug of the forum
+     * @param mixed  $forum   Either ID or slug of the forum
      */
     public function forum(Request $request, $forum)
     {
@@ -165,8 +163,8 @@ class Frontend
      * @since 1.0
      *
      * @param object $request The Symonfy request object
-     * @param mixed $forum Either ID or slug of the forum
-     * @param mixed $topic Either ID or slug of the topic
+     * @param mixed  $forum   Either ID or slug of the forum
+     * @param mixed  $topic   Either ID or slug of the topic
      */
     public function topic(Request $request, $forum, $topic)
     {

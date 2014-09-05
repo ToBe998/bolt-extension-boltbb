@@ -7,8 +7,6 @@ use Silex\Application;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\HttpFoundation\RedirectResponse;
-use Symfony\Component\Validator\Constraints as Assert;
 use Bolt\Extension\Bolt\BoltBB\Extension;
 use Bolt\Extension\Bolt\BoltBB\ForumsAdmin;
 use Bolt\Extension\Bolt\BoltBB\Contenttypes;
@@ -144,7 +142,6 @@ class Backend
                     if (! $bbct->isContenttype($type)) {
                         try {
                             $bbct->insertContenttype($type);
-
                         } catch (Exception $e) {
                             return new Response($e->getMessage(), Response::HTTP_INTERNAL_SERVER_ERROR, array('content-type' => 'text/html'));
                         }
