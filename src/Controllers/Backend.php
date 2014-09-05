@@ -77,6 +77,14 @@ class Backend
             }
         }
 
+        // Set a flashbag if there is missing data
+        if ($needsync) {
+            $this->app['session']->getFlashBag()->add('error', "BoltBB configured forums are missing from the database table.  Run 'Sync Table' to resolve." );
+        }
+        if ($needtypes) {
+            $this->app['session']->getFlashBag()->add('error', "BoltBB contenttypes haven't been added to contenttypes.yml.  Run 'Setup Contenttypes' to resolve." );
+        }
+
         $html = $this->app['render']->render('boltbb_admin.twig', array(
             'forums' => $forums,
             'boltbb' => $this->config['boltbb'],
