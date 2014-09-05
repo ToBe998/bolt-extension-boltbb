@@ -105,23 +105,23 @@ class Extension extends \Bolt\BaseExtension
 
         /*
          * Routes for forum base, individual forums and individual topics
-        */
-        $this->app->get("/{$this->config['base_uri']}/", array($this->controller, 'Index'))
+         */
+        $this->app->get("/{$this->config['base_uri']}/", array($this->controller, 'index'))
                     ->before(array($this->controller, 'before'))
-                    ->bind('Index');
-        $this->app->get("/{$this->config['base_uri']}/all/", array($this->controller, 'Uncategorised'))
+                    ->bind('index');
+        $this->app->get("/{$this->config['base_uri']}/all/", array($this->controller, 'uncategorised'))
                     ->before(array($this->controller, 'before'))
-                    ->bind('Uncategorised');
-        $this->app->match("/{$this->config['base_uri']}/{forum}/", array($this->controller, 'Forum'))
+                    ->bind('uncategorised');
+        $this->app->match("/{$this->config['base_uri']}/{forum}/", array($this->controller, 'forum'))
                     ->before(array($this->controller, 'before'))
                     ->assert('forum', '[a-zA-Z0-9_\-]+')
-                    ->bind('Forum')
+                    ->bind('forum')
                     ->method('GET|POST');
-        $this->app->match("/{$this->config['base_uri']}/{forum}/{topic}", array($this->controller, 'Topic'))
+        $this->app->match("/{$this->config['base_uri']}/{forum}/{topic}", array($this->controller, 'topic'))
                     ->before(array($this->controller, 'before'))
                     ->assert('forum', '[a-zA-Z0-9_\-]+')
                     ->assert('topic', '[a-zA-Z0-9_\-]+')
-                    ->bind('Topic')
+                    ->bind('topic')
                     ->method('GET|POST');
     }
 
@@ -206,7 +206,7 @@ class Extension extends \Bolt\BaseExtension
         return array(
             'base_uri' => 'forums',
             'contenttypes' => array(
-                'topics' => 'topics',
+                'topics'  => 'topics',
                 'replies' => 'replies'
             ),
             'admin_roles' => array('root', 'admin', 'developer', 'chief-editor')

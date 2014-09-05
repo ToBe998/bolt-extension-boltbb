@@ -8,18 +8,37 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\Validator\Constraints as Assert;
 use Bolt\Extension\Bolt\BoltBB\Extension;
-use Bolt\Extension\Bolt\BoltBB\Functions;
+use Bolt\Extension\Bolt\BoltBB\Forums;
+use Bolt\Extension\Bolt\BoltBB\Discussions;
 
 class Frontend
 {
+    /**
+     * @var Application
+     */
     private $app;
-    private $functions;
+
+    /**
+     * @var array
+     */
+    private $config;
+
+    /**
+     * @var Bolt\Extension\Bolt\BoltBB\Forums
+     */
+    private $forums;
+
+    /**
+     * @var Bolt\Extension\Bolt\BoltBB\Discussions
+     */
+    private $discuss;
 
     public function __construct(Silex\Application $app)
     {
         $this->app = $app;
         $this->config = $this->app['extensions.' . Extension::NAME]->config;
-        $this->functions = new Functions($this->app);
+        $this->forums = new Forums($this->app);
+        $this->discuss = new Discussions($this->app);
     }
 
     /**
@@ -41,7 +60,7 @@ class Frontend
      *
      * @since 1.0
      */
-    public function Index($forums = array())
+    public function index($forums = array())
     {
         // Add assets to Twig path
         $this->addTwigPath();
@@ -70,7 +89,7 @@ class Frontend
      *
      * @since 1.0
      */
-    public function Uncategorised($forums = array())
+    public function uncategorised($forums = array())
     {
         // Add assets to Twig path
         $this->addTwigPath();
@@ -94,12 +113,12 @@ class Frontend
      * @param object $request The Symonfy request object
      * @param mixed $forum Either ID or slug of the forum
      */
-    public function Forum(Request $request, $forum)
+    public function forum(Request $request, $forum)
     {
         // Add assets to Twig path
         $this->addTwigPath();
 
-        $forum = $this->functions->getForum($forum);
+        $forum = $this->forums->getForum($forum);
         $constraints = array('constraints' => new Assert\NotBlank());
 
         $data = array();
@@ -117,10 +136,10 @@ class Frontend
 
         if ($form->isValid()) {
             // Create the new topic
-            $topicid = $this->functions->doNewTopic($request, $forum);
+            $topicid = $this->discuss->doNewTopic($request, $forum);
 
             // Get the new topic's URI
-            $uri = $this->functions->getTopicURI($forum['id'], $topicid);
+            $uri = $this->forums->getTopicURI($forum['id'], $topicid);
 
             // Redirect to the new topic
             return $this->app->redirect($uri);
@@ -149,14 +168,14 @@ class Frontend
      * @param mixed $forum Either ID or slug of the forum
      * @param mixed $topic Either ID or slug of the topic
      */
-    public function Topic(Request $request, $forum, $topic)
+    public function topic(Request $request, $forum, $topic)
     {
         // Add assets to Twig path
         $this->addTwigPath();
 
         // Get consistent info for forum and topic
-        $forum = $this->functions->getForum($forum);
-        $topic = $this->functions->getTopic($forum['id'], $topic);
+        $forum = $this->forums->getForum($forum);
+        $topic = $this->forums->getTopic($forum['id'], $topic);
 
         $data = array();
         $form = $this->app['form.factory']
@@ -174,7 +193,7 @@ class Frontend
 
         if ($form->isValid()) {
             // Create new reply
-            $replyid = $this->functions->doNewReply($request, $forum, $topic);
+            $replyid = $this->discuss->doNewReply($request, $forum, $topic);
 
             //
             return $this->app->redirect($request->getRequestUri() . '#reply-' . $forum['id'] . '-' . $topic['id'] . '-' . $replyid);

@@ -15,14 +15,26 @@ use Bolt\Extension\Bolt\BoltBB\Contenttypes;
 
 class Backend
 {
+    /**
+     * @var Application
+     */
     private $app;
-    private $functions;
+
+    /**
+     * @var array
+     */
+    private $config;
+
+    /**
+     * @var Bolt\Extension\Bolt\BoltBB\ForumsAdmin
+     */
+    private $admin;
 
     public function __construct(Application $app)
     {
         $this->app = $app;
         $this->config = $this->app['extensions.' . Extension::NAME]->config;
-        $this->functions = new Functions($this->app);
+        $this->admin = new ForumsAdmin($this->app);
     }
 
     /**
@@ -33,7 +45,7 @@ class Backend
         // Enable HTML snippets in our routes so that JS & CSS gets inserted
         $this->app['htmlsnippets'] = true;
 
-        // Add our JS & CSS and CKeditor
+        // Add our JS & CSS
 //         $this->app['extensions.' . Extension::NAME]->addCSS($this->config['stylesheet'] , false);
         $this->app['extensions.' . Extension::NAME]->addJavascript('/js/boltbb.admin.js', true);
     }
@@ -47,28 +59,8 @@ class Backend
     {
         $this->addTwigPath();
 
-        $forums = array();
-        $needsync = false;
+        $forums = $this->admin->getForums();
         $needtypes = false;
-
-        // Get forum data and check if the table is in sync with the config
-        foreach ($this->config['forums'] as $key => $values) {
-            //
-            $record = $this->functions->getForum($key);
-
-            $forums[$key] = array(
-                'name' => $values['title'],
-                'description' => $values['description'],
-                'state' => empty($record) ? 'missing' : $record['state'],
-                'topics' => empty($record) ? '-' : $this->functions->getForumTopicCount($record['id']),
-                'replies' => empty($record) ? '-' : $this->functions->getForumReplyCount($record['id'])
-            );
-
-            // If any of the forums are missing from the database, set a flag
-            if (empty($record)) {
-                $needsync = true;
-            }
-        }
 
         // Test to see if contenttypes have been set up
         foreach ($this->config['contenttypes'] as $type) {
@@ -86,9 +78,9 @@ class Backend
         }
 
         $html = $this->app['render']->render('boltbb_admin.twig', array(
-            'forums' => $forums,
             'boltbb' => $this->config['boltbb'],
-            'needsync' => $needsync,
+            'forums' => $forums['forums'],
+            'needsync' => $forums['needsync'],
             'needtypes' => $needtypes
         ));
 
@@ -123,9 +115,9 @@ class Backend
 
                 // Sync our database table with the configuration files defined forums
                 try {
-                    $this->functions->syncForumDbTables();
+                    $this->admin->syncForumDbTables();
 
-                    $values = $this->functions->getForums();
+                    $values = $this->admin->getForums();
 
                     return new JsonResponse($values);
                 } catch (Exception $e) {

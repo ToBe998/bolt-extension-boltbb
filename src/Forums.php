@@ -4,11 +4,8 @@ namespace Bolt\Extension\Bolt\BoltBB;
 
 use Silex;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpFoundation\RedirectResponse;
-use Symfony\Component\Validator\Constraints as Assert;
 
-class Functions
+class Forums
 {
     /**
      * @var Application
@@ -26,9 +23,6 @@ class Functions
         $this->config = $this->app['extensions.' . Extension::NAME]->config;
 
         $prefix = $this->app['config']->get('general/database/prefix', "bolt_");
-
-// XXX
-// $this->app['storage']->getTablename($contenttype);  // Protected though
         $this->forums_table_name = $prefix . 'forums';
         $this->topics_table_name = $prefix . $this->config['contenttypes']['topics'];
         $this->replies_table_name = $prefix . $this->config['contenttypes']['replies'];
@@ -62,23 +56,24 @@ class Functions
         return $forum;
     }
 
-
-
     /**
-     * Return an associative array of all of our forums in the database
+     * Return an associative array of all of our forums in the database and config
      *
      * @return mixed
      */
-    public function getForums($forums = false)
+    public function getForumsAdmin()
     {
+        $forums = $this->config['forums'];
         $rows = $this->app['db']->fetchAll('SELECT * FROM ' . $this->forums_table_name);
 
         foreach ($rows as $row) {
             $forums[$row['slug']] = array(
-                'title' => $this->config['forums'][$row['slug']]['title'],
+                'title' => isset($this->config['forums'][$row['slug']]) ? $this->config['forums'][$row['slug']]['title'] : $row['slug'],
                 'description' => $this->config['forums'][$row['slug']]['description'],
                 'subscribers' => empty($row['subscribers']) ? '' : json_decode($row['subscribers'], true),
-                'state' => $row['state']
+                'state' => isset($this->config['forums'][$row['slug']]) ? $row['state'] : 'abandoned',
+                'topics' => $this->getForumTopicCount($row['id']),
+                'replies' => $this->getForumReplyCount($row['id'])
             );
         }
 
@@ -88,7 +83,7 @@ class Functions
     /**
      * Get a slug for a given forum
      *
-     * @param mixed $forum Either a slug or numeric ID for a forum
+     * @param  mixed  $forum Either a slug or numeric ID for a forum
      * @return string Slug of requested forum
      */
     public function getForumSlug($forum)
@@ -104,7 +99,7 @@ class Functions
      *
      * @since 1.0
      *
-     * @param mixed $input Either a slug or numeric ID for a topic
+     * @param  mixed $input Either a slug or numeric ID for a topic
      * @return array Details of the topic including replies
      */
     public function getTopic($forum_input, $topic_input)
@@ -132,8 +127,8 @@ class Functions
      *
      * @since 1.0
      *
-     * @param integer $forum_id The ID of the forum to get topics for
-     * @param array $pager
+     * @param  integer $forum_id The ID of the forum to get topics for
+     * @param  array   $pager
      * @return array
      */
     public function getForumTopics($forum_id, &$pager = array())
@@ -146,7 +141,7 @@ class Functions
      *
      * @since 1.0
      *
-     * @param integer $forum_id The ID of the forum to get topics for
+     * @param  integer $forum_id The ID of the forum to get topics for
      * @return array
      */
     public function getForumTopicCount($forum_id)
@@ -167,7 +162,7 @@ class Functions
      *
      * @since 1.0
      *
-     * @param integer $forum_id The ID of the forum to get replies for
+     * @param  integer $forum_id The ID of the forum to get replies for
      * @return array
      */
     public function getForumReplyCount($forum_id)
@@ -188,7 +183,7 @@ class Functions
      *
      * @since 1.0
      *
-     * @param integer $forum_id The ID of the forum to get last post for
+     * @param  integer $forum_id The ID of the forum to get last post for
      * @return array
      */
     public function getForumLastPost($forum_id)
@@ -204,8 +199,8 @@ class Functions
     /**
      * Get the unique resource identifier for a given forum
      *
-     * @param mixed $forum
-     * @param bool $relative
+     * @param  mixed  $forum
+     * @param  bool   $relative
      * @return string
      */
     public function getForumURI($forum, $relative = true)
@@ -225,8 +220,8 @@ class Functions
      *
      * @since 1.0
      *
-     * @param integer $forum_id The ID of the forum to get topics replies for
-     * @param integer $topic_id The ID of the topic to get replies for
+     * @param  integer $forum_id The ID of the forum to get topics replies for
+     * @param  integer $topic_id The ID of the topic to get replies for
      * @return array
      */
     public function getTopicReplies($topic_id, &$pager = array())
@@ -243,8 +238,8 @@ class Functions
      *
      * @since 1.0
      *
-     * @param integer $forum_id The ID of the forum to get replies for
-     * @param integer $topic_id The ID of the forum to get replies for
+     * @param  integer $forum_id The ID of the forum to get replies for
+     * @param  integer $topic_id The ID of the forum to get replies for
      * @return array
      */
     public function getTopicReplyCount($topic_id)
@@ -262,8 +257,8 @@ class Functions
      *
      * @since 1.0
      *
-     * @param integer $forum_id The ID of the forum to get last post for
-     * @param integer $topic_id The ID of the topic to get last post for
+     * @param  integer $forum_id The ID of the forum to get last post for
+     * @param  integer $topic_id The ID of the topic to get last post for
      * @return array
      */
     public function getTopicLastPost($forum_id, $topic_id)
@@ -281,8 +276,8 @@ class Functions
     /**
      * Get the unique resource identifier for a given topic
      *
-     * @param mixed $forum
-     * @param bool $relative
+     * @param  mixed  $forum
+     * @param  bool   $relative
      * @return string
      */
     public function getTopicURI($forum, $topic, $relative = true)
@@ -327,9 +322,11 @@ class Functions
 
         if ($id === false) {
             $this->app['session']->getFlashBag()->set('error', 'There was an error posting the topic.');
+
             return null;
         } else {
             $this->app['session']->getFlashBag()->set('success', 'Topic posted.');
+
             return $id;
         }
     }
@@ -361,26 +358,12 @@ class Functions
 
         if ($id === false) {
             $this->app['session']->getFlashBag()->set('error', 'There was an error posting the reply.');
+
             return null;
         } else {
             $this->app['session']->getFlashBag()->set('success', 'Reply posted.');
-            return $id;
-        }
-    }
 
-    /**
-     * Check and create forum table records to match the configuration
-     *
-     * TODO: expand to (maybe) do removes too...  think more first
-     *
-     * @return void
-     */
-    public function syncForumDbTables()
-    {
-        foreach ($this->config['forums'] as $key => $values) {
-            // doCreateForumRecord() will only create a forum record if it
-            // currently doesn't exist, so just call it
-            $this->doCreateForumRecord($key);
+            return $id;
         }
     }
 
@@ -389,9 +372,9 @@ class Functions
      *
      * @since 1.0
      *
-     * @param string $type Either 'topic' or 'reply'
-     * @param integer $count Number of recent entries to return
-     * @return array Array of recent entries
+     * @param  string  $type  Either 'topic' or 'reply'
+     * @param  integer $count Number of recent entries to return
+     * @return array   Array of recent entries
      */
     public function getRecent($type, $count = 5)
     {
@@ -420,24 +403,5 @@ class Functions
         ));
 
         return new \Twig_Markup($html, 'UTF-8');
-    }
-
-    /**
-     * Create a forum database entry
-     *
-     * @param string $forum The YAML key for the new forum
-     */
-    private function doCreateForumRecord($forum)
-    {
-        if (empty($this->getForum($forum))){
-            //
-            $data = array(
-                'slug'  => $forum,
-                'state' => 'open'
-            );
-
-            $this->app['db']->insert($this->forums_table_name, $data);
-        }
-
     }
 }
