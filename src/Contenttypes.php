@@ -151,7 +151,7 @@ class Contenttypes
 
         foreach ($array as $key => $value) {
             if (is_array($value)) {
-                $out .= str_repeat(" ", $this->indent) . $key . "\n";
+                $out .= str_repeat(" ", $this->indent) . $key . ":\n";
                 $out .= $this->yaml->dump($value, 2, $this->indent + 4);
             } else {
                 $out .= $this->yaml->dump(array($key => $value), 2, $this->indent);
