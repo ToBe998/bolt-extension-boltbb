@@ -3,9 +3,14 @@
 /**
  * Default Contenttypes definitions
  *
+ * @author Gawain Lynch <gawain.lynch@gmail.com>
  */
 
 namespace Bolt\Extension\Bolt\BoltBB;
+
+use Silex;
+use Silex\Application;
+use Symfony\Component\Yaml\Parser;
 
 /**
  * Content override class
@@ -13,43 +18,102 @@ namespace Bolt\Extension\Bolt\BoltBB;
 class Contenttypes
 {
     /**
-     * Contenttype defaults for Topics
-     *
-     * @var array
+     * @var Application
      */
-    private $topics;
+    private $app;
 
     /**
-     * Contenttype defaults for Replies
-     *
      * @var array
      */
-    private $replies;
+    private $config;
 
-    public function __construct()
+    /**
+     * @var Symfony\Component\Yaml\Parser
+     */
+    private $parser;
+
+    /**
+     * @var array
+     */
+    private $contenttypes;
+
+    public function __construct(Application $app)
     {
-        $this->setTopics();
-        $this->setReplies();
+        $this->app = $app;
+        $this->config = $this->app['extensions.' . Extension::NAME]->config;
+
+        $this->parser = new Parser();
     }
 
     /**
-     * Getter for topics contenttype array
+     * Test to see if a contenttype exists in contenttype.yml
      *
-     * @return array
+     * @param string $contenttype
+     * @return boolean
      */
-    public function getTopics()
+    public function isContenttype($contenttype)
     {
-        return $this->topics;
+        if (! isset($this->contenttypes)) {
+            $this->loadContenttypesYml();
+        }
+
+        if (isset($this->contenttypes[$contenttype])) {
+            return true;
+        }
+
+        return false;
     }
 
     /**
-     * Getter for replies contenttype array
+     * Load an uncached copy of contenttypes.yml
      *
-     * @return array
+     * This is overkill in the long-run, but will do until we can dynamically
+     * insert contenttypes into $app['config'] early enough to be useful
      */
-    public function getReplies()
+    private function loadContenttypesYml()
     {
-        return $this->replies;
+        $filename = $this->app['resources']->getPath('config') . '/contenttype.yml';
+
+        if (is_readable($filename)) {
+            $this->contenttypes = $this->parser->parse(file_get_contents($filename) . "\n");
+        }
+    }
+
+    /**
+     * Insert a missing contenttype into contenttypes.yml
+     *
+     * @param string $type Either 'topics' or 'replies'
+     *
+     * @return void
+     */
+    public function insertContenttype($type)
+    {
+        // Check to see if the contenttype is already in contenttypes.yml
+        if ($this->isContenttype($type)) {
+            return;
+        }
+
+        // Build our defaults
+        if ($type == 'topics') {
+            $output[$this->config['contenttypes']['topics']] = $this->getDefaultTopics();
+        } elseif ($type == 'replies') {
+            $output[$this->config['contenttypes']['replies']] = $this->getDefaultReplies();
+        }
+
+        // Get the existing file, comments and all...  Play nice!
+        $filename = $this->app['resources']->getPath('config') . '/contenttype.yml';
+
+        if (is_readable($filename)) {
+            $data = file_get_contents($filename) . "\n\n";
+
+            // Append the contenttype
+            $data .= "##\n";
+            $data .= "## Automatically generated BoltBB contenttype for {$type}\n";
+            $data .= "##\n";
+            $data .= $this->parser->dump($output);
+        }
+
+        file_put_contents($filename, $data);
     }
 
     /**
@@ -57,9 +121,9 @@ class Contenttypes
      *
      * @return void
      */
-    private function setTopics()
+    private function getDefaultTopics()
     {
-        $this->topics = array(
+        return array(
             'name' => 'Topics',
             'singular_name' => 'Topic',
             'fields' => array(
@@ -122,9 +186,9 @@ class Contenttypes
      *
      * @return void
      */
-    private function setReplies()
+    private function getDefaultReplies()
     {
-        $this->replies = array(
+        return array(
             'name' => 'Replies',
             'singular_name' => 'Reply',
             'fields' => array(

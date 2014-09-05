@@ -78,13 +78,24 @@ var BoltBBAdmin = Object.extend(Object, {
                 })
             .always(function() {
                 alert( "This always get called" );
-                });            
+                });
     },
     
     doContenttypes: function(e) {
         var controller = this;
         
         console.debug("Setting up BoltBB contenttypes");
+        
+        jQuery.get(baseurl + '/ajax?task=forumContenttypes', function(data){})
+            .done(function() {
+                alert( "Contenttypes updated" );
+                })
+            .fail(function() {
+                alert( "There was some error" );
+                })
+            .always(function() {
+                alert( "This always get called" );
+                });
     },
     
     doOpen: function(e) {

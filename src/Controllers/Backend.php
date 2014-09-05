@@ -11,6 +11,7 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\Validator\Constraints as Assert;
 use Bolt\Extension\Bolt\BoltBB\Extension;
 use Bolt\Extension\Bolt\BoltBB\Functions;
+use Bolt\Extension\Bolt\BoltBB\Contenttypes;
 
 class Backend
 {
@@ -107,6 +108,18 @@ class Backend
                 if ($app['request']->get('task') == 'forumSync') {
 
                     $this->functions->syncForumDbTables();
+
+                    return new JsonResponse('ok');
+                } elseif ($app['request']->get('task') == 'forumContenttypes') {
+
+                    //
+                    $bbct = new Contenttypes($this->app);
+
+                    foreach ($this->config['contenttypes'] as $type => $values) {
+                        if (! $bbct->isContenttype($type)) {
+                            $bbct->insertContenttype($type);
+                        }
+                    }
 
                     return new JsonResponse('ok');
                 }
