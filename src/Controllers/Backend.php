@@ -48,8 +48,10 @@ class Backend
         $this->addTwigPath();
 
         $forums = array();
-        $missing = false;
+        $needsync = false;
+        $needtypes = false;
 
+        // Get forum data and check if the table is in sync with the config
         foreach ($this->config['forums'] as $key => $values) {
             //
             $record = $this->functions->getForum($key);
@@ -64,14 +66,22 @@ class Backend
 
             // If any of the forums are missing from the database, set a flag
             if (empty($record)) {
-                $missing = true;
+                $needsync = true;
+            }
+        }
+
+        // Test to see if contenttypes have been set up
+        foreach ($this->config['contenttypes'] as $type) {
+            if (!$this->app['storage']->getContentType($type)) {
+                $needtypes = true;
             }
         }
 
         $html = $this->app['render']->render('boltbb_admin.twig', array(
             'forums' => $forums,
             'boltbb' => $this->config['boltbb'],
-            'missing' => $missing
+            'needsync' => $needsync,
+            'needtypes' => $needtypes
         ));
 
         return new \Twig_Markup($html, 'UTF-8');

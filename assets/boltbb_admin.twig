@@ -63,20 +63,26 @@
                 <div class="panel-heading"><i class="fa fa-cog fa-fw"></i>Admin Options</div>
                 <div class="panel-body">
 
-                    {% if missing %}
+                    {% if needsync or needtypes %}
                         <h4><strong>{{ __('Forum Setup') }}</strong></h4>
 
+                        {% if needsync %}
                         <div class="btn-group">
                             <a class="btn btn-tertiary" data-action="boltbb-forum-sync">
                                 <i class="fa fa-wrench"></i> {{ __('Sync Table') }}
                             </a>
                         </div>
+                        {% endif %}
 
+                        {% if needtypes %}
                         <div class="btn-group">
                             <a class="btn btn-tertiary" data-action="boltbb-forum-contenttypes">
                                 <i class="fa fa-wrench"></i> {{ __('Setup Contenttypes') }}
                             </a>
                         </div>
+                        {% endif %}
+
+                        <hr>
                     {% endif %}
 
                         <h4><strong>{{ __('Forum Maintenance') }}</strong></h4>

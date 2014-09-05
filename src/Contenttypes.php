@@ -10,6 +10,7 @@ namespace Bolt\Extension\Bolt\BoltBB;
 
 use Silex;
 use Silex\Application;
+use Symfony\Component\Yaml\Yaml;
 use Symfony\Component\Yaml\Parser;
 use Symfony\Component\Yaml\Dumper;
 
@@ -37,6 +38,13 @@ class Contenttypes
      * @var array
      */
     private $contenttypes;
+
+    /**
+     * Typo avoiding filename of contenttypes.yml
+     *
+     * @var string
+     */
+    private $yamlfile = 'contenttypes.yml';
 
     public function __construct(Application $app)
     {
@@ -73,7 +81,7 @@ class Contenttypes
      */
     private function loadContenttypesYml()
     {
-        $filename = $this->app['resources']->getPath('config') . '/contenttype.yml';
+        $filename = $this->app['resources']->getPath('config') . '/' . $this->yamlfile;
 
         if (is_readable($filename)) {
             $this->contenttypes = $this->parser->parse(file_get_contents($filename) . "\n");
@@ -96,27 +104,50 @@ class Contenttypes
 
         // Build our defaults
         if ($type == 'topics') {
-            $output[$this->config['contenttypes']['topics']] = $this->getDefaultTopics();
+            $output = $this->getDefaultTopics();
         } elseif ($type == 'replies') {
-            $output[$this->config['contenttypes']['replies']] = $this->getDefaultReplies();
+            $output = $this->getDefaultReplies();
         }
 
         // Get the existing file, comments and all...  Play nice!
-        $filename = $this->app['resources']->getPath('config') . '/contenttype.yml';
+        $filename = $this->app['resources']->getPath('config') . '/' . $this->yamlfile;
 
         if (is_readable($filename)) {
-            $data = file_get_contents($filename) . "\n\n";
+            $data = file_get_contents($filename) . "\n";
 
             // Append the contenttype
             $data .= "##\n";
             $data .= "## Automatically generated BoltBB contenttype for {$type}\n";
             $data .= "##\n";
+            $data .= "{$type}:\n";
+            $data .= $this->getYaml($output);
 
-            $dumper = new Dumper();
-            $dumper->dump($output);
+            file_put_contents($filename, $data . "\n");
+        }
+    }
+
+    /**
+     * Work around Symfony YAML's lack of recursion support
+     *
+     * @param array $array
+     * @param string $out
+     * @return string
+     */
+    private function getYaml($array, $out = '')
+    {
+        $this->yaml = new Dumper();
+        $this->indent = 4;
+
+        foreach ($array as $key => $value) {
+            if (is_array($value)) {
+                $out .= str_repeat(" ", $this->indent) . $key . "\n";
+                $out .= $this->yaml->dump($value, 2, $this->indent + 4);
+            } else {
+                $out .= $this->yaml->dump(array($key => $value), 2, $this->indent);
+            }
         }
 
-        file_put_contents($filename, $data);
+        return $out;
     }
 
     /**
@@ -143,19 +174,19 @@ class Contenttypes
                     'type'    => 'text',
                     'variant' => 'inline',
                     'info'    => '',
-                    'readonly' => 'true',
+                    'readonly' => true,
                     'group'   => 'Info'
                 ),
                 'authorip' => array(
                     'type'    => 'text',
                     'variant' => 'inline',
                     'label'   => 'IP address',
-                    'readonly' => 'true'
+                    'readonly' => true
                 ),
                 'forum' => array(
                     'type'    => 'integer',
                     'variant' => 'inline',
-                    'readonly' => 'true'
+                    'readonly' => true
                 ),
                 'state' => array(
                     'type'    => 'select',
@@ -176,8 +207,8 @@ class Contenttypes
                 ),
                 'subscribers' => array(
                     'type' => 'textarea',
-                    'readonly' => 'true',
-                    'hidden' => 'true'
+                    'readonly' => true,
+                    'hidden' => true
                 ),
             ),
             'default_status' => 'published',
@@ -208,24 +239,24 @@ class Contenttypes
                     'type'    => 'text',
                     'variant' => 'inline',
                     'info'    => '',
-                    'readonly' => 'true',
+                    'readonly' => true,
                     'group'   => 'Info'
                 ),
                 'authorip' => array(
                     'type'    => 'text',
                     'variant' => 'inline',
                     'label'   => 'IP address',
-                    'readonly' => 'true'
+                    'readonly' => true
                 ),
                 'forum' => array(
                     'type'    => 'integer',
                     'variant' => 'inline',
-                    'readonly' => 'true'
+                    'readonly' => true
                 ),
                 'topic' => array(
                     'type'    => 'integer',
                     'variant' => 'inline',
-                    'readonly' => 'true'
+                    'readonly' => true
                 )
             ),
             'default_status' => 'published',
