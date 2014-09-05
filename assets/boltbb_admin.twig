@@ -47,7 +47,7 @@
                                                value="{{ slug }}">
                                     </label>
                                 </td>
-                                <td class="boltbb-forum-name">{{ forum.title }}</td>
+                                <td class="boltbb-forum-name"><a href="{{ app.paths.rooturl }}{{ base_uri }}/{{ slug }}" target="_blank">{{ forum.title }}</a></td>
                                 <td class="boltbb-forum-desc">{{ forum.description }}</td>
                                 <td class="boltbb-forum-state">{{ forum.state|default('missing') }}</td>
                                 <td class="boltbb-forum-topics" align="center">{{ forum.topics|default('-') }}</td>
@@ -98,7 +98,7 @@
                         <div class="row">
                             <div class="col-md-12">
                                 <a class="btn btn-tertiary" data-action="boltbb-forum-open">
-                                    <i class="fa fa-refresh"></i> {{ __('Open Selected Forums') }}
+                                    <i class="fa fa-folder-open-o"></i> {{ __('Open Selected Forums') }}
                                 </a>
                             </div>
                         </div>
@@ -108,7 +108,7 @@
                         <div class="row">
                             <div class="col-md-12">
                                 <a class="btn btn-tertiary" data-action="boltbb-forum-close">
-                                    <i class="fa fa-refresh"></i> {{ __('Close Selected Forums') }}
+                                    <i class="fa fa-folder-o"></i> {{ __('Close Selected Forums') }}
                                 </a>
                             </div>
                         </div>

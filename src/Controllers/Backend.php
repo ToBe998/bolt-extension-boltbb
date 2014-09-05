@@ -77,6 +77,7 @@ class Backend
 
         $html = $this->app['render']->render('boltbb_admin.twig', array(
             'boltbb' => $this->config['boltbb'],
+            'base_uri' => $this->config['base_uri'],
             'forums' => $forums['forums'],
             'needsync' => $forums['needsync'],
             'needtypes' => $needtypes
