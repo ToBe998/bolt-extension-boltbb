@@ -44,7 +44,7 @@ class BoltBBTwigExtension extends \Twig_Extension
     /**
      * Return the HTML for a breadcrumb menu
      *
-     * @param integer $forum_id The ID of the forum
+     * @param  integer      $forum_id The ID of the forum
      * @return \Twig_Markup
      */
     public function forumsBreadcrumbs($forum_id = false)
@@ -59,7 +59,7 @@ class BoltBBTwigExtension extends \Twig_Extension
      *
      * @since 1.0
      *
-     * @param integer $forum_id The ID of the forum
+     * @param  integer      $forum_id The ID of the forum
      * @return \Twig_Markup
      */
     public function forumSlug($forum_id)
@@ -74,7 +74,7 @@ class BoltBBTwigExtension extends \Twig_Extension
      *
      * @since 1.0
      *
-     * @param integer $forum_id The ID of the forum
+     * @param  integer      $forum_id The ID of the forum
      * @return \Twig_Markup
      */
     public function forumTopicCount($forum_id)
@@ -89,7 +89,7 @@ class BoltBBTwigExtension extends \Twig_Extension
      *
      * @since 1.0
      *
-     * @param integer $forum_id The ID of the forum
+     * @param  integer      $forum_id The ID of the forum
      * @return \Twig_Markup
      */
     public function forumReplyCount($forum_id)
@@ -104,7 +104,7 @@ class BoltBBTwigExtension extends \Twig_Extension
      *
      * @since 1.0
      *
-     * @param integer $forum_id The ID of the forum
+     * @param  integer      $forum_id The ID of the forum
      * @return \Twig_Markup
      */
     public function topicReplyCount($topic_id)

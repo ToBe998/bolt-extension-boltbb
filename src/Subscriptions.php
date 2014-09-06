@@ -30,7 +30,7 @@ class Subscriptions
     /**
      *
      * @param Silex\Application $app
-     * @param  mixed $topic Topic ID or slug
+     * @param mixed             $topic Topic ID or slug
      */
     public function __construct(Silex\Application $app)
     {
@@ -56,7 +56,7 @@ class Subscriptions
         $subscribers = array();
 
         // Get the topic subscribers
-        if (! empty($topic->values['subscribers'])){
+        if (! empty($topic->values['subscribers'])) {
             foreach (json_decode($this->topic->values['subscribers'], true) as $key => $value) {
                 $subscribers[$value] = false;
             }
@@ -85,7 +85,7 @@ class Subscriptions
      * Add a subscriber ID to the forum
      *
      * @param mixed $forum
-     * @param int   $id ID to add to subscription array
+     * @param int   $id    ID to add to subscription array
      */
     public function addSubscriberForum($forum, $id, $subscribers = array())
     {
@@ -117,7 +117,7 @@ class Subscriptions
      * Do direct to database to avoid PRE_SAVE & POST_SAVE hooks
      *
      * @param mixed $topic
-     * @param int   $id ID to add to subscription array
+     * @param int   $id    ID to add to subscription array
      */
     public function addSubscriberTopic($topic,  $id, $subscribers = array())
     {
@@ -147,7 +147,7 @@ class Subscriptions
      * Remove a subscriber ID from the forum
      *
      * @param mixed $forum
-     * @param int   $id ID to add to subscription array
+     * @param int   $id    ID to add to subscription array
      */
     public function delSubscriberForum($forum,  $id, $subscribers = array())
     {
@@ -177,7 +177,7 @@ class Subscriptions
      * Do direct to database to avoid PRE_SAVE & POST_SAVE hooks
      *
      * @param mixed $topic
-     * @param int   $id ID to add to subscription array
+     * @param int   $id    ID to add to subscription array
      */
     public function delSubscriberTopic($topic,  $id, $subscribers = array())
     {

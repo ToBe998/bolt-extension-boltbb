@@ -140,8 +140,7 @@ class Extension extends \Bolt\BaseExtension
             }
         }
 
-        if ($this->authorized)
-        {
+        if ($this->authorized) {
             $this->controller = new Controllers\Backend($this->app);
 
             $this->path = $this->app['config']->get('general/branding/path') . '/extensions/boltbb';
@@ -175,7 +174,7 @@ class Extension extends \Bolt\BaseExtension
 
         $this->forums_table_name = $prefix . 'forums';
         $this->app['integritychecker']->registerExtensionTable(
-            function(Schema $schema) use ($me) {
+            function (Schema $schema) use ($me) {
                 // Define table
                 $table = $schema->createTable($me->forums_table_name);
 

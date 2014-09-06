@@ -60,7 +60,7 @@ class Contenttypes
     /**
      * Test to see if a contenttype exists in contenttype.yml
      *
-     * @param string $contenttype
+     * @param  string  $contenttype
      * @return boolean
      */
     public function isContenttype($contenttype)
@@ -140,8 +140,8 @@ class Contenttypes
     /**
      * Work around Symfony YAML's lack of recursion support
      *
-     * @param array $array
-     * @param string $out
+     * @param  array  $array
+     * @param  string $out
      * @return string
      */
     private function getYaml($array, $out = '')
