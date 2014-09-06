@@ -4,7 +4,7 @@ namespace Bolt\Extension\Bolt\BoltBB;
 
 use Silex;
 
-class ForumsAdmin
+class Admin
 {
     /**
      * @var Application

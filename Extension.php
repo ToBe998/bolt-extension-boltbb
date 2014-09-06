@@ -53,7 +53,7 @@ class Extension extends \Bolt\BaseExtension
             $this->setControllerFrontend();
 
             // Twig functions
-            $this->app['twig']->addExtension(new ForumsTwigExtension($this->app));
+            $this->app['twig']->addExtension(new BoltBBTwigExtension($this->app));
         }
 
         /*

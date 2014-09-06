@@ -23,7 +23,7 @@ class Subscriptions
     private $config;
 
     /**
-     * @var ForumsData
+     * @var Data
      */
     private $data;
 
@@ -36,7 +36,7 @@ class Subscriptions
     {
         $this->app = $app;
         $this->config = $this->app['extensions.' . Extension::NAME]->config;
-        $this->data = new ForumsData($this->app);
+        $this->data = new Data($this->app);
     }
 
     /**

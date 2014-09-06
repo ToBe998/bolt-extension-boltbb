@@ -8,7 +8,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Bolt\Extension\Bolt\BoltBB\Extension;
-use Bolt\Extension\Bolt\BoltBB\ForumsAdmin;
+use Bolt\Extension\Bolt\BoltBB\Admin;
 use Bolt\Extension\Bolt\BoltBB\Contenttypes;
 
 class Backend
@@ -24,7 +24,7 @@ class Backend
     private $config;
 
     /**
-     * @var Bolt\Extension\Bolt\BoltBB\ForumsAdmin
+     * @var Bolt\Extension\Bolt\BoltBB\Admin
      */
     private $admin;
 
@@ -32,7 +32,7 @@ class Backend
     {
         $this->app = $app;
         $this->config = $this->app['extensions.' . Extension::NAME]->config;
-        $this->admin = new ForumsAdmin($this->app);
+        $this->admin = new Admin($this->app);
     }
 
     /**

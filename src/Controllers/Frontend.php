@@ -6,7 +6,7 @@ use Silex;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Validator\Constraints as Assert;
 use Bolt\Extension\Bolt\BoltBB\Extension;
-use Bolt\Extension\Bolt\BoltBB\ForumsData;
+use Bolt\Extension\Bolt\BoltBB\Data;
 use Bolt\Extension\Bolt\BoltBB\Discussions;
 
 class Frontend
@@ -22,7 +22,7 @@ class Frontend
     private $config;
 
     /**
-     * @var Bolt\Extension\Bolt\BoltBB\ForumsData
+     * @var Bolt\Extension\Bolt\BoltBB\Data
      */
     private $data;
 
@@ -35,7 +35,7 @@ class Frontend
     {
         $this->app = $app;
         $this->config = $this->app['extensions.' . Extension::NAME]->config;
-        $this->data = new ForumsData($this->app);
+        $this->data = new Data($this->app);
         $this->discuss = new Discussions($this->app);
     }
 

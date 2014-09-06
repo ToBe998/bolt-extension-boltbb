@@ -5,13 +5,13 @@ namespace Bolt\Extension\Bolt\BoltBB;
 /**
  * Twig functions
  */
-class ForumsTwigExtension extends \Twig_Extension
+class BoltBBTwigExtension extends \Twig_Extension
 {
     private $twig = null;
 
     public function __construct(\Silex\Application $app)
     {
-        $this->data = new ForumsData($app);
+        $this->data = new Data($app);
     }
 
     public function initRuntime(\Twig_Environment $environment)
