@@ -6,7 +6,7 @@ use Silex;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Validator\Constraints as Assert;
 use Bolt\Extension\Bolt\BoltBB\Extension;
-use Bolt\Extension\Bolt\BoltBB\Forums;
+use Bolt\Extension\Bolt\BoltBB\ForumsData;
 use Bolt\Extension\Bolt\BoltBB\Discussions;
 
 class Frontend
@@ -22,9 +22,9 @@ class Frontend
     private $config;
 
     /**
-     * @var Bolt\Extension\Bolt\BoltBB\Forums
+     * @var Bolt\Extension\Bolt\BoltBB\ForumsData
      */
-    private $forums;
+    private $data;
 
     /**
      * @var Bolt\Extension\Bolt\BoltBB\Discussions
@@ -35,7 +35,7 @@ class Frontend
     {
         $this->app = $app;
         $this->config = $this->app['extensions.' . Extension::NAME]->config;
-        $this->forums = new Forums($this->app);
+        $this->data = new ForumsData($this->app);
         $this->discuss = new Discussions($this->app);
     }
 
@@ -65,7 +65,7 @@ class Frontend
 
         // Combine YAML and database information about each forum
         foreach ($this->config['forums'] as $key => $forum) {
-            $forums[$key] = $this->forums->getForum($key);
+            $forums[$key] = $this->data->getForum($key);
         }
 
         $html = $this->app['render']->render(
@@ -114,7 +114,7 @@ class Frontend
         // Add assets to Twig path
         $this->addTwigPath();
 
-        $forum = $this->forums->getForum($forum);
+        $forum = $this->data->getForum($forum);
         $constraints = array('constraints' => new Assert\NotBlank());
 
         $data = array();
@@ -135,7 +135,7 @@ class Frontend
             $topicid = $this->discuss->doNewTopic($request, $forum);
 
             // Get the new topic's URI
-            $uri = $this->forums->getTopicURI($topicid);
+            $uri = $this->data->getTopicURI($topicid);
 
             // Redirect to the new topic
             return $this->app->redirect($uri);
@@ -170,8 +170,8 @@ class Frontend
         $this->addTwigPath();
 
         // Get consistent info for forum and topic
-        $forum = $this->forums->getForum($forum);
-        $topic = $this->forums->getTopic($topic);
+        $forum = $this->data->getForum($forum);
+        $topic = $this->data->getTopic($topic);
 
         $data = array();
         $form = $this->app['form.factory']

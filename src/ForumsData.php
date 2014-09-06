@@ -5,7 +5,7 @@ namespace Bolt\Extension\Bolt\BoltBB;
 use Silex;
 use Symfony\Component\HttpFoundation\Request;
 
-class Forums
+class ForumsData
 {
     /**
      * @var Application

@@ -23,9 +23,9 @@ class Subscriptions
     private $config;
 
     /**
-     * @var Forums
+     * @var ForumsData
      */
-    private $forums;
+    private $data;
 
     /**
      *
@@ -36,7 +36,7 @@ class Subscriptions
     {
         $this->app = $app;
         $this->config = $this->app['extensions.' . Extension::NAME]->config;
-        $this->forums = new Forums($this->app);
+        $this->data = new ForumsData($this->app);
     }
 
     /**
@@ -89,7 +89,7 @@ class Subscriptions
      */
     public function addSubscriberForum($forum, $id, $subscribers = array())
     {
-        $forum = $this->forums->getForum($forum);
+        $forum = $this->data->getForum($forum);
 
         //array_diff( [312, 401, 1599, 3], [401] )
     }
@@ -104,7 +104,7 @@ class Subscriptions
      */
     public function addSubscriberTopic($topic,  $id, $subscribers = array())
     {
-        $topic = $this->forums->getTopic($topic);
+        $topic = $this->data->getTopic($topic);
     }
 
     /**
@@ -115,7 +115,7 @@ class Subscriptions
      */
     public function delSubscriberForum($forum,  $id, $subscribers = array())
     {
-        $forum = $this->forums->getForum($forum);
+        $forum = $this->data->getForum($forum);
     }
 
     /**
@@ -128,6 +128,6 @@ class Subscriptions
      */
     public function delSubscriberTopic($topic,  $id, $subscribers = array())
     {
-        $topic = $this->forums->getTopic($topic);
+        $topic = $this->data->getTopic($topic);
     }
 }
