@@ -259,11 +259,6 @@ class Contenttypes
                     'label'   => 'IP address',
                     'readonly' => true
                 ),
-                'forum' => array(
-                    'type'    => 'integer',
-                    'variant' => 'inline',
-                    'readonly' => true
-                ),
                 'topic' => array(
                     'type'    => 'integer',
                     'variant' => 'inline',
