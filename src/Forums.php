@@ -51,9 +51,11 @@ class Forums
         if ($forum) {
             $forum['title'] = $this->config['forums'][$forum['slug']]['title'];
             $forum['description'] = $this->config['forums'][$forum['slug']]['description'];
+
+            return $forum;
         }
 
-        return $forum;
+        return false;
     }
 
     /**
