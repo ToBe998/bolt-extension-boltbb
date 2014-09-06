@@ -80,10 +80,6 @@ class Extension extends \Bolt\BaseExtension
         $this->config['tables']['topics'] = $prefix . $this->config['contenttypes']['topics'];
         $this->config['tables']['replies'] = $prefix . $this->config['contenttypes']['replies'];
 
-        //$this->forums_table_name = $prefix . 'forums';
-        //$this->topics_table_name = $prefix . $this->config['contenttypes']['topics'];
-        //$this->replies_table_name = $prefix . $this->config['contenttypes']['replies'];
-
         // CSS
         if (isset($this->config['stylesheet'])) {
             $this->config['stylesheet'] = 'css/' . $this->config['stylesheet'];
