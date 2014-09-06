@@ -3,12 +3,14 @@
 
 namespace Bolt\Extension\Bolt\BoltBB;
 
-// Database access
 use Doctrine\DBAL\Schema\Schema;
-
-// Cron
 use Bolt\CronEvents;
 
+/**
+ *
+ * @author Gawain Lynch <gawain.lynch@gmail.com>
+ *
+ */
 class Extension extends \Bolt\BaseExtension
 {
     /**
@@ -207,7 +209,12 @@ class Extension extends \Bolt\BaseExtension
                 'topics'  => 'topics',
                 'replies' => 'replies'
             ),
-            'admin_roles' => array('root', 'admin', 'developer', 'chief-editor')
+            'admin_roles' => array('root', 'admin', 'developer', 'chief-editor'),
+            'notifications' => array(
+                'debug'         => true,
+                'debug_address' => 'noreply@example.com',
+                'from_address'  => 'noreply@example.com'
+            )
         );
     }
 }

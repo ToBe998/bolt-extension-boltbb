@@ -4,6 +4,11 @@ namespace Bolt\Extension\Bolt\BoltBB;
 
 use Silex;
 
+/**
+ *
+ * @author Gawain Lynch <gawain.lynch@gmail.com>
+ *
+ */
 class Notifications
 {
     /**
@@ -31,7 +36,12 @@ class Notifications
      */
     private $from_address;
 
-    public function __construct(Silex\Application $app)
+    /**
+     *
+     * @param Silex\Application $app
+     * @param string            $type
+     */
+    public function __construct(Silex\Application $app, $type)
     {
         $this->app = $app;
         $this->config = $this->app['extensions.' . Extension::NAME]->config;
@@ -59,5 +69,40 @@ class Notifications
      */
     public function doY()
     {
+    }
+
+    /**
+     *
+     */
+    private function doCompose()
+    {
+        $this->message = \Swift_Message::newInstance()
+                ->setSubject($subject)
+                ->setFrom($this->from_address)
+                ->setBody(strip_tags($mailhtml))
+                ->addPart($mailhtml, 'text/html');
+    }
+
+    /**
+     * Send a notification to a single user
+     *
+     * @param \Swift_Message $message
+     * @param array          $recipient
+     */
+    private function doSend(\Swift_Message $message, $recipient)
+    {
+        // Set the recipient for *this* message
+        $message->setTo($recipient);
+
+        $res = $this->app['mailer']->send($message);
+
+        // log the result of the attempt
+        if ($res) {
+            if ($this->debug) {
+                $this->app['log']->add('Sent BoltBB notification to '. $formconfig['testmode_recipient'] . ' (in testmode) - ' . $formconfig['recipient_name'], 3);
+            } else {
+                $this->app['log']->add('Sent BoltBB notification to '. $formconfig['recipient_email'] . ' - ' . $formconfig['recipient_name'], 3);
+            }
+        }
     }
 }

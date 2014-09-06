@@ -5,6 +5,11 @@ namespace Bolt\Extension\Bolt\BoltBB;
 use Silex;
 use Symfony\Component\HttpFoundation\Request;
 
+/**
+ *
+ * @author Gawain Lynch <gawain.lynch@gmail.com>
+ *
+ */
 class Discussions
 {
     /**
