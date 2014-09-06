@@ -21,11 +21,6 @@ class ForumsData
     {
         $this->app = $app;
         $this->config = $this->app['extensions.' . Extension::NAME]->config;
-
-        $prefix = $this->app['config']->get('general/database/prefix', "bolt_");
-        $this->forums_table_name = $prefix . 'forums';
-        $this->topics_table_name = $prefix . $this->config['contenttypes']['topics'];
-        $this->replies_table_name = $prefix . $this->config['contenttypes']['replies'];
     }
 
     /**
@@ -41,10 +36,10 @@ class ForumsData
     public function getForum($forum)
     {
         if (is_numeric($forum)) {
-            $query = "SELECT * FROM {$this->forums_table_name} WHERE id = :id";
+            $query = "SELECT * FROM {$this->config['tables']['forums']} WHERE id = :id";
             $forum = $this->app['db']->fetchAssoc($query, array(':id' => $forum));
         } else {
-            $query = "SELECT * FROM {$this->forums_table_name} WHERE slug = :slug";
+            $query = "SELECT * FROM {$this->config['tables']['forums']} WHERE slug = :slug";
             $forum = $this->app['db']->fetchAssoc($query, array(':slug' => $forum));
         }
 
@@ -119,10 +114,10 @@ class ForumsData
     public function getForumTopicCount($forum_id)
     {
         if (empty($forum_id)) {
-            $query = "SELECT * FROM {$this->topics_table_name}";
+            $query = "SELECT * FROM {$this->config['tables']['topics']}";
             $map = array();
         } else {
-            $query = "SELECT * FROM {$this->topics_table_name} WHERE forum = :forum";
+            $query = "SELECT * FROM {$this->config['tables']['topics']} WHERE forum = :forum";
             $map = array(':forum' => $forum_id);
         }
 
@@ -140,10 +135,10 @@ class ForumsData
     public function getForumReplyCount($forum_id)
     {
         if (empty($forum_id)) {
-            $query = "SELECT * FROM {$this->replies_table_name}";
+            $query = "SELECT * FROM {$this->config['tables']['replies']}";
             $map = array();
         } else {
-            $query = "SELECT * FROM {$this->replies_table_name} WHERE forum = :forum";
+            $query = "SELECT * FROM {$this->config['tables']['replies']} WHERE forum = :forum";
             $map = array(':forum' => $forum_id);
         }
 
@@ -215,7 +210,7 @@ class ForumsData
      */
     public function getTopicReplyCount($topic_id)
     {
-        $query = "SELECT * FROM {$this->replies_table_name} WHERE topic = :topic";
+        $query = "SELECT * FROM {$this->config['tables']['replies']} WHERE topic = :topic";
         $map = array(
             ':topic' => $topic_id
         );

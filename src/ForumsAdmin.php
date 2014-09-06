@@ -20,11 +20,6 @@ class ForumsAdmin
     {
         $this->app = $app;
         $this->config = $this->app['extensions.' . Extension::NAME]->config;
-
-        $prefix = $this->app['config']->get('general/database/prefix', "bolt_");
-        $this->forums_table_name = $prefix . 'forums';
-        $this->topics_table_name = $prefix . $this->config['contenttypes']['topics'];
-        $this->replies_table_name = $prefix . $this->config['contenttypes']['replies'];
     }
 
     /**
@@ -37,7 +32,7 @@ class ForumsAdmin
         $forums = new Forums($this->app);
 
         $conf = $this->config['forums'];
-        $rows = $this->app['db']->fetchAll('SELECT * FROM ' . $this->forums_table_name);
+        $rows = $this->app['db']->fetchAll('SELECT * FROM ' . $this->config['tables']['forums']);
         $return = array(
             'needsync' => false,
             'forums' => $conf
@@ -87,7 +82,7 @@ class ForumsAdmin
     public function doForumOpen($forum)
     {
         $this->app['db']->update(
-            $this->forums_table_name,
+            $this->config['tables']['forums'],
             array('state' => 'open'),
             array('slug' => $forum)
         );
@@ -96,7 +91,7 @@ class ForumsAdmin
     public function doForumClose($forum)
     {
         $this->app['db']->update(
-            $this->forums_table_name,
+            $this->config['tables']['forums'],
             array('state' => 'closed'),
             array('slug' => $forum)
         );
@@ -118,7 +113,7 @@ class ForumsAdmin
                 'state' => 'open'
             );
 
-            $this->app['db']->insert($this->forums_table_name, $data);
+            $this->app['db']->insert($this->config['tables']['forums'], $data);
         }
     }
 }
