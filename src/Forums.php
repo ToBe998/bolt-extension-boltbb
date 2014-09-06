@@ -59,30 +59,6 @@ class Forums
     }
 
     /**
-     * Return an associative array of all of our forums in the database and config
-     *
-     * @return mixed
-     */
-    public function getForumsAdmin()
-    {
-        $forums = $this->config['forums'];
-        $rows = $this->app['db']->fetchAll('SELECT * FROM ' . $this->forums_table_name);
-
-        foreach ($rows as $row) {
-            $forums[$row['slug']] = array(
-                'title' => isset($this->config['forums'][$row['slug']]) ? $this->config['forums'][$row['slug']]['title'] : $row['slug'],
-                'description' => $this->config['forums'][$row['slug']]['description'],
-                'subscribers' => empty($row['subscribers']) ? '' : json_decode($row['subscribers'], true),
-                'state' => isset($this->config['forums'][$row['slug']]) ? $row['state'] : 'abandoned',
-                'topics' => $this->getForumTopicCount($row['id']),
-                'replies' => $this->getForumReplyCount($row['id'])
-            );
-        }
-
-        return $forums;
-    }
-
-    /**
      * Get a slug for a given forum
      *
      * @param  mixed  $forum Either a slug or numeric ID for a forum
