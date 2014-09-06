@@ -74,13 +74,6 @@ class Extension extends \Bolt\BaseExtension
      */
     private function setConfig()
     {
-        if (empty($this->config['base_uri'])) {
-            $this->config['base_uri'] = 'forums';
-        }
-        if (empty($this->config['csrf'])) {
-            $this->config['csrf'] = true;
-        }
-
         // CSS
         if (isset($this->config['stylesheet'])) {
             $this->config['stylesheet'] = 'css/' . $this->config['stylesheet'];
@@ -214,7 +207,8 @@ class Extension extends \Bolt\BaseExtension
                 'debug'         => true,
                 'debug_address' => 'noreply@example.com',
                 'from_address'  => 'noreply@example.com'
-            )
+            ),
+            'csrf' => true
         );
     }
 }
