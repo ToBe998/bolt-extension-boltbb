@@ -75,26 +75,19 @@ class Forums
      * Get an array that describes the topic regardless of requesting via
      * slug or topic ID
      *
-     * @since 1.0
-     *
-     * @param  mixed $forum_input Either a slug or numeric ID for a forum
      * @param  mixed $topic_input Either a slug or numeric ID for a topic
      * @return array Details of the topic including replies
      */
-    public function getTopic($forum_input, $topic_input)
+    public function getTopic($topic_input)
     {
-        $forum = $this->getForum($forum_input);
-
         //
         if (is_numeric($topic_input)) {
             return $this->app['storage']->getContent('topics', array(
-                'forum' => $forum['id'],
                 'id' => $topic_input,
                 'returnsingle' => true
             ));
         } else {
             return $this->app['storage']->getContent('topics', array(
-                'forum' => $forum['id'],
                 'slug' => $topic_input,
                 'returnsingle' => true
             ));
@@ -239,13 +232,11 @@ class Forums
      * @param  integer $topic_id The ID of the topic to get last post for
      * @return array
      */
-    public function getTopicLastPost($forum_id, $topic_id)
+    public function getTopicLastPost($topic_id)
     {
-        $forum = $this->getForum($forum_id);
-        $topic = $this->getTopic($forum['id'], $topic_id);
+        $topic = $this->getTopic($topic_id);
 
         return $this->app['storage']->getContent('topics', array(
-            'forum' => $forum['id'],
             'topic' => $topic['id'],
             'returnsingle' => true
         ));
@@ -258,10 +249,10 @@ class Forums
      * @param  bool   $relative
      * @return string
      */
-    public function getTopicURI($forum, $topic, $relative = true)
+    public function getTopicURI($topic, $relative = true)
     {
-        $forum = $this->getForum($forum);
-        $topic = $this->getTopic($forum['id'], $topic);
+        $topic = $this->getTopic($topic);
+        $forum = $this->getForum($topic['forum']);
 
         $uri = '/' . $this->config['base_uri'] . '/' . $forum['slug'] . '/' . $topic['slug'];
 

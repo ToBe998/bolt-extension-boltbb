@@ -135,7 +135,7 @@ class Frontend
             $topicid = $this->discuss->doNewTopic($request, $forum);
 
             // Get the new topic's URI
-            $uri = $this->forums->getTopicURI($forum['id'], $topicid);
+            $uri = $this->forums->getTopicURI($topicid);
 
             // Redirect to the new topic
             return $this->app->redirect($uri);
@@ -171,7 +171,7 @@ class Frontend
 
         // Get consistent info for forum and topic
         $forum = $this->forums->getForum($forum);
-        $topic = $this->forums->getTopic($forum['id'], $topic);
+        $topic = $this->forums->getTopic($topic);
 
         $data = array();
         $form = $this->app['form.factory']
