@@ -77,7 +77,8 @@ class Forums
      *
      * @since 1.0
      *
-     * @param  mixed $input Either a slug or numeric ID for a topic
+     * @param  mixed $forum_input Either a slug or numeric ID for a forum
+     * @param  mixed $topic_input Either a slug or numeric ID for a topic
      * @return array Details of the topic including replies
      */
     public function getTopic($forum_input, $topic_input)
@@ -216,7 +217,6 @@ class Forums
      *
      * @since 1.0
      *
-     * @param  integer $forum_id The ID of the forum to get replies for
      * @param  integer $topic_id The ID of the forum to get replies for
      * @return array
      */
@@ -269,79 +269,6 @@ class Forums
             return $uri;
         } else {
             // XXX
-        }
-    }
-
-    /**
-     * Create a new topic
-     *
-     * @since 1.0
-     *
-     */
-    public function doNewTopic(Request $request, $forum)
-    {
-        // Get form
-        $form = $request->get('form');
-
-        $values = array(
-            'slug' => makeSlug($form['title'], 128),
-            'title' => $form['title'],
-            'author' => $form['author'],
-            'authorip' => $request->getClientIp(),
-            'forum' => $forum['id'],
-            'state' => 'open',
-            'body' => $form['editor']
-        );
-
-        $record = $this->app['storage']->getEmptyContent($this->config['contenttypes']['topics']);
-        $record->setValues($values);
-
-        $id = $this->app['storage']->saveContent($record);
-
-        if ($id === false) {
-            $this->app['session']->getFlashBag()->set('error', 'There was an error posting the topic.');
-
-            return null;
-        } else {
-            $this->app['session']->getFlashBag()->set('success', 'Topic posted.');
-
-            return $id;
-        }
-    }
-
-    /**
-     * Create a new reply
-     *
-     * @since 1.0
-     *
-     */
-    public function doNewReply(Request $request, $topic)
-    {
-        // Get form
-        $form = $request->get('form');
-
-        $values = array(
-            'slug' => makeSlug($topic['title'], 128),
-            'title' => $topic['title'],
-            'author' => $form['author'],
-            'authorip' => $request->getClientIp(),
-            'topic' => $topic['id'],
-            'body' => $form['editor']
-        );
-
-        $record = $this->app['storage']->getEmptyContent($this->config['contenttypes']['replies']);
-        $record->setValues($values);
-
-        $id = $this->app['storage']->saveContent($record);
-
-        if ($id === false) {
-            $this->app['session']->getFlashBag()->set('error', 'There was an error posting the reply.');
-
-            return null;
-        } else {
-            $this->app['session']->getFlashBag()->set('success', 'Reply posted.');
-
-            return $id;
         }
     }
 
