@@ -107,9 +107,9 @@ class ForumsTwigExtension extends \Twig_Extension
      * @param integer $forum_id The ID of the forum
      * @return \Twig_Markup
      */
-    public function topicReplyCount($forum_id, $topic_id)
+    public function topicReplyCount($topic_id)
     {
-        $html = $this->forums->getTopicReplyCount($forum_id, $topic_id);
+        $html = $this->forums->getTopicReplyCount($topic_id);
 
         return new \Twig_Markup($html, 'UTF-8');
     }
