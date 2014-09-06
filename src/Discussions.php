@@ -21,8 +21,6 @@ class Discussions
     {
         $this->app = $app;
         $this->config = $this->app['extensions.' . Extension::NAME]->config;
-
-        $prefix = $this->app['config']->get('general/database/prefix', "bolt_");
     }
 
     /**
