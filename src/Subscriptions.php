@@ -51,8 +51,8 @@ class Subscriptions
      */
     public function getSubscribers($topic)
     {
-        $topic = $forums->getTopic($topic);
-        $forum = $forums->getForum($topic->values['forum']);
+        $topic = $this->data->getTopic($topic);
+        $forum = $this->data->getForum($topic->values['forum']);
         $subscribers = array();
 
         // Get the topic subscribers
@@ -91,7 +91,24 @@ class Subscriptions
     {
         $forum = $this->data->getForum($forum);
 
-        //array_diff( [312, 401, 1599, 3], [401] )
+        if ($forum === false) {
+            return;
+        }
+
+        if (! empty($forum['subscribers'])) {
+            $subscribers = json_decode($forum['subscribers'], true);
+        }
+
+        if (! in_array($id, $subscribers)) {
+            $subscribers[] = $id;
+            $subscribers = json_encode($subscribers);
+
+            $this->app['db']->update(
+                $this->config['tables']['forums'],
+                array('subscribers' => $subscribers),
+                array('id' => $forum['id'])
+            );
+        }
     }
 
     /**
@@ -105,6 +122,25 @@ class Subscriptions
     public function addSubscriberTopic($topic,  $id, $subscribers = array())
     {
         $topic = $this->data->getTopic($topic);
+
+        if ($topic === false) {
+            return;
+        }
+
+        if (! empty($topic->values['subscribers'])) {
+            $subscribers = json_decode($topic->values['subscribers'], true);
+        }
+
+        if (! in_array($id, $subscribers)) {
+            $subscribers[] = $id;
+            $subscribers = json_encode($subscribers);
+
+            $this->app['db']->update(
+                $this->config['tables']['topics'],
+                array('subscribers' => $subscribers),
+                array('id' => $topic->values['id'])
+            );
+        }
     }
 
     /**
@@ -116,6 +152,23 @@ class Subscriptions
     public function delSubscriberForum($forum,  $id, $subscribers = array())
     {
         $forum = $this->data->getForum($forum);
+
+        if ($forum === false) {
+            return;
+        }
+
+        if (! empty($forum['subscribers'])) {
+            $subscribers = json_decode($forum['subscribers'], true);
+        }
+
+        // Remove the ID if present
+        $subscribers = json_encode(array_diff($subscribers, array($id)));
+
+        $this->app['db']->update(
+            $this->config['tables']['forums'],
+            array('subscribers' => $subscribers),
+            array('id' => $forum['id'])
+        );
     }
 
     /**
@@ -129,5 +182,22 @@ class Subscriptions
     public function delSubscriberTopic($topic,  $id, $subscribers = array())
     {
         $topic = $this->data->getTopic($topic);
+
+        if ($topic === false) {
+            return;
+        }
+
+        if (! empty($topic->values['subscribers'])) {
+            $subscribers = json_decode($topic->values['subscribers'], true);
+        }
+
+        // Remove the ID if present
+        $subscribers = json_encode(array_diff($subscribers, array($id)));
+
+        $this->app['db']->update(
+            $this->config['tables']['topics'],
+            array('subscribers' => $subscribers),
+            array('id' => $topic->values['id'])
+        );
     }
 }
