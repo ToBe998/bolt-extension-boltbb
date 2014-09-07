@@ -184,7 +184,7 @@ class Contenttypes
                 'author' => array(
                     'type'    => 'text',
                     'variant' => 'inline',
-                    'info'    => '',
+                    'info'    => 'The ClientLogin ID of the author',
                     'readonly' => true,
                     'group'   => 'Info'
                 ),
@@ -201,6 +201,7 @@ class Contenttypes
                 ),
                 'state' => array(
                     'type'    => 'select',
+                    'info'    => 'Open: Replies can be made<br><br>Closed: Replies are closed',
                     'values'  => array(
                         'open',
                         'closed'
@@ -209,12 +210,13 @@ class Contenttypes
                 ),
                 'visibility' => array(
                     'type'    => 'select',
+                    'variant' => 'inline',
+                    'info'    => 'Global: List at top of all forums<br><br>Pinned: List at the top of the specified form (below any global)<br><br>Normal: Listed newest first in the specified forum',
                     'values'  => array(
                         'nomal',
                         'pinned',
                         'global'
                     ),
-                    'variant' => 'inline'
                 ),
                 'subscribers' => array(
                     'type' => 'textarea',
@@ -249,7 +251,7 @@ class Contenttypes
                 'author' => array(
                     'type'    => 'text',
                     'variant' => 'inline',
-                    'info'    => '',
+                    'info'    => 'The ClientLogin ID of the author',
                     'readonly' => true,
                     'group'   => 'Info'
                 ),
