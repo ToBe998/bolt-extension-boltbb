@@ -42,7 +42,7 @@ module.exports = function(grunt) {
         options: {
             includePaths: ['']
         },
-        jquery: {
+        js: {
             options: {
                 mangle: true,
                 sourceMap: true,

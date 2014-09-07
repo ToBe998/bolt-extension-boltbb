@@ -1,3 +1,6 @@
+/*
+ * CKEditor configuration
+ */
 CKEDITOR.replace( "form[editor]" );
 
 CKEDITOR.editorConfig = function( config ) {
@@ -10,3 +13,13 @@ CKEDITOR.editorConfig = function( config ) {
                       { name: 'links',       items: [ 'Link', 'Unlink' ] },
                       { name: 'source',      items: [ 'Source' ] }];
 };
+
+/*
+ * CSS Emoticons trigger elements
+ * 
+ * See: http://os.alfajango.com/css-emoticons/
+ */
+$( document ).ready(function() {
+    $('.topic p').emoticonize();
+    $('.reply p').emoticonize();
+    });
