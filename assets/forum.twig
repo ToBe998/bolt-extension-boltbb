@@ -50,7 +50,7 @@
                     {{ form_start(form) }}
                         {{ form_row(form.title) }}
                         {{ form_row(form.editor) }}
-                        {{ form_row(form.author, {value : visitor.id}) }}
+                        {{ form_row(form.author, {value : client.id}) }}
                         <br>
                         {{ form_row(form.post) }}
                     {{ form_end(form) }}

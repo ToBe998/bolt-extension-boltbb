@@ -47,13 +47,14 @@ class Discussions
         $form = $request->get('form');
 
         $values = array(
-            'slug' => makeSlug($form['title'], 128),
-            'title' => $form['title'],
-            'author' => $form['author'],
-            'authorip' => $request->getClientIp(),
-            'forum' => $form['forum'],
-            'state' => 'open',
-            'body' => $form['editor']
+            'slug'       => makeSlug($form['title'], 128),
+            'title'      => $form['title'],
+            'author'     => $form['author'],
+            'authorip'   => $request->getClientIp(),
+            'forum'      => $form['forum'],
+            'state'      => 'open',
+            'visibility' => 'normal',
+            'body'       => $form['editor']
         );
 
         $record = $this->app['storage']->getEmptyContent($this->config['contenttypes']['topics']);
@@ -84,13 +85,13 @@ class Discussions
         $form = $request->get('form');
 
         $values = array(
-            'slug' => makeSlug($topic['title'], 128),
-            'title' => $topic['title'],
-            'author' => $form['author'],
+            'slug'     => makeSlug($topic['title'], 128),
+            'title'    => $topic['title'],
+            'author'   => $form['author'],
             'authorip' => $request->getClientIp(),
-            'forum' => $topic['forum'],
-            'topic' => $form['topic'],
-            'body' => $form['editor']
+            'forum'    => $topic['forum'],
+            'topic'    => $form['topic'],
+            'body'     => $form['editor']
         );
 
         $record = $this->app['storage']->getEmptyContent($this->config['contenttypes']['replies']);
@@ -161,7 +162,7 @@ class Discussions
             // Create new reply
             $replyid = $this->doNewReply($request, $topic);
 
-            //
+            // Redirect
             return $this->app->redirect($request->getRequestUri() . '#reply-' . $forum['id'] . '-' . $topic['id'] . '-' . $replyid);
         }
 

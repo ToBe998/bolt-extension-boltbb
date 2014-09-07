@@ -4,6 +4,7 @@ namespace Bolt\Extension\Bolt\BoltBB\Controllers;
 
 use Silex;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\Validator\Constraints as Assert;
 use Bolt\Extension\Bolt\BoltBB\Extension;
 use Bolt\Extension\Bolt\BoltBB\Data;
@@ -147,6 +148,9 @@ class Frontend
 
         // Create and handle submission form
         $view = $this->discuss->doTopicForm($request, $forum);
+        if (get_class($view) == 'Symfony\Component\HttpFoundation\RedirectResponse') {
+            return $view;
+        }
 
         $html = $this->app['render']->render($this->config['templates']['forum'], array(
             'form' => $view,
@@ -216,6 +220,9 @@ class Frontend
 
         // Create and handle submission form
         $view = $this->discuss->doReplyForm($request, $forum, $topic);
+        if (get_class($view) == 'Symfony\Component\HttpFoundation\RedirectResponse') {
+            return $view;
+        }
 
         $html = $this->app['render']->render($this->config['templates']['topic'], array(
             'form' => $view,
