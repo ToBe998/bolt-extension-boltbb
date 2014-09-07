@@ -41,7 +41,7 @@ class Discussions
      * @since 1.0
      *
      */
-    public function doNewTopic(Request $request, $forum)
+    public function doTopicNew(Request $request, $forum)
     {
         // Get form
         $form = $request->get('form');
@@ -79,7 +79,7 @@ class Discussions
      * @since 1.0
      *
      */
-    public function doNewReply(Request $request, $topic)
+    public function doReplyNew(Request $request, $topic)
     {
         // Get form
         $form = $request->get('form');
@@ -129,7 +129,7 @@ class Discussions
 
         if ($form->isValid()) {
             // Create the new topic
-            $topicid = $this->doNewTopic($request, $forum);
+            $topicid = $this->doTopicNew($request, $forum);
 
             // Get the new topic's URI
             $uri = $this->data->getTopicURI($topicid);
@@ -160,7 +160,7 @@ class Discussions
 
         if ($form->isValid()) {
             // Create new reply
-            $replyid = $this->doNewReply($request, $topic);
+            $replyid = $this->doReplyNew($request, $topic);
 
             // Redirect
             return $this->app->redirect($request->getRequestUri() . '#reply-' . $forum['id'] . '-' . $topic['id'] . '-' . $replyid);
