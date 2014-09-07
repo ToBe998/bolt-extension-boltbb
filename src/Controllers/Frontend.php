@@ -118,32 +118,35 @@ class Frontend
         $this->addTwigPath();
         $forum = $this->data->getForum($forum);
 
-        $data = array();
-        $form = $this->app['form.factory']
-                        ->createBuilder('form', $data,  array('csrf_protection' => $this->config['csrf']))
-                            ->add('title',  'text',     array('constraints' => new Assert\NotBlank()))
-                            ->add('editor', 'textarea', array('constraints' => new Assert\NotBlank(),
-                                                              'label' => false,
-                                                              'attr'  => array('style' => 'height: 150px;')))
-                            ->add('forum',  'hidden',   array('data'  => $forum['id']))
-                            ->add('author', 'hidden',   array('data'  => '-1'))
-                            ->add('post',   'submit',   array('label' => 'Post new topic'))
-                            ->getForm();
+//         $data = array();
+//         $form = $this->app['form.factory']
+//                         ->createBuilder('form', $data,  array('csrf_protection' => $this->config['csrf']))
+//                             ->add('title',  'text',     array('constraints' => new Assert\NotBlank()))
+//                             ->add('editor', 'textarea', array('constraints' => new Assert\NotBlank(),
+//                                                               'label' => false,
+//                                                               'attr'  => array('style' => 'height: 150px;')))
+//                             ->add('forum',  'hidden',   array('data'  => $forum['id']))
+//                             ->add('author', 'hidden',   array('data'  => '-1'))
+//                             ->add('post',   'submit',   array('label' => 'Post new topic'))
+//                             ->getForm();
 
-        $form->handleRequest($request);
+//         $form->handleRequest($request);
 
-        if ($form->isValid()) {
-            // Create the new topic
-            $topicid = $this->discuss->doNewTopic($request, $forum);
+//         if ($form->isValid()) {
+//             // Create the new topic
+//             $topicid = $this->discuss->doNewTopic($request, $forum);
 
-            // Get the new topic's URI
-            $uri = $this->data->getTopicURI($topicid);
+//             // Get the new topic's URI
+//             $uri = $this->data->getTopicURI($topicid);
 
-            // Redirect to the new topic
-            return $this->app->redirect($uri);
-        }
+//             // Redirect to the new topic
+//             return $this->app->redirect($uri);
+//         }
 
-        $view = $form->createView();
+//         $view = $form->createView();
+
+        // Create and handle submission form
+        $view = $this->discuss->doTopicForm($request, $forum);
 
         $html = $this->app['render']->render($this->config['templates']['forum'], array(
             'form' => $view,
@@ -186,30 +189,33 @@ class Frontend
         $forum = $this->data->getForum($forum);
         $topic = $this->data->getTopic($topic);
 
-        $data = array();
-        $form = $this->app['form.factory']
-                        ->createBuilder('form', $data,  array('csrf_protection' => $this->config['csrf']))
-                            ->add('editor', 'textarea', array('constraints' => new Assert\NotBlank(),
-                                                              'label' => false,
-                                                              'attr'  => array('style' => 'height: 150px;')))
-                            ->add('topic',  'hidden',   array('data'  => $topic['id']))
-                            ->add('author', 'hidden',   array('data'  => '-1'))
-                            ->add('notify', 'checkbox', array('label' => 'Notify me of updates to this topic',
-                                                              'data'  => true))
-                            ->add('post',   'submit',   array('label' => 'Post reply'))
-                            ->getForm();
+//         $data = array();
+//         $form = $this->app['form.factory']
+//                         ->createBuilder('form', $data,  array('csrf_protection' => $this->config['csrf']))
+//                             ->add('editor', 'textarea', array('constraints' => new Assert\NotBlank(),
+//                                                               'label' => false,
+//                                                               'attr'  => array('style' => 'height: 150px;')))
+//                             ->add('topic',  'hidden',   array('data'  => $topic['id']))
+//                             ->add('author', 'hidden',   array('data'  => '-1'))
+//                             ->add('notify', 'checkbox', array('label' => 'Notify me of updates to this topic',
+//                                                               'data'  => true))
+//                             ->add('post',   'submit',   array('label' => 'Post reply'))
+//                             ->getForm();
 
-        $form->handleRequest($request);
+//         $form->handleRequest($request);
 
-        if ($form->isValid()) {
-            // Create new reply
-            $replyid = $this->discuss->doNewReply($request, $topic);
+//         if ($form->isValid()) {
+//             // Create new reply
+//             $replyid = $this->discuss->doNewReply($request, $topic);
 
-            //
-            return $this->app->redirect($request->getRequestUri() . '#reply-' . $forum['id'] . '-' . $topic['id'] . '-' . $replyid);
-        }
+//             //
+//             return $this->app->redirect($request->getRequestUri() . '#reply-' . $forum['id'] . '-' . $topic['id'] . '-' . $replyid);
+//         }
 
-        $view = $form->createView();
+//         $view = $form->createView();
+
+        // Create and handle submission form
+        $view = $this->discuss->doReplyForm($request, $forum, $topic);
 
         $html = $this->app['render']->render($this->config['templates']['topic'], array(
             'form' => $view,

@@ -4,6 +4,7 @@ namespace Bolt\Extension\Bolt\BoltBB;
 
 use Silex;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  *
@@ -22,10 +23,16 @@ class Discussions
      */
     private $config;
 
+    /**
+     * @var Bolt\Extension\Bolt\BoltBB\Data
+     */
+    private $data;
+
     public function __construct(Silex\Application $app)
     {
         $this->app = $app;
         $this->config = $this->app['extensions.' . Extension::NAME]->config;
+        $this->data = new Data($this->app);
     }
 
     /**
@@ -100,5 +107,64 @@ class Discussions
 
             return $id;
         }
+    }
+
+    public function doTopicForm(Request $request, $forum)
+    {
+        //
+        $data = array();
+        $form = $this->app['form.factory']
+                        ->createBuilder('form', $data,  array('csrf_protection' => $this->config['csrf']))
+                            ->add('title',  'text',     array('constraints' => new Assert\NotBlank()))
+                            ->add('editor', 'textarea', array('constraints' => new Assert\NotBlank(),
+                                                              'label' => false,
+                                                              'attr'  => array('style' => 'height: 150px;')))
+                            ->add('forum',  'hidden',   array('data'  => $forum['id']))
+                            ->add('author', 'hidden',   array('data'  => '-1'))
+                            ->add('post',   'submit',   array('label' => 'Post new topic'))
+                            ->getForm();
+
+        $form->handleRequest($request);
+
+        if ($form->isValid()) {
+            // Create the new topic
+            $topicid = $this->doNewTopic($request, $forum);
+
+            // Get the new topic's URI
+            $uri = $this->data->getTopicURI($topicid);
+
+            // Redirect to the new topic
+            return $this->app->redirect($uri);
+        }
+
+        return $form->createView();
+    }
+
+    public function doReplyForm(Request $request, $forum, $topic)
+    {
+        $data = array();
+        $form = $this->app['form.factory']
+                        ->createBuilder('form', $data,  array('csrf_protection' => $this->config['csrf']))
+                            ->add('editor', 'textarea', array('constraints' => new Assert\NotBlank(),
+                                                              'label' => false,
+                                                              'attr'  => array('style' => 'height: 150px;')))
+                            ->add('topic',  'hidden',   array('data'  => $topic['id']))
+                            ->add('author', 'hidden',   array('data'  => '-1'))
+                            ->add('notify', 'checkbox', array('label' => 'Notify me of updates to this topic',
+                                                              'data'  => true))
+                            ->add('post',   'submit',   array('label' => 'Post reply'))
+                            ->getForm();
+
+        $form->handleRequest($request);
+
+        if ($form->isValid()) {
+            // Create new reply
+            $replyid = $this->doNewReply($request, $topic);
+
+            //
+            return $this->app->redirect($request->getRequestUri() . '#reply-' . $forum['id'] . '-' . $topic['id'] . '-' . $replyid);
+        }
+
+        return $form->createView();
     }
 }
