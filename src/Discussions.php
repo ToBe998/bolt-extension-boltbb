@@ -44,7 +44,7 @@ class Discussions
             'title' => $form['title'],
             'author' => $form['author'],
             'authorip' => $request->getClientIp(),
-            'forum' => $forum['id'],
+            'forum' => $form['forum'],
             'state' => 'open',
             'body' => $form['editor']
         );
@@ -81,7 +81,8 @@ class Discussions
             'title' => $topic['title'],
             'author' => $form['author'],
             'authorip' => $request->getClientIp(),
-            'topic' => $topic['id'],
+            'forum' => $form['forum'],
+            'topic' => $form['topic'],
             'body' => $form['editor']
         );
 

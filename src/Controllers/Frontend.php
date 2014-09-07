@@ -123,8 +123,9 @@ class Frontend
                             ->add('title',  'text',     array('constraints' => new Assert\NotBlank()))
                             ->add('editor', 'textarea', array('constraints' => new Assert\NotBlank(),
                                                               'label' => false,
-                                                              'attr' => array('style' => 'height: 150px;')))
-                            ->add('author', 'hidden',   array('data' => '-1'))
+                                                              'attr'  => array('style' => 'height: 150px;')))
+                            ->add('forum',  'hidden',   array('data'  => $forum['id']))
+                            ->add('author', 'hidden',   array('data'  => '-1'))
                             ->add('post',   'submit',   array('label' => 'Post new topic'))
                             ->getForm();
 
@@ -178,10 +179,12 @@ class Frontend
                         ->createBuilder('form', $data,  array('csrf_protection' => $this->config['csrf']))
                             ->add('editor', 'textarea', array('constraints' => new Assert\NotBlank(),
                                                               'label' => false,
-                                                              'attr' => array('style' => 'height: 150px;')))
-                            ->add('author', 'hidden',   array('data' => '-1'))
+                                                              'attr'  => array('style' => 'height: 150px;')))
+                            ->add('forum',  'hidden',   array('data'  => $forum['id']))
+                            ->add('topic',  'hidden',   array('data'  => $topic['id']))
+                            ->add('author', 'hidden',   array('data'  => '-1'))
                             ->add('notify', 'checkbox', array('label' => 'Notify me of updates to this topic',
-                                                              'data' => true))
+                                                              'data'  => true))
                             ->add('post',   'submit',   array('label' => 'Post reply'))
                             ->getForm();
 
