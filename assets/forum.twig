@@ -3,6 +3,7 @@
 {% block forums %}
 
     {% include '_messages.twig' %}
+    {% import '_macro.twig' as element %}
 
     <div class="row forum-title">
         <h4>{{ forum.title }}</h4>
@@ -20,48 +21,16 @@
                 <div class="small-4 columns text-left topic-last-post">Last Post</div>
             </div>
 
+            {% for topic in global %}
+                {{ element.topic(topic) }}
+            {% endfor %}
+
+            {% for topic in pinned %}
+                {{ element.topic(topic) }}
+            {% endfor %}
+
             {% for topic in topics %}
-                {% if topic.visibility == 'normal' %}
-                    {% set class = topic.state %}
-                {% else %}
-                    {% set class = topic.visibility %}
-                {% endif %}
-
-                {# Topic #}
-                <div class="row topic {{ class }}" id="topic-{{ topic.forum }}-{{ topic.id }}">
-
-                    <div class="small-6 columns text-left topic-title">
-                        <p><a href="/{{ boltbb.base_uri }}/{{ forum.slug }}/{{ topic.slug }}">{{ topic.title }}</a></p>
-                        {% set author = clientprofile(topic.author) %}
-                        <div>Posted by {{ author.username }}</div>
-                        <div>{{ topic.datecreated|date('M j, Y H:i:s') }}</div>
-                    </div>
-
-                    <div class="small-2 columns text-center topic-replies">
-                        {{ topicreplycount(topic.id) }}
-                    </div>
-
-                    <div class="small-4 columns text-left topic-last-post">
-                        {% setcontent lastpost = contenttypes.replies where { forum: topic.forum, topic: topic.id } orderby '-datecreated' returnsingle %}
-                        {% if lastpost is empty %}
-                            {% setcontent lastpost = contenttypes.topics where { forum: topic.forum, topic: topic.id } orderby '-datecreated' returnsingle %}
-                        {% endif %}
-                        {% if lastpost is not empty %}
-                            <div>{{ lastpost.datecreated|date('M j, Y H:i:s') }}</div>
-
-                            {% set author = clientprofile(lastpost.author) %}
-                            {% if author is not empty %}
-                                <div><img src="{{ author.avatar }}" alt="{{ author.username }}" class="avatar">&nbsp;{{ author.username }}</div>
-                            {% endif %}
-                        {% endif %}
-                    </div>
-
-                </div>
-
-                {# Topic footer #}
-                <div class="row topic-footer">
-                    <div class="small-12 columns"></div>
-                </div>
+                {{ element.topic(topic) }}
             {% endfor %}
 
             <hr>

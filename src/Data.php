@@ -93,18 +93,21 @@ class Data
      *
      * @since 1.0
      *
-     * @param  int           $forum_id The ID of the forum to get topics for
-     * @param  arary         $params   An optional associative array of WHERE parameters
-     * @param  int           $limit    If set, page the output to the passed limit
+     * @param int   $forum_id The ID of the forum to get topics for
+     * @param arary $params   An optional associative array of WHERE parameters
+     * @param int   $limit    If set, page the output to the passed limit
      * @return \Bolt\Content
      */
     public function getForumTopics($forum_id, $params = false, $limit = false)
     {
         $query = array(
-            'forum' => $forum_id,
             'order' => '-datecreated',
             'returnsingle' => false
         );
+
+        if ($forum_id) {
+            $query['forum'] = $forum_id;
+        }
 
         if ($limit) {
             $query['limit'] = $limit;
@@ -198,8 +201,8 @@ class Data
      *
      * @since 1.0
      *
-     * @param  int           $topic_id The ID of the topic to get replies for
-     * @param  int           $limit    If set, page the output to the passed limit
+     * @param int   $topic_id The ID of the topic to get replies for
+     * @param int   $limit    If set, page the output to the passed limit
      * @return \Bolt\Content
      */
     public function getTopicReplies($topic_id, $limit = false)

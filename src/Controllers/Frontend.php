@@ -116,21 +116,7 @@ class Frontend
     {
         // Add assets to Twig path
         $this->addTwigPath();
-
         $forum = $this->data->getForum($forum);
-        $global = $this->data->getForumTopics($forum['id'],
-                  array('visibility' => 'global')
-                  );
-        $pinned = $this->data->getForumTopics($forum['id'],
-                  array('visibility' => 'pinned')
-                  );
-        $normal = $this->data->getForumTopics($forum['id'],
-                  array('visibility' => 'normal',
-                        'state' => 'open || closed'
-                  ),
-                  $this->config['pagercount']);
-
-        $topics = array_merge($global, $pinned, $normal);
 
         $data = array();
         $form = $this->app['form.factory']
@@ -164,7 +150,18 @@ class Frontend
             'twigparent' => $this->config['parent_template'],
             'contenttypes' => $this->config['contenttypes'],
             'forum' => $forum,
-            'topics' => $topics,
+            'global' => $this->data->getForumTopics(false,
+                  array('visibility' => 'global')
+                  ),
+            'pinned' => $this->data->getForumTopics($forum['id'],
+                  array('visibility' => 'pinned')
+                  ),
+            'topics' => $this->data->getForumTopics($forum['id'],
+                  array('visibility' => 'normal',
+                        'state' => 'open || closed'
+                  ),
+                  $this->config['pagercount']),
+            'showpager' => $this->app['storage']->isEmptyPager() ? false : true,
             'boltbb' => $this->config
         ));
 
@@ -188,7 +185,6 @@ class Frontend
         // Get consistent info for forum and topic
         $forum = $this->data->getForum($forum);
         $topic = $this->data->getTopic($topic);
-        $replies = $this->data->getTopicReplies($topic->values['id'], $this->config['pagercount']);
 
         $data = array();
         $form = $this->app['form.factory']
@@ -196,7 +192,6 @@ class Frontend
                             ->add('editor', 'textarea', array('constraints' => new Assert\NotBlank(),
                                                               'label' => false,
                                                               'attr'  => array('style' => 'height: 150px;')))
-                            ->add('forum',  'hidden',   array('data'  => $forum['id']))
                             ->add('topic',  'hidden',   array('data'  => $topic['id']))
                             ->add('author', 'hidden',   array('data'  => '-1'))
                             ->add('notify', 'checkbox', array('label' => 'Notify me of updates to this topic',
@@ -222,7 +217,8 @@ class Frontend
             'contenttypes' => $this->config['contenttypes'],
             'forum' => $forum,
             'topic' => $topic,
-            'replies' => $replies,
+            'replies' => $this->data->getTopicReplies($topic->values['id'], $this->config['pagercount']),
+            'showpager' => $this->app['storage']->isEmptyPager() ? false : true,
             'boltbb' => $this->config
         ));
 

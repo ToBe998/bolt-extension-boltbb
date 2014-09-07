@@ -10,3 +10,47 @@
     {% endif %}
     <div class="row text-center">{{ ip }}</div>
 {% endmacro %}
+
+{% macro topic(record) %}
+    {% if record.visibility == 'normal' %}
+        {% set class = record.state %}
+    {% else %}
+        {% set class = record.visibility %}
+    {% endif %}
+
+    {# Topic #}
+    <div class="row topic {{ class }}" id="topic-{{ record.forum }}-{{ record.id }}">
+
+        <div class="small-6 columns text-left topic-title">
+            <p><a href="/{{ boltbb.base_uri }}/{{ forum.slug }}/{{ record.slug }}">{{ record.title }}</a></p>
+            {% set author = clientprofile(record.author) %}
+            <div>Posted by {{ author.username }}</div>
+            <div>{{ record.datecreated|date('M j, Y H:i:s') }}</div>
+        </div>
+
+        <div class="small-2 columns text-center topic-replies">
+            {{ topicreplycount(record.id) }}
+        </div>
+
+        <div class="small-4 columns text-left topic-last-post">
+            {% setcontent lastpost = contenttypes.replies where { forum: record.forum, topic: record.id } orderby '-datecreated' returnsingle %}
+            {% if lastpost is empty %}
+                {% setcontent lastpost = contenttypes.topics where { forum: record.forum, topic: record.id } orderby '-datecreated' returnsingle %}
+            {% endif %}
+            {% if lastpost is not empty %}
+                <div>{{ lastpost.datecreated|date('M j, Y H:i:s') }}</div>
+
+                {% set author = clientprofile(lastpost.author) %}
+                {% if author is not empty %}
+                    <div><img src="{{ author.avatar }}" alt="{{ author.username }}" class="avatar">&nbsp;{{ author.username }}</div>
+                {% endif %}
+            {% endif %}
+        </div>
+
+    </div>
+
+    {# Topic footer #}
+    <div class="row topic-footer">
+        <div class="small-12 columns"></div>
+    </div>
+{% endmacro %}
