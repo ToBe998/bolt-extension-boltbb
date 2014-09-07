@@ -5,8 +5,6 @@
     {% include '_messages.twig' %}
     {% import '_macro.twig' as element %}
 
-    {% setcontent replies = contenttypes.replies where { topic: topic.id } limit pagercount orderby 'datecreated' allowpaging %}
-
     <div class="row topic-title">
         <h4>{{ topic.title }}</h4>
 

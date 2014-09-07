@@ -118,7 +118,19 @@ class Frontend
         $this->addTwigPath();
 
         $forum = $this->data->getForum($forum);
-        $constraints = array('constraints' => new Assert\NotBlank());
+        $global = $this->data->getForumTopics($forum['id'],
+                  array('visibility' => 'global')
+                  );
+        $pinned = $this->data->getForumTopics($forum['id'],
+                  array('visibility' => 'pinned')
+                  );
+        $normal = $this->data->getForumTopics($forum['id'],
+                  array('visibility' => 'normal',
+                        'state' => 'open || closed'
+                  ),
+                  $this->config['pagercount']);
+
+        $topics = array_merge($global, $pinned, $normal);
 
         $data = array();
         $form = $this->app['form.factory']
@@ -151,8 +163,8 @@ class Frontend
             'form' => $view,
             'twigparent' => $this->config['parent_template'],
             'contenttypes' => $this->config['contenttypes'],
-            'pagercount' => $this->config['pagercount'],
             'forum' => $forum,
+            'topics' => $topics,
             'boltbb' => $this->config
         ));
 
@@ -176,6 +188,7 @@ class Frontend
         // Get consistent info for forum and topic
         $forum = $this->data->getForum($forum);
         $topic = $this->data->getTopic($topic);
+        $replies = $this->data->getTopicReplies($topic->values['id'], $this->config['pagercount']);
 
         $data = array();
         $form = $this->app['form.factory']
@@ -207,10 +220,9 @@ class Frontend
             'form' => $view,
             'twigparent' => $this->config['parent_template'],
             'contenttypes' => $this->config['contenttypes'],
-            'pagercount' => $this->config['pagercount'],
             'forum' => $forum,
             'topic' => $topic,
-            'topic_author' => $topic['author'],
+            'replies' => $replies,
             'boltbb' => $this->config
         ));
 

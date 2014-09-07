@@ -4,11 +4,6 @@
 
     {% include '_messages.twig' %}
 
-    {% setcontent global = contenttypes.topics where { visibility: 'global' } orderby '-datecreated' %}
-    {% setcontent pinned = contenttypes.topics where { visibility: 'pinned', forum: forum.id } orderby '-datecreated' %}
-    {% setcontent normal = contenttypes.topics where { visibility: 'normal', forum: forum.id, state: 'open || closed' } limit pagercount orderby '-datecreated' allowpaging %}
-    {% set topics = global|merge(pinned)|merge(normal) %}
-
     <div class="row forum-title">
         <h4>{{ forum.title }}</h4>
         <h6>{{ forum.description }}</h6>

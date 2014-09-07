@@ -93,13 +93,25 @@ class Data
      *
      * @since 1.0
      *
-     * @param  integer $forum_id The ID of the forum to get topics for
-     * @param  array   $pager
-     * @return array
+     * @param  int           $forum_id The ID of the forum to get topics for
+     * @param  arary         $params   An optional associative array of WHERE parameters
+     * @param  int           $limit    If set, page the output to the passed limit
+     * @return \Bolt\Content
      */
-    public function getForumTopics($forum_id, &$pager = array())
+    public function getForumTopics($forum_id, $params = false, $limit = false)
     {
-        return $this->app['storage']->getContent('topics', array('forum' => $forum_id), $pager);
+        $query = array(
+            'forum' => $forum_id,
+            'order' => '-datecreated',
+            'returnsingle' => false
+        );
+
+        if ($limit) {
+            $query['limit'] = $limit;
+            $query['paging'] = true;
+        }
+
+        return $this->app['storage']->getContent('topics', $query, $pager, $params);
     }
 
     /**
@@ -186,17 +198,24 @@ class Data
      *
      * @since 1.0
      *
-     * @param  integer $forum_id The ID of the forum to get topics replies for
-     * @param  integer $topic_id The ID of the topic to get replies for
-     * @return array
+     * @param  int           $topic_id The ID of the topic to get replies for
+     * @param  int           $limit    If set, page the output to the passed limit
+     * @return \Bolt\Content
      */
-    public function getTopicReplies($topic_id, &$pager = array())
+    public function getTopicReplies($topic_id, $limit = false)
     {
-        return $this->app['storage']->getContent('replies', array(
+        $query = array(
             'topic' => $topic_id,
             'order' => 'datecreated',
-            'returnsingle' => false),
-            $pager);
+            'returnsingle' => false
+        );
+
+        if ($limit) {
+            $query['limit'] = $limit;
+            $query['paging'] = true;
+        }
+
+        return $this->app['storage']->getContent('replies', $query);
     }
 
     /**
