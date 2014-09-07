@@ -203,7 +203,7 @@ class Frontend
 
         if ($form->isValid()) {
             // Create new reply
-            $replyid = $this->discuss->doNewReply($request, $forum, $topic);
+            $replyid = $this->discuss->doNewReply($request, $topic);
 
             //
             return $this->app->redirect($request->getRequestUri() . '#reply-' . $forum['id'] . '-' . $topic['id'] . '-' . $replyid);

@@ -81,7 +81,7 @@ class Discussions
             'title' => $topic['title'],
             'author' => $form['author'],
             'authorip' => $request->getClientIp(),
-            'forum' => $form['forum'],
+            'forum' => $topic['forum'],
             'topic' => $form['topic'],
             'body' => $form['editor']
         );
