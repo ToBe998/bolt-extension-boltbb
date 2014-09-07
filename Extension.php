@@ -5,6 +5,7 @@ namespace Bolt\Extension\Bolt\BoltBB;
 
 use Doctrine\DBAL\Schema\Schema;
 use Bolt\CronEvents;
+use Bolt\StorageEvents;
 
 /**
  *
@@ -60,6 +61,11 @@ class Extension extends \Bolt\BaseExtension
          * Scheduled cron listener
          */
         $this->app['dispatcher']->addListener(CronEvents::CRON_DAILY, array($this, 'cronDaily'));
+
+        /*
+         * Post-save hook for topic and reply creations
+         */
+        $this->app['dispatcher']->addListener(StorageEvents::POST_SAVE, array($this, 'hookPostSave'));
     }
 
     /**
@@ -67,6 +73,34 @@ class Extension extends \Bolt\BaseExtension
      */
     public function cronDaily()
     {
+    }
+
+    /**
+     * Post-save hook for topic and reply creations
+     *
+     * @param \Bolt\StorageEvent $event
+     */
+    public function hookPostSave(\Bolt\StorageEvent $event)
+    {
+        // Get contenttype
+        $contenttype = $event->getContentType();
+        if (empty($contenttype) || !(
+            $contenttype == 'topics' ||
+            $contenttype == 'replies')) {
+                return;
+            }
+
+        // If this is not a create event, leave
+        if ($event->isCreate()) {
+            // Get the content
+            $record = $event->getContent();
+
+            if ($contenttype == 'topics') {
+                //
+            } elseif ($contenttype == 'replies') {
+                //
+            }
+        }
     }
 
     /**
