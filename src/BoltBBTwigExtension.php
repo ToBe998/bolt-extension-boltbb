@@ -58,6 +58,7 @@ class BoltBBTwigExtension extends \Twig_Extension
             'forumtopiccount'   => new \Twig_Function_Method($this, 'forumTopicCount'),
             'forumreplycount'   => new \Twig_Function_Method($this, 'forumReplyCount'),
             'topicreplycount'   => new \Twig_Function_Method($this, 'topicReplyCount'),
+            'lastpost'          => new \Twig_Function_Method($this, 'lastPost'),
         );
     }
 
@@ -143,5 +144,16 @@ class BoltBBTwigExtension extends \Twig_Extension
         $html = $this->data->getTopicReplyCount($topic_id);
 
         return new \Twig_Markup($html, 'UTF-8');
+    }
+
+    /**
+     * Return the last post record for the passed forum
+     *
+     * @param integer      $forum_id The ID of the forum
+     * @return \Bolt\Content
+     */
+    public function lastPost($forum_id = false)
+    {
+        return $this->data->getForumLastPost($forum_id);
     }
 }

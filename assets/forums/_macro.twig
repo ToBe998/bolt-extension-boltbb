@@ -22,7 +22,7 @@
     <div class="row topic {{ class }}" id="topic-{{ record.forum }}-{{ record.id }}">
 
         <div class="small-6 columns text-left topic-title">
-            <p><a href="/{{ config.base_uri }}/{{ forum.slug }}/{{ record.slug }}">{{ record.title }}</a></p>
+            <p><a href="/{{ base_uri }}/{{ forum.slug }}/{{ record.slug }}">{{ record.title }}</a></p>
             {% set author = clientprofile(record.author) %}
             <div>Posted by {{ author.username }}</div>
             <div>{{ record.datecreated|date('M j, Y H:i:s') }}</div>

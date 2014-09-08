@@ -3,6 +3,7 @@
 namespace Bolt\Extension\Bolt\BoltBB;
 
 use Silex;
+use Bolt\Extension\Bolt\ClientProfiles\ClientProfiles;
 
 class Data
 {
@@ -53,6 +54,45 @@ class Data
     }
 
     /**
+     * G
+     * @param string|int $forum
+     * @return array
+     */
+    public function getForumLastPost($forum = false)
+    {
+        if ($forum) {
+            $forum = $this->getForum($forum);
+            $params = array(
+                'forum' => $forum['id'],
+                'returnsingle' => true
+            );
+        } else {
+            $params = array('returnsingle' => true);
+        }
+
+        // Try for a reply first
+        $record = $this->app['storage']->getContent($this->config['contenttypes']['replies'], $params);
+
+        // Get the latest topic instead
+        if (empty($record)) {
+            $record = $this->app['storage']->getContent($this->config['contenttypes']['topics'], $params);
+
+            if (empty($record)) {
+                return false;
+            }
+        }
+
+        // Only save values
+        $lastpost = $record->values;
+
+        // Fill in the author information if exists
+        $profiles = new ClientProfiles($this->app);
+        $lastpost['author'] = $profiles->getClientProfile($record->values['author']);
+
+        return $lastpost;
+    }
+
+    /**
      * Get a slug for a given forum
      *
      * @param  mixed  $forum Either a slug or numeric ID for a forum
@@ -76,14 +116,16 @@ class Data
     {
         //
         if (is_numeric($topic_input)) {
-            return $this->app['storage']->getContent('topics', array(
-                'id' => $topic_input,
-                'returnsingle' => true
+            return $this->app['storage']->getContent($this->config['contenttypes']['topics'],
+                array(
+                    'id' => $topic_input,
+                    'returnsingle' => true
             ));
         } else {
-            return $this->app['storage']->getContent('topics', array(
-                'slug' => $topic_input,
-                'returnsingle' => true
+            return $this->app['storage']->getContent($this->config['contenttypes']['topics'],
+                array(
+                    'slug' => $topic_input,
+                    'returnsingle' => true
             ));
         }
     }
@@ -114,7 +156,7 @@ class Data
             $query['paging'] = true;
         }
 
-        return $this->app['storage']->getContent('topics', $query, $pager, $params);
+        return $this->app['storage']->getContent($this->config['contenttypes']['topics'], $query, $pager, $params);
     }
 
     /**
@@ -160,24 +202,6 @@ class Data
     }
 
     /**
-     * Lookup a forums last post
-     *
-     * @since 1.0
-     *
-     * @param  integer $forum_id The ID of the forum to get last post for
-     * @return array
-     */
-    public function getForumLastPost($forum_id)
-    {
-        $forum = $this->getForum($forum_id);
-
-        return $this->app['storage']->getContent('topics', array(
-            'forum' => $forum['id'],
-            'returnsingle' => true
-        ));
-    }
-
-    /**
      * Get the unique resource identifier for a given forum
      *
      * @param  mixed  $forum
@@ -218,7 +242,7 @@ class Data
             $query['paging'] = true;
         }
 
-        return $this->app['storage']->getContent('replies', $query);
+        return $this->app['storage']->getContent($this->config['contenttypes']['replies'], $query);
     }
 
     /**
@@ -252,10 +276,54 @@ class Data
     {
         $topic = $this->getTopic($topic_id);
 
-        return $this->app['storage']->getContent('topics', array(
-            'topic' => $topic['id'],
-            'returnsingle' => true
+        return $this->app['storage']->getContent($this->config['contenttypes']['topics'],
+            array(
+                'topic' => $topic['id'],
+                'returnsingle' => true
         ));
+
+/*
+        if ($forum) {
+            $forum = $this->getForum($forum);
+            $params = array(
+                'forum' => $forum['id'],
+                'returnsingle' => true
+            );
+        } else {
+            $params = array('returnsingle' => true);
+        }
+
+        // Try for a reply first
+        $lastpost = $this->app['storage']->getContent($this->config['contenttypes']['replies'], $params);
+
+        // Get the latest topic instead
+        if (empty($lastpost)) {
+            $lastpost = $this->app['storage']->getContent($this->config['contenttypes']['topics'], $params);
+
+            if (empty($lastpost)) {
+                return false;
+            }
+        }
+
+        // Fill in the author information if exists
+        $profiles = new ClientProfiles($this->app);
+        $lastpost['author'] = $profiles->getClientProfile($lastpost->values['author']);
+
+        return $lastpost;
+ */
+
+/*
+ / Index
+ {% setcontent lastpost = contenttypes.replies where { forum: forum.id } orderby '-datecreated' returnsingle %}
+    {% if lastpost is empty %}
+ {% setcontent lastpost = contenttypes.topics where { forum: forum.id } orderby '-datecreated' returnsingle %}
+ {% endif %}
+ // Forum
+ {% setcontent lastpost = contenttypes.replies where { forum: record.forum, topic: record.id } orderby '-datecreated' returnsingle %}
+ {% if lastpost is empty %}
+    {% setcontent lastpost = contenttypes.topics where { forum: record.forum, topic: record.id } orderby '-datecreated' returnsingle %}
+ {% endif %}
+ */
     }
 
     /**

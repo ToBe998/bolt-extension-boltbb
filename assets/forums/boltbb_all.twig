@@ -31,7 +31,7 @@
                 <div class="topic {{ topic.state }}" id="topic-{{ topic.forum }}-{{ topic.id }}">
 
                     <div class="topic-title">
-                        <p><a href="/{{ config.base_uri }}/{{ forum.slug }}/{{ topic.slug }}">{{ topic.title }}</a></p>
+                        <p><a href="/{{ base_uri }}/{{ forum.slug }}/{{ topic.slug }}">{{ topic.title }}</a></p>
                         {% set author = clientprofile(topic.author) %}
                         <div>Posted by {{ author.username }} on {{ topic.datecreated|date('M j, Y H:i:s') }}</div>
                     </div>

@@ -67,6 +67,16 @@ class Frontend
         // Add assets to Twig path
         $this->addTwigPath();
 
+        // Add the uncategorised version
+        $forums['all'] = array(
+            'id'          => 0,
+            'slug'        => 'all',
+            'state'       => 'open',
+            'subscribers' => '',
+            'title'       => 'All Discussions',
+            'description' => 'The uncategorised version',
+        );
+
         // Combine YAML and database information about each forum
         foreach ($this->config['forums'] as $key => $forum) {
             $forums[$key] = $this->data->getForum($key);
@@ -76,9 +86,9 @@ class Frontend
             $this->config['templates']['forums']['index'], array(
                 'twigparent' => $this->config['templates']['parent'],
                 'contenttypes' => $this->config['contenttypes'],
-                'pagercount' => $this->config['pagercount'],
                 'forums' => $forums,
-                'config' => $this->config
+                'boltbb' => $this->config['boltbb'],
+                'base_uri'  => $this->config['base_uri'],
         ));
 
         return new \Twig_Markup($html, 'UTF-8');
@@ -98,8 +108,8 @@ class Frontend
             $this->config['templates']['forums']['all'], array(
                 'twigparent' => $this->config['templates']['parent'],
                 'contenttypes' => $this->config['contenttypes'],
-                'pagercount' => $this->config['pagercount'],
-                'config' => $this->config
+                'boltbb' => $this->config['boltbb'],
+                'base_uri'  => $this->config['base_uri'],
         ));
 
         return new \Twig_Markup($html, 'UTF-8');
@@ -142,7 +152,8 @@ class Frontend
                   ),
                   $this->config['pagercount']),
             'showpager' => $this->app['storage']->isEmptyPager() ? false : true,
-            'config' => $this->config
+            'boltbb' => $this->config['boltbb'],
+            'base_uri'  => $this->config['base_uri'],
         ));
 
         return new \Twig_Markup($html, 'UTF-8');
@@ -180,7 +191,8 @@ class Frontend
             'topic' => $topic,
             'replies' => $this->data->getTopicReplies($topic->values['id'], $this->config['pagercount']),
             'showpager' => $this->app['storage']->isEmptyPager() ? false : true,
-            'config' => $this->config
+            'boltbb' => $this->config['boltbb'],
+            'base_uri'  => $this->config['base_uri'],
         ));
 
         return new \Twig_Markup($html, 'UTF-8');
