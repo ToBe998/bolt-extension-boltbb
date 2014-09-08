@@ -1,0 +1,19 @@
+{#
+ # Passed in variables:
+ #   name.full  - Recipient's full name
+ #   name.first - Recipient's first name (if exists)
+ #   name.last  - Recipient's last name (if exists)
+ #   forum      - Name of the forum the topic or reply is in
+ #   type       - Either 'topic' or 'reply'
+ #   title      - Title of (related) topic
+ #   author     - Name of person who wrote the topic/reply that this notification is about
+ #   url        - URL to the topic
+ #}
+<p>Dear {{ name.first }},</p>
+<p></p>
+<p>A new {{ type }} has been added to {{ forum }}.</p>
+<p></p>
+<p>You can see it <a href="{{ url }}">here</a></p>
+<p></p>
+<p>Sent from BoltBB</p>
+
