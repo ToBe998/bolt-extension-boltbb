@@ -73,12 +73,12 @@ class Frontend
         }
 
         $html = $this->app['render']->render(
-            $this->config['templates']['index'], array(
-                'twigparent' => $this->config['parent_template'],
+            $this->config['templates']['forums']['index'], array(
+                'twigparent' => $this->config['templates']['parent'],
                 'contenttypes' => $this->config['contenttypes'],
                 'pagercount' => $this->config['pagercount'],
                 'forums' => $forums,
-                'boltbb' => $this->config
+                'config' => $this->config
         ));
 
         return new \Twig_Markup($html, 'UTF-8');
@@ -89,17 +89,17 @@ class Frontend
      *
      * @since 1.0
      */
-    public function uncategorised($forums = array())
+    public function all($forums = array())
     {
         // Add assets to Twig path
         $this->addTwigPath();
 
         $html = $this->app['render']->render(
-            $this->config['templates']['uncategorised'], array(
-                'twigparent' => $this->config['parent_template'],
+            $this->config['templates']['forums']['all'], array(
+                'twigparent' => $this->config['templates']['parent'],
                 'contenttypes' => $this->config['contenttypes'],
                 'pagercount' => $this->config['pagercount'],
-                'boltbb' => $this->config
+                'config' => $this->config
         ));
 
         return new \Twig_Markup($html, 'UTF-8');
@@ -125,9 +125,9 @@ class Frontend
             return $view;
         }
 
-        $html = $this->app['render']->render($this->config['templates']['forum'], array(
+        $html = $this->app['render']->render($this->config['templates']['forums']['forum'], array(
             'form' => $view,
-            'twigparent' => $this->config['parent_template'],
+            'twigparent' => $this->config['templates']['parent'],
             'contenttypes' => $this->config['contenttypes'],
             'forum' => $forum,
             'global' => $this->data->getForumTopics(false,
@@ -142,7 +142,7 @@ class Frontend
                   ),
                   $this->config['pagercount']),
             'showpager' => $this->app['storage']->isEmptyPager() ? false : true,
-            'boltbb' => $this->config
+            'config' => $this->config
         ));
 
         return new \Twig_Markup($html, 'UTF-8');
@@ -172,15 +172,15 @@ class Frontend
             return $view;
         }
 
-        $html = $this->app['render']->render($this->config['templates']['topic'], array(
+        $html = $this->app['render']->render($this->config['templates']['forums']['topic'], array(
             'form' => $view,
-            'twigparent' => $this->config['parent_template'],
+            'twigparent' => $this->config['templates']['parent'],
             'contenttypes' => $this->config['contenttypes'],
             'forum' => $forum,
             'topic' => $topic,
             'replies' => $this->data->getTopicReplies($topic->values['id'], $this->config['pagercount']),
             'showpager' => $this->app['storage']->isEmptyPager() ? false : true,
-            'boltbb' => $this->config
+            'config' => $this->config
         ));
 
         return new \Twig_Markup($html, 'UTF-8');
@@ -189,6 +189,7 @@ class Frontend
     private function addTwigPath()
     {
         $this->app['twig.loader.filesystem']->addPath(dirname(dirname(__DIR__)) . '/assets');
+        $this->app['twig.loader.filesystem']->addPath(dirname(dirname(__DIR__)) . '/assets/forums');
     }
 
 }

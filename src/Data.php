@@ -295,25 +295,4 @@ class Data
             'returnsingle' => false
         ));
     }
-
-    /**
-     * Render the breadcrumbs
-     *
-     * @return \Twig_Markup
-     */
-    public function getBreadcrumbs($forum_id = null)
-    {
-        if (empty($forum_id)) {
-            $forum = '';
-        } else {
-            $forum = $this->getForum($forum_id);
-        }
-
-        $html = $this->app['render']->render($this->config['templates']['breadcrumbs'], array(
-            'forum' => $forum,
-            'boltbb' => $this->config
-        ));
-
-        return new \Twig_Markup($html, 'UTF-8');
-    }
 }

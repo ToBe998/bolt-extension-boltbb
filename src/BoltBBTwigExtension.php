@@ -7,10 +7,30 @@ namespace Bolt\Extension\Bolt\BoltBB;
  */
 class BoltBBTwigExtension extends \Twig_Extension
 {
+    /**
+     * @var Application
+     */
+    private $app;
+
+    /**
+     * @var array
+     */
+    private $config;
+
+    /**
+     * @var Bolt\Extension\Bolt\BoltBB\Data
+     */
+    private $data;
+
+    /**
+     * @var \Twig_Environment
+     */
     private $twig = null;
 
     public function __construct(\Silex\Application $app)
     {
+        $this->app = $app;
+        $this->config = $this->app['extensions.' . Extension::NAME]->config;
         $this->data = new Data($app);
     }
 
@@ -49,7 +69,18 @@ class BoltBBTwigExtension extends \Twig_Extension
      */
     public function forumsBreadcrumbs($forum_id = false)
     {
-        $html = $this->data->getBreadcrumbs($forum_id);
+        if (empty($forum_id)) {
+            $forum = '';
+        } else {
+            $forum = $this->data->getForum($forum_id);
+        }
+
+        $this->app['twig.loader.filesystem']->addPath(dirname(__DIR__) . '/assets/navigation');
+
+        $html = $this->app['render']->render($this->config['templates']['navigation']['crumbs'], array(
+            'forum' => $forum,
+            'boltbb' => $this->config
+        ));
 
         return new \Twig_Markup($html, 'UTF-8');
     }

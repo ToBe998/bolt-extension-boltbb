@@ -92,14 +92,11 @@ class Extension extends \Bolt\BaseExtension
 
         // If this is not a create event, leave
         if ($event->isCreate()) {
-            // Get the content
+            $notify = new Notifications($this->app);
+
             $record = $event->getContent();
 
-            if ($contenttype == 'topics') {
-                //
-            } elseif ($contenttype == 'replies') {
-                //
-            }
+            $notify->doNotification($record);
         }
     }
 
@@ -142,9 +139,9 @@ class Extension extends \Bolt\BaseExtension
         $this->app->get("/{$this->config['base_uri']}/", array($this->controller, 'index'))
                     ->before(array($this->controller, 'before'))
                     ->bind('index');
-        $this->app->get("/{$this->config['base_uri']}/all/", array($this->controller, 'uncategorised'))
+        $this->app->get("/{$this->config['base_uri']}/all/", array($this->controller, 'all'))
                     ->before(array($this->controller, 'before'))
-                    ->bind('uncategorised');
+                    ->bind('all');
         $this->app->match("/{$this->config['base_uri']}/{forum}/", array($this->controller, 'forum'))
                     ->before(array($this->controller, 'before'))
                     ->assert('forum', '[a-zA-Z0-9_\-]+')
@@ -237,10 +234,31 @@ class Extension extends \Bolt\BaseExtension
     {
         return array(
             'base_uri' => 'forums',
+            'webassets' => array(
+                'stylesheet' => 'boltbb.min.css',
+                'javascript' => 'boltbb.min.js',
+            ),
             'contenttypes' => array(
                 'topics'  => 'topics',
                 'replies' => 'replies'
             ),
+            'templates' => array(
+                'parent' => 'boltbb.twig',
+                'forums' => array(
+                    'index' => 'boltbb_index.twig',
+                    'forum' => 'boltbb_forum.twig',
+                    'topic' => 'boltbb_topic.twig',
+                    'all'   => 'boltbb_all.twig'
+                ),
+                'navigation' => array(
+                    'crumbs' => 'boltbb_crumbs.twig'
+                ),
+                'email'  => array(
+                    'subject' => 'boltbb_email_subject.twig',
+                    'body'    => 'boltbb_email_body.twig'
+                ),
+            ),
+            'pagercount' => 5,
             'admin_roles' => array('root', 'admin', 'developer', 'chief-editor'),
             'notifications' => array(
                 'debug'         => true,

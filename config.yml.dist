@@ -12,6 +12,9 @@ forums:
 #    title: My Forum
 #    description: A forum to discuss the weather
 
+# Maximum number of topics and/or replies to list on a page
+pagercount: 10
+
 # The base URI to use for the forums section of your site.  
 # What you define here will create the URLs as: 
 #   http://your-bolt-site.com/{base_uri}/
@@ -22,31 +25,29 @@ contenttypes:
   topics: topics
   replies: replies
 
-# Maximum number of topics and/or replies to list on a page
-pagercount: 10
-
-# The parent template
-parent_template: boltbb.twig
-
 # Local twig templates
 #
-# These can be overridden by files of the same name in your theme, or you can
-# store them with the extension  
+# These can be overridden by files of the same path/name.twig in your theme, or 
+# you can store them with the extension (beware this can be unexpectedly removed)
 templates:
-  index: forums.twig
-  forum: forum.twig
-  topic: topic.twig
-  uncategorised: uncategorised.twig
-  breadcrumbs: breadcrumbs.twig
+  parent: boltbb.twig
+  forums:
+    index: boltbb_index.twig
+    forum: boltbb_forum.twig
+    topic: boltbb_topic.twig
+    all:   boltbb_all.twig
+  email:
+    subject: boltbb_email_subject.twig
+    body:    boltbb_email_body.twig
+  breadcrumbs: boltbb_breadcrumbs.twig
 
 
-# CSS file
+# Web assets
 #
 # If you are generating your own CSS, they should use '.custom.' in the file name
-#stylesheet: boltbb.css
-stylesheet: boltbb.min.css
-#stylesheet: boltbb.custom.css
-#stylesheet: boltbb.custom.min.css
+webassets:
+  stylesheet: boltbb.min.css
+  javascript: boltbb.min.js
 
 notifications:
   from_address: noreply@example.com

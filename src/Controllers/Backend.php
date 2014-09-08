@@ -75,7 +75,7 @@ class Backend
             $this->app['session']->getFlashBag()->add('error', "BoltBB contenttypes are missing from contenttypes.yml.  Run 'Setup Contenttypes' to resolve.<br>" );
         }
 
-        $html = $this->app['render']->render('boltbb_admin.twig', array(
+        $html = $this->app['render']->render('boltbb.twig', array(
             'boltbb' => $this->config['boltbb'],
             'base_uri' => $this->config['base_uri'],
             'forums' => $forums['forums'],
@@ -177,7 +177,7 @@ class Backend
 
     private function addTwigPath()
     {
-        $this->app['twig.loader.filesystem']->addPath(dirname(dirname(__DIR__)) . '/assets');
+        $this->app['twig.loader.filesystem']->addPath(dirname(dirname(__DIR__)) . '/assets/admin');
     }
 
 }
