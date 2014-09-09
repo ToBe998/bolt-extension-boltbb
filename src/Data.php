@@ -172,6 +172,7 @@ class Data
             }
         }
 
+        return $records;
     }
 
     /**
