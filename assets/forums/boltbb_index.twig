@@ -60,12 +60,12 @@
 
                     <div class="small-4 columns text-left forum-last-post">
 
-                        {% set lastpost = lastpost(forum.id) %}
+                        {% set lastpost = lastpost(forum) %}
                         {%  if lastpost is not empty %}
-                            <div>{{ forum.lastpost.datecreated|date('M j, Y H:i:s') }}</div>
+                            <div>{{ lastpost.datecreated|date('M j, Y H:i:s') }}</div>
 
                             {% if lastpost.author is not empty %}
-                                <div><img src="{{ lastpost.author.avatar }}" alt="{{ lastpost.author.username }}" class="avatar">&nbsp;{{ lastpost.author.username }}</div>
+                                <div><img src="{{ lastpost.authorprofile.avatar }}" alt="{{ lastpost.authorprofile.username }}" class="avatar">&nbsp;{{ lastpost.authorprofile.username }}</div>
                             {% endif %}
                         {% endif %}
                     </div>
