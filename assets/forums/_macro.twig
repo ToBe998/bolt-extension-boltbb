@@ -10,24 +10,24 @@
     <div class="row text-center">{{ ip }}</div>
 {% endmacro %}
 
-{% macro topic(record) %}
-    {% if record.visibility == 'normal' %}
-        {% set class = record.state %}
+{% macro topic(base_uri, forum, topic) %}
+    {% if topic.visibility == 'normal' %}
+        {% set class = topic.state %}
     {% else %}
-        {% set class = record.visibility %}
+        {% set class = topic.visibility %}
     {% endif %}
 
     {# Topic #}
-    <div class="row topic {{ class }}" id="topic-{{ record.forum }}-{{ record.id }}">
+    <div class="row topic {{ class }}" id="topic-{{ topic.forum }}-{{ topic.id }}">
 
         <div class="small-6 columns text-left topic-title">
-            <p><a href="/{{ base_uri }}/{{ forum.slug }}/{{ record.slug }}">{{ record.title }}</a></p>
-            <div>Posted by {{ record.author.username }}</div>
-            <div>{{ record.datecreated|date('M j, Y H:i:s') }}</div>
+            <p><a href="/{{ base_uri }}/{{ forum.slug }}/{{ topic.slug }}">{{ topic.title }}</a></p>
+            <div>Posted by {{ topic.author.username }}</div>
+            <div>{{ topic.datecreated|date('M j, Y H:i:s') }}</div>
         </div>
 
         <div class="small-2 columns text-center topic-replies">
-            {{ topicreplycount(record.id) }}
+            {{ topicreplycount(topic.id) }}
         </div>
 
         <div class="small-4 columns text-left topic-last-post">

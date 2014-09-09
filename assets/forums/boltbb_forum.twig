@@ -46,15 +46,15 @@
             </div>
 
             {% for topic in global %}
-                {{ element.topic(topic) }}
+                {{ element.topic(base_uri, forum, topic) }}
             {% endfor %}
 
             {% for topic in pinned %}
-                {{ element.topic(topic) }}
+                {{ element.topic(base_uri, forum, topic) }}
             {% endfor %}
 
             {% for topic in topics %}
-                {{ element.topic(topic) }}
+                {{ element.topic(base_uri, forum, topic) }}
             {% endfor %}
 
             <hr>
