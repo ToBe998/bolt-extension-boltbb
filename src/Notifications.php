@@ -3,6 +3,7 @@
 namespace Bolt\Extension\Bolt\BoltBB;
 
 use Silex;
+use Bolt\Extension\Bolt\ClientProfiles\ClientProfiles;
 
 /**
  *
@@ -101,6 +102,14 @@ class Notifications
 
         $data = new Data($this->app);
         $forum = $data->getForum($this->record['forum']);
+
+        /*
+         * Author information
+         */
+        if (! isset($this->record->values['authorprofile'])) {
+            $profiles = new ClientProfiles($this->app);
+            $this->record->values['authorprofile'] = $profiles->getClientProfile($this->record->values['author']);
+        }
 
         /*
          * Subject
