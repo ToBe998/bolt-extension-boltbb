@@ -1,12 +1,11 @@
-{% macro author(id, ip) %}
-    {% if profile is not empty %}
-        <div class="row text-center">
-            <img src="{{ profile.avatar }}" alt="{{ profile.username }}" class="avatar">
-        </div>
-        <div class="row text-center">
-            {{ profile.username }}
-        </div>
-    {% endif %}
+{% macro author(author, ip) %}
+
+    <div class="row text-center">
+        <img src="{{ author.avatar }}" alt="{{ author.username }}" class="avatar">
+    </div>
+    <div class="row text-center">
+        {{ author.username }}
+    </div>
 
     {% set geoip = geoip(ip) %}
     <div class="row text-center">
