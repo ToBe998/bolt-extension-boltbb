@@ -161,7 +161,19 @@ class Admin
      */
     public function doTestNotification()
     {
-        //
+        $data = new Data($this->app);
+
+        // Get a topic record
+        $record = $data->getTopic(4);
+
+        // Ensure during this instance we're in debug mode!
+        $this->config['notifications']['debug'] = true;
+
+        // Create the notification object
+        $notify = new Notifications($this->app, $record);
+
+        // Send it!
+        $notify->doNotification();
     }
 
     /**
