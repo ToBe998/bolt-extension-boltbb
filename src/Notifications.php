@@ -149,9 +149,11 @@ class Notifications
          */
         $this->message = \Swift_Message::newInstance()
                 ->setSubject($subject)
-                ->setFrom(array($this->from_address, $this->config['boltbb']['title']))
+                ->setFrom($this->from_address)
                 ->setBody(strip_tags($body))
                 ->addPart($body, 'text/html');
+        // SwiftMail barfs on this, despite it being documented to work!
+        //->setFrom(array($this->from_address, $this->config['boltbb']['title']))
     }
 
     /**
