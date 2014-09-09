@@ -130,6 +130,36 @@ class Backend
                 }
 
                 return new JsonResponse($values);
+            } elseif ($app['request']->get('task') == 'repairRelation') {
+                /*
+                 * Repair forum/reply relationships
+                 */
+//                 if (! empty($request->request->get('forums'))) {
+//                     foreach ($request->request->get('forums') as $forum) {
+//                         try {
+//                             $this->admin->doForumClose($forum);
+//                         } catch (Exception $e) {
+//                             return new Response($e->getMessage(), Response::HTTP_INTERNAL_SERVER_ERROR, array('content-type' => 'text/html'));
+//                         }
+//                     }
+//                 }
+
+                return new JsonResponse($values);
+            } elseif ($app['request']->get('task') == 'testNotify') {
+                /*
+                 * Send a test notification
+                 */
+//                 if (! empty($request->request->get('forums'))) {
+//                     foreach ($request->request->get('forums') as $forum) {
+//                         try {
+//                             $this->admin->doForumClose($forum);
+//                         } catch (Exception $e) {
+//                             return new Response($e->getMessage(), Response::HTTP_INTERNAL_SERVER_ERROR, array('content-type' => 'text/html'));
+//                         }
+//                     }
+//                 }
+
+                return new JsonResponse($values);
             }
 
             // Yeah, nah

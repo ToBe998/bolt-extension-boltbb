@@ -45,9 +45,7 @@ var BoltBBAdmin = Object.extend(Object, {
         });
         
         // Call the BoltBB set up functions
-        this.checkInstalled();
-        //this.liveSearch();
-        //this.installReset();
+        //this.checkInstalled();
         
     },
     
@@ -105,7 +103,7 @@ var BoltBBAdmin = Object.extend(Object, {
         
         console.debug("Opening forums: " + data);
         
-        $.post(baseurl + '/ajax?task=forumOpen', {forums: data} , function(data){})
+        $.post(baseurl + '/ajax?task=forumOpen', {forums: data}, function(data){})
             .done(function() {
                 location.reload(true);
                 })
@@ -127,9 +125,47 @@ var BoltBBAdmin = Object.extend(Object, {
         
         console.debug("Closing forums: " + data);
         
-        $.post(baseurl + '/ajax?task=forumClose', {forums: data} , function(data){})
+        $.post(baseurl + '/ajax?task=forumClose', {forums: data}, function(data){})
             .done(function() {
                 location.reload(true);
+                })
+            .fail(function() {
+                alert( "There was an error" );
+                })
+            .always(function() {
+                //alert( "This always get called" );
+                });
+    },
+    
+    doRepairRelation: function(e) {
+        var controller = this;
+        
+        console.debug("Repairing forum/reply relations");
+        
+        $.post(baseurl + '/ajax?task=repairRelation', '', function(data){})
+            .done(function() {
+                //location.reload(true);
+                alert('Repair done');
+                console.debug(data);
+                })
+            .fail(function() {
+                alert( "There was an error" );
+                })
+            .always(function() {
+                //alert( "This always get called" );
+                });
+    },
+    
+    doTestNotify: function(e) {
+        var controller = this;
+        
+        console.debug("Sending test notification");
+        
+        $.post(baseurl + '/ajax?task=testNotify', '', function(data){})
+            .done(function() {
+                //location.reload(true);
+                alert('Notification sent');
+                console.debug(data);
                 })
             .fail(function() {
                 alert( "There was an error" );
@@ -148,10 +184,12 @@ var BoltBBAdmin = Object.extend(Object, {
         click: function(e, t){
             var controller = e.data;
             switch(jQuery(e.target).data('action')) {
-                case "boltbb-forum-sync"  : controller.doSync(e.originalEvent); break;
+                case "boltbb-forum-sync"         : controller.doSync(e.originalEvent); break;
                 case "boltbb-forum-contenttypes" : controller.doContenttypes(e.originalEvent); break;
-                case "boltbb-forum-open"  : controller.doOpen(e.originalEvent); break;
-                case "boltbb-forum-close" : controller.doClose(e.originalEvent); break;
+                case "boltbb-forum-open"         : controller.doOpen(e.originalEvent); break;
+                case "boltbb-forum-close"        : controller.doClose(e.originalEvent); break;
+                case "boltbb-repair-relation"    : controller.doRepairRelation(e.originalEvent); break;
+                case "boltbb-test-notify"        : controller.doTestNotify(e.originalEvent); break;
             }
         }
 

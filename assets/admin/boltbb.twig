@@ -94,7 +94,7 @@
                         <hr>
                     {% endif %}
 
-                        <h4><strong>{{ __('Forum Maintenance') }}</strong></h4>
+                        <h4><strong>{{ __('Maintenance') }}</strong></h4>
                         <div class="row">
                             <div class="col-md-12">
                                 <a class="btn btn-tertiary" data-action="boltbb-forum-open">
@@ -109,6 +109,29 @@
                             <div class="col-md-12">
                                 <a class="btn btn-tertiary" data-action="boltbb-forum-close">
                                     <i class="fa fa-folder-o"></i> {{ __('Close Selected Forums') }}
+                                </a>
+                            </div>
+                        </div>
+
+                        <hr>
+
+                        <h4><strong>{{ __('Repair') }}</strong></h4>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <a class="btn btn-tertiary" data-action="boltbb-repair-relation">
+                                    <i class="fa fa-folder-open-o"></i> {{ __('Repair Reply/Forum Relationships') }}
+                                </a>
+                            </div>
+                        </div>
+
+                        <hr>
+
+                        <h4><strong>{{ __('Testing') }}</strong></h4>
+
+                        <div class="row">
+                            <div class="col-md-12">
+                                <a class="btn btn-tertiary" data-action="boltbb-test-notify">
+                                    <i class="fa fa-folder-o"></i> {{ __('Send Test Notification') }}
                                 </a>
                             </div>
                         </div>
