@@ -64,7 +64,7 @@
                         {%  if lastpost is not empty %}
                             <div>{{ lastpost.datecreated|date('M j, Y H:i:s') }}</div>
 
-                            {% if lastpost.author is not empty %}
+                            {% if lastpost.authorprofile is not empty %}
                                 <div><img src="{{ lastpost.authorprofile.avatar }}" alt="{{ lastpost.authorprofile.username }}" class="avatar">&nbsp;{{ lastpost.authorprofile.username }}</div>
                             {% endif %}
                         {% endif %}
