@@ -64,10 +64,14 @@ class Data
             $forum = $this->getForum($forum);
             $params = array(
                 'forum' => $forum['id'],
+                'orderby' => '-datechanged',
                 'returnsingle' => true
             );
         } else {
-            $params = array('returnsingle' => true);
+            $params = array(
+                'orderby' => '-datechanged',
+                'returnsingle' => true
+            );
         }
 
         // Try for a reply first
@@ -82,14 +86,11 @@ class Data
             }
         }
 
-        // Only save values
-        $lastpost = $record->values;
-
         // Fill in the author information if exists
         $profiles = new ClientProfiles($this->app);
-        $lastpost['author'] = $profiles->getClientProfile($record->values['author']);
+        $record['authorprofile'] = $profiles->getClientProfile($record->values['author']);
 
-        return $lastpost;
+        return $record;
     }
 
     /**
@@ -248,7 +249,20 @@ class Data
             $query['paging'] = true;
         }
 
-        return $this->app['storage']->getContent($this->config['contenttypes']['replies'], $query);
+        $replies = $this->app['storage']->getContent($this->config['contenttypes']['replies'], $query);
+
+        if (empty($replies)) {
+            return false;
+        }
+
+        // Fill in the author information if exists
+        $profiles = new ClientProfiles($this->app);
+
+        foreach ($replies as $reply) {
+            $reply->values['authorprofile'] = $profiles->getClientProfile($reply->values['author']);
+        }
+
+        return $replies;
     }
 
     /**
@@ -274,49 +288,34 @@ class Data
      *
      * @since 1.0
      *
-     * @param  integer $forum_id The ID of the forum to get last post for
      * @param  integer $topic_id The ID of the topic to get last post for
      * @return array
      */
     public function getTopicLastPost($topic_id)
     {
-        $topic = $this->getTopic($topic_id);
+        // Make sure if we're passed a slug that we have the actual ID
+        if (! is_numeric($topic_id)) {
+            $topic = $this->getTopic($topic_id);
+            $topic_id = $topic['id'];
+        }
 
-        return $this->app['storage']->getContent($this->config['contenttypes']['topics'],
+        $record = $this->app['storage']->getContent(
+            $this->config['contenttypes']['replies'],
             array(
-                'topic' => $topic['id'],
+                'orderby' => '-datechanged',
+                'topic' => $topic_id,
                 'returnsingle' => true
         ));
 
-/*
-        if ($forum) {
-            $forum = $this->getForum($forum);
-            $params = array(
-                'forum' => $forum['id'],
-                'returnsingle' => true
-            );
-        } else {
-            $params = array('returnsingle' => true);
-        }
-
-        // Try for a reply first
-        $lastpost = $this->app['storage']->getContent($this->config['contenttypes']['replies'], $params);
-
-        // Get the latest topic instead
-        if (empty($lastpost)) {
-            $lastpost = $this->app['storage']->getContent($this->config['contenttypes']['topics'], $params);
-
-            if (empty($lastpost)) {
-                return false;
-            }
+        if (empty($record)) {
+            $record = $topic;
         }
 
         // Fill in the author information if exists
         $profiles = new ClientProfiles($this->app);
-        $lastpost['author'] = $profiles->getClientProfile($lastpost->values['author']);
+        $record['authorprofile'] = $profiles->getClientProfile($record->values['author']);
 
-        return $lastpost;
- */
+        return $record;
 
 /*
  / Index
