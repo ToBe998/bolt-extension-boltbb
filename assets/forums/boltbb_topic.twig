@@ -1,3 +1,25 @@
+{#
+ # Passed in variables:
+ #   boltbb
+ #     .title       - The BoltBB title of the forums site
+ #     .description - The BoltBB description of the forums site
+ #   forum
+ #     .title       - Forum title
+ #     .description - Forum's description tag
+ #     .id          - Numeric ID of the forum
+ #     .slug        - Forum slug
+ #   topic
+ #     .title       -
+ #     .datecreated -
+ #     .author      -
+ #     .authorip    -
+ #     .body        -
+ #   replies        - Array
+ #     .datecreated -
+ #     .author      -
+ #     .authorip    -
+ #     .body        -
+ #}
 {% extends twigparent %}
 
 {% block forums %}
@@ -13,6 +35,7 @@
 
     {# Only show the topic text if we're on the first page #}
     {% if (request('page') == 1) or (request('page') is empty) %}
+
     {# Topic #}
     <div class="row topic" id="topic-{{ forum.id }}-{{ topic.id }}">
         <div class="small-12 columns">

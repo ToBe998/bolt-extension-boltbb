@@ -1,5 +1,4 @@
 {% macro author(id, ip) %}
-    {% set profile = clientprofile(id) %}
     {% if profile is not empty %}
         <div class="row text-center">
             <img src="{{ profile.avatar }}" alt="{{ profile.username }}" class="avatar">
