@@ -116,18 +116,24 @@ class Data
     {
         //
         if (is_numeric($topic_input)) {
-            return $this->app['storage']->getContent($this->config['contenttypes']['topics'],
+            $topic = $this->app['storage']->getContent($this->config['contenttypes']['topics'],
                 array(
                     'id' => $topic_input,
                     'returnsingle' => true
             ));
         } else {
-            return $this->app['storage']->getContent($this->config['contenttypes']['topics'],
+            $topic = $this->app['storage']->getContent($this->config['contenttypes']['topics'],
                 array(
                     'slug' => $topic_input,
                     'returnsingle' => true
             ));
         }
+
+        // Fill in the author information if exists
+        $profiles = new ClientProfiles($this->app);
+        $topic->values['authorprofile'] = $profiles->getClientProfile($topic->values['author']);
+
+        return $topic;
     }
 
     /**
