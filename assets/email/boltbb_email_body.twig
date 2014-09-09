@@ -1,0 +1,30 @@
+{#
+ # Passed in variables:
+ #   forum       - Name of the forum the topic or reply is in
+ #   contenttype - The contenttype singular name. Usually either 'Topic' or 'Reply'
+ #   title       - Title of (related) topic
+ #   author      - Name of person who wrote the topic/reply that this notification is about
+ #   uri         - The relative URI to the topic
+ #   body        - Body of the topic/reply
+ #}
+<p>{{ author }} {% spaceless %}
+{% if contenttype == 'Topic' %}
+started the topic: {{ title }}
+{% else %}
+responded to the topic: {{ title }}
+{% endif %}
+{% endspaceless %}</p>
+<hr>
+
+<div style="padding-left:20px;border-left:3px solid #ccc">
+{{ body|raw }}
+</div>
+<hr>
+
+<p>To reply to this conversation <a href="{{ app.paths.rooturl }}{{ uri }}">follow this link</a> and have your say!</p>
+
+<p>You are receiving this email because you subscribed to a forum topic.</p>
+
+<p>Login and visit the topic to unsubscribe from these emails.</p>
+
+<p>Sent from <a href="http://bolt.cm">Bolt CMS — BoltBB</a></p>
