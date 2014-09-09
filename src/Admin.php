@@ -157,6 +157,14 @@ class Admin
     }
 
     /**
+     * Compose and send a test notification
+     */
+    public function doTestNotification()
+    {
+        //
+    }
+
+    /**
      * Create a forum database entry
      *
      * @param string $forum The YAML key for the new forum
