@@ -130,6 +130,33 @@ class Admin
     }
 
     /**
+     * For each topic, set the topics' replies to have the same forum ID
+     *
+     * @return void
+     */
+    public function doRepairReplyMeta()
+    {
+        $topics = $this->app['db']->fetchAll('SELECT id, title, forum from ' . $this->config['tables']['topics']);
+
+        if (empty($topics)) {
+            return false;
+        }
+
+        foreach ($topics as $topic) {
+            $i = 1;
+            $this->app['db']->update(
+                $this->config['tables']['replies'],
+                array(
+                    'title' => '[' . __('Reply') . ']:' . $topic['title'],
+                    'slug' => makeSlug($topic['title'], 128) . '-' . $i
+                ),
+                array('topic' => $topic['id'])
+            );
+            $i++;
+        }
+    }
+
+    /**
      * Create a forum database entry
      *
      * @param string $forum The YAML key for the new forum
