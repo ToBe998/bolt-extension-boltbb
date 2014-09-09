@@ -47,14 +47,15 @@ class Discussions
         $form = $request->get('form');
 
         $values = array(
-            'slug'       => makeSlug($form['title'], 128),
-            'title'      => $form['title'],
-            'author'     => $form['author'],
-            'authorip'   => $request->getClientIp(),
-            'forum'      => $form['forum'],
-            'state'      => 'open',
-            'visibility' => 'normal',
-            'body'       => $form['editor']
+            'slug'        => makeSlug($form['title'], 128),
+            'title'       => $form['title'],
+            'author'      => $form['author'],
+            'authorip'    => $request->getClientIp(),
+            'forum'       => $form['forum'],
+            'state'       => 'open',
+            'visibility'  => 'normal',
+            'body'        => $form['editor'],
+            'subscribers' => json_encode(array($form['author']))
         );
 
         $record = $this->app['storage']->getEmptyContent($this->config['contenttypes']['topics']);
