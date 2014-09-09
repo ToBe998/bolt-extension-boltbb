@@ -307,28 +307,13 @@ class Data
                 'returnsingle' => true
         ));
 
-        if (empty($record)) {
-            $record = $topic;
+        // Fill in the author information if exists
+        if (! empty($record)) {
+            $profiles = new ClientProfiles($this->app);
+            $record['authorprofile'] = $profiles->getClientProfile($record->values['author']);
         }
 
-        // Fill in the author information if exists
-        $profiles = new ClientProfiles($this->app);
-        $record['authorprofile'] = $profiles->getClientProfile($record->values['author']);
-
         return $record;
-
-/*
- / Index
- {% setcontent lastpost = contenttypes.replies where { forum: forum.id } orderby '-datecreated' returnsingle %}
-    {% if lastpost is empty %}
- {% setcontent lastpost = contenttypes.topics where { forum: forum.id } orderby '-datecreated' returnsingle %}
- {% endif %}
- // Forum
- {% setcontent lastpost = contenttypes.replies where { forum: record.forum, topic: record.id } orderby '-datecreated' returnsingle %}
- {% if lastpost is empty %}
-    {% setcontent lastpost = contenttypes.topics where { forum: record.forum, topic: record.id } orderby '-datecreated' returnsingle %}
- {% endif %}
- */
     }
 
     /**
