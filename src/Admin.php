@@ -29,7 +29,7 @@ class Admin
      */
     public function getForums()
     {
-        $forums = new Forums($this->app);
+        $data = new Data($this->app);
 
         $conf = $this->config['forums'];
         $rows = $this->app['db']->fetchAll('SELECT * FROM ' . $this->config['tables']['forums']);
@@ -47,8 +47,8 @@ class Admin
                 'description' => $conf[$slug]['description'],
                 'subscribers' => empty($row['subscribers']) ? '' : json_decode($row['subscribers'], true),
                 'state'       => isset($conf[$slug]) ? $row['state'] : 'abandoned',
-                'topics'      => $forums->getForumTopicCount($row['id']),
-                'replies'     => $forums->getForumReplyCount($row['id'])
+                'topics'      => $data->getForumTopicCount($row['id']),
+                'replies'     => $data->getForumReplyCount($row['id'])
             );
         }
 
@@ -104,9 +104,9 @@ class Admin
      */
     private function doCreateForumRecord($forum)
     {
-        $forums = new Forums($this->app);
+        $data = new Data($this->app);
 
-        if (empty($forums->getForum($forum))) {
+        if (empty($data->getForum($forum))) {
             //
             $data = array(
                 'slug'  => $forum,
