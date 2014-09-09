@@ -79,6 +79,11 @@ class Admin
         }
     }
 
+    /**
+     * Set a particular forum state to 'open'
+     *
+     * @param int $forum
+     */
     public function doForumOpen($forum)
     {
         $this->app['db']->update(
@@ -88,6 +93,11 @@ class Admin
         );
     }
 
+    /**
+     * Set a particular forum state to 'closed'
+     *
+     * @param int $forum
+     */
     public function doForumClose($forum)
     {
         $this->app['db']->update(
@@ -95,6 +105,28 @@ class Admin
             array('state' => 'closed'),
             array('slug' => $forum)
         );
+    }
+
+    /**
+     * For each topic, set the topics' replies to have the same forum ID
+     *
+     * @return void
+     */
+    public function doRepairReplyRelationships()
+    {
+        $topics = $this->app['db']->fetchAll('SELECT id, forum from ' . $this->config['tables']['topics']);
+
+        if (empty($topics)) {
+            return false;
+        }
+
+        foreach ($topics as $topic) {
+            $this->app['db']->update(
+                $this->config['tables']['replies'],
+                array('forum' => $topic['forum']),
+                array('topic' => $topic['id'])
+            );
+        }
     }
 
     /**
