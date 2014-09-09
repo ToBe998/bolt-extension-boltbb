@@ -7,7 +7,13 @@
             {{ profile.username }}
         </div>
     {% endif %}
-    <div class="row text-center">{{ ip }}</div>
+
+    {% set geoip = geoip(ip) %}
+    <div class="row text-center">
+        <div class="small-12 columns">{{ ip }}</div>
+        <div class="small-12 columns"><img src="{{ geoip.flag }}">&nbsp;{{ geoip.country }}</div>
+    </div>
+
 {% endmacro %}
 
 {% macro topic(base_uri, forum, topic) %}
