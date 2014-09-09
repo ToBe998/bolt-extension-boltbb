@@ -152,8 +152,12 @@ class BoltBBTwigExtension extends \Twig_Extension
      * @param integer      $forum_id The ID of the forum
      * @return \Bolt\Content
      */
-    public function lastPost($forum_id = false)
+    public function lastPost($record = false)
     {
-        return $this->data->getForumLastPost($forum_id);
+        if (gettype($record) == 'object') {
+            return $this->data->getTopicLastPost($record->values['id']);
+        } else {
+            return $this->data->getForumLastPost($record['id']);
+        }
     }
 }
