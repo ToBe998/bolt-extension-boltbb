@@ -92,10 +92,11 @@ class Extension extends \Bolt\BaseExtension
 
         // If this is not a create event, leave
         if ($event->isCreate()) {
-            $notify = new Notifications($this->app);
-
+            // Get the newly saved record
             $record = $event->getContent();
 
+            // Launch the notification
+            $notify = new Notifications($this->app, $record);
             $notify->doNotification($record);
         }
     }
