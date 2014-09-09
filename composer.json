@@ -7,8 +7,9 @@
 	],
 	"require" : {
 		"bolt/bolt" : ">=2.0.0,<3.0.0",
-		"bolt/clientlogin" : ">1.0.4",
-		"bolt/clientprofiles" : ">=1.0.0"
+		"bolt/clientlogin" : ">=2.0.0",
+        "bolt/clientprofiles" : ">=2.0.0",
+        "bolt/geoip" : ">=2.0.0"
 	},
 	"license" : "GPL",
 	"authors" : [{
