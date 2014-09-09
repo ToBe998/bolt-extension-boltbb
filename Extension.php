@@ -247,8 +247,7 @@ class Extension extends \Bolt\BaseExtension
                 'forums' => array(
                     'index' => 'boltbb_index.twig',
                     'forum' => 'boltbb_forum.twig',
-                    'topic' => 'boltbb_topic.twig',
-                    'all'   => 'boltbb_all.twig'
+                    'topic' => 'boltbb_topic.twig'
                 ),
                 'navigation' => array(
                     'crumbs' => 'boltbb_crumbs.twig'

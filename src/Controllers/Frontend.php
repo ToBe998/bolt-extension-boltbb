@@ -73,8 +73,8 @@ class Frontend
             'slug'        => 'all',
             'state'       => 'open',
             'subscribers' => '',
-            'title'       => 'All Discussions',
-            'description' => 'The uncategorised version',
+            'title'       => __('All Discussions'),
+            'description' => __('The uncategorised version'),
         );
 
         // Combine YAML and database information about each forum
@@ -105,9 +105,23 @@ class Frontend
         $this->addTwigPath();
 
         $html = $this->app['render']->render(
-            $this->config['templates']['forums']['all'], array(
+            $this->config['templates']['forums']['forum'], array(
+                'form' => '',
                 'twigparent' => $this->config['templates']['parent'],
                 'contenttypes' => $this->config['contenttypes'],
+                'forum' => 0,
+                'global' => $this->data->getForumTopics(false,
+                    array('visibility' => 'global')
+                ),
+                'pinned' => $this->data->getForumTopics(false,
+                    array('visibility' => 'pinned')
+                ),
+                'topics' => $this->data->getForumTopics(false,
+                    array('visibility' => 'normal',
+                        'state' => 'open || closed'
+                    ),
+                    $this->config['pagercount']),
+                'showpager' => $this->app['storage']->isEmptyPager() ? false : true,
                 'boltbb' => $this->config['boltbb'],
                 'base_uri'  => $this->config['base_uri'],
         ));
@@ -135,25 +149,26 @@ class Frontend
             return $view;
         }
 
-        $html = $this->app['render']->render($this->config['templates']['forums']['forum'], array(
-            'form' => $view,
-            'twigparent' => $this->config['templates']['parent'],
-            'contenttypes' => $this->config['contenttypes'],
-            'forum' => $forum,
-            'global' => $this->data->getForumTopics(false,
-                  array('visibility' => 'global')
-                  ),
-            'pinned' => $this->data->getForumTopics($forum['id'],
-                  array('visibility' => 'pinned')
-                  ),
-            'topics' => $this->data->getForumTopics($forum['id'],
-                  array('visibility' => 'normal',
-                        'state' => 'open || closed'
-                  ),
-                  $this->config['pagercount']),
-            'showpager' => $this->app['storage']->isEmptyPager() ? false : true,
-            'boltbb' => $this->config['boltbb'],
-            'base_uri'  => $this->config['base_uri'],
+        $html = $this->app['render']->render(
+            $this->config['templates']['forums']['forum'], array(
+                'form' => $view,
+                'twigparent' => $this->config['templates']['parent'],
+                'contenttypes' => $this->config['contenttypes'],
+                'forum' => $forum,
+                'global' => $this->data->getForumTopics(false,
+                    array('visibility' => 'global')
+                ),
+                'pinned' => $this->data->getForumTopics($forum['id'],
+                    array('visibility' => 'pinned')
+                ),
+                'topics' => $this->data->getForumTopics($forum['id'],
+                    array('visibility' => 'normal',
+                          'state' => 'open || closed'
+                    ),
+                    $this->config['pagercount']),
+                'showpager' => $this->app['storage']->isEmptyPager() ? false : true,
+                'boltbb' => $this->config['boltbb'],
+                'base_uri'  => $this->config['base_uri'],
         ));
 
         return new \Twig_Markup($html, 'UTF-8');
@@ -183,16 +198,17 @@ class Frontend
             return $view;
         }
 
-        $html = $this->app['render']->render($this->config['templates']['forums']['topic'], array(
-            'form' => $view,
-            'twigparent' => $this->config['templates']['parent'],
-            'contenttypes' => $this->config['contenttypes'],
-            'forum' => $forum,
-            'topic' => $topic,
-            'replies' => $this->data->getTopicReplies($topic->values['id'], $this->config['pagercount']),
-            'showpager' => $this->app['storage']->isEmptyPager() ? false : true,
-            'boltbb' => $this->config['boltbb'],
-            'base_uri'  => $this->config['base_uri'],
+        $html = $this->app['render']->render(
+            $this->config['templates']['forums']['topic'], array(
+                'form' => $view,
+                'twigparent' => $this->config['templates']['parent'],
+                'contenttypes' => $this->config['contenttypes'],
+                'forum' => $forum,
+                'topic' => $topic,
+                'replies' => $this->data->getTopicReplies($topic->values['id'], $this->config['pagercount']),
+                'showpager' => $this->app['storage']->isEmptyPager() ? false : true,
+                'boltbb' => $this->config['boltbb'],
+                'base_uri'  => $this->config['base_uri'],
         ));
 
         return new \Twig_Markup($html, 'UTF-8');
