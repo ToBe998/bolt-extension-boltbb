@@ -27,7 +27,7 @@
 
         <div class="small-6 columns text-left topic-title">
             <p><a href="/{{ base_uri }}/{{ forum.slug }}/{{ topic.slug }}">{{ topic.title }}</a></p>
-            <div>Posted by {{ topic.author.username }}</div>
+            <div>Posted by {{ topic.authorprofile.username }}</div>
             <div>{{ topic.datecreated|date('M j, Y H:i:s') }}</div>
         </div>
 

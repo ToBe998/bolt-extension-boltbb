@@ -88,7 +88,7 @@ class Data
 
         // Fill in the author information if exists
         $profiles = new ClientProfiles($this->app);
-        $record['authorprofile'] = $profiles->getClientProfile($record->values['author']);
+        $record->values['authorprofile'] = $profiles->getClientProfile($record->values['author']);
 
         return $record;
     }
@@ -163,7 +163,15 @@ class Data
             $query['paging'] = true;
         }
 
-        return $this->app['storage']->getContent($this->config['contenttypes']['topics'], $query, $pager, $params);
+        $records = $this->app['storage']->getContent($this->config['contenttypes']['topics'], $query, $pager, $params);
+
+        if (! empty($records)) {
+            $profiles = new ClientProfiles($this->app);
+            foreach ($records as $record ) {
+                $record->values['authorprofile'] = $profiles->getClientProfile($record->values['author']);
+            }
+        }
+
     }
 
     /**
@@ -310,7 +318,7 @@ class Data
         // Fill in the author information if exists
         if (! empty($record)) {
             $profiles = new ClientProfiles($this->app);
-            $record['authorprofile'] = $profiles->getClientProfile($record->values['author']);
+            $record->values['authorprofile'] = $profiles->getClientProfile($record->values['author']);
         }
 
         return $record;
