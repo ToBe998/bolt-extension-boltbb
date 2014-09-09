@@ -50,6 +50,15 @@ module.exports = function(grunt) {
             },
             src: '../js/boltbb.js',
             dest: '../js/boltbb.min.js'
+        },
+        admin: {
+            options: {
+                mangle: true,
+                sourceMap: true,
+                preserveComments: 'some'
+            },
+            src: '../js/boltbb.admin.js',
+            dest: '../js/boltbb.admin.min.js'
         }
     },
 
