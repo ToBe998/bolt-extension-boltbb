@@ -23,8 +23,7 @@
 
         <div class="small-6 columns text-left topic-title">
             <p><a href="/{{ base_uri }}/{{ forum.slug }}/{{ record.slug }}">{{ record.title }}</a></p>
-            {% set author = clientprofile(record.author) %}
-            <div>Posted by {{ author.username }}</div>
+            <div>Posted by {{ record.author.username }}</div>
             <div>{{ record.datecreated|date('M j, Y H:i:s') }}</div>
         </div>
 
@@ -33,16 +32,12 @@
         </div>
 
         <div class="small-4 columns text-left topic-last-post">
-            {% setcontent lastpost = contenttypes.replies where { forum: record.forum, topic: record.id } orderby '-datecreated' returnsingle %}
-            {% if lastpost is empty %}
-                {% setcontent lastpost = contenttypes.topics where { forum: record.forum, topic: record.id } orderby '-datecreated' returnsingle %}
-            {% endif %}
-            {% if lastpost is not empty %}
-                <div>{{ lastpost.datecreated|date('M j, Y H:i:s') }}</div>
+            {% set lastpost = lastpost(forum.id) %}
+            {%  if lastpost is not empty %}
+                <div>{{ forum.lastpost.datecreated|date('M j, Y H:i:s') }}</div>
 
-                {% set author = clientprofile(lastpost.author) %}
-                {% if author is not empty %}
-                    <div><img src="{{ author.avatar }}" alt="{{ author.username }}" class="avatar">&nbsp;{{ author.username }}</div>
+                {% if lastpost.author is not empty %}
+                    <div><img src="{{ lastpost.author.avatar }}" alt="{{ lastpost.author.username }}" class="avatar">&nbsp;{{ lastpost.author.username }}</div>
                 {% endif %}
             {% endif %}
         </div>
