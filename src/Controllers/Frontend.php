@@ -5,7 +5,6 @@ namespace Bolt\Extension\Bolt\BoltBB\Controllers;
 use Silex;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RedirectResponse;
-use Symfony\Component\Validator\Constraints as Assert;
 use Bolt\Extension\Bolt\BoltBB\Extension;
 use Bolt\Extension\Bolt\BoltBB\Data;
 use Bolt\Extension\Bolt\BoltBB\Discussions;

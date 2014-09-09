@@ -55,7 +55,7 @@ class Data
 
     /**
      * G
-     * @param string|int $forum
+     * @param  string|int $forum
      * @return array
      */
     public function getForumLastPost($forum = false)
@@ -142,9 +142,9 @@ class Data
      *
      * @since 1.0
      *
-     * @param int   $forum_id The ID of the forum to get topics for
-     * @param arary $params   An optional associative array of WHERE parameters
-     * @param int   $limit    If set, page the output to the passed limit
+     * @param  int           $forum_id The ID of the forum to get topics for
+     * @param  arary         $params   An optional associative array of WHERE parameters
+     * @param  int           $limit    If set, page the output to the passed limit
      * @return \Bolt\Content
      */
     public function getForumTopics($forum_id, $params = false, $limit = false)
@@ -167,7 +167,7 @@ class Data
 
         if (! empty($records)) {
             $profiles = new ClientProfiles($this->app);
-            foreach ($records as $record ) {
+            foreach ($records as $record) {
                 $record->values['authorprofile'] = $profiles->getClientProfile($record->values['author']);
             }
         }
@@ -241,8 +241,8 @@ class Data
      *
      * @since 1.0
      *
-     * @param int   $topic_id The ID of the topic to get replies for
-     * @param int   $limit    If set, page the output to the passed limit
+     * @param  int           $topic_id The ID of the topic to get replies for
+     * @param  int           $limit    If set, page the output to the passed limit
      * @return \Bolt\Content
      */
     public function getTopicReplies($topic_id, $limit = false)

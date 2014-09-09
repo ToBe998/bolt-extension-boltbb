@@ -149,7 +149,7 @@ class BoltBBTwigExtension extends \Twig_Extension
     /**
      * Return the last post record for the passed forum
      *
-     * @param integer      $forum_id The ID of the forum
+     * @param  integer       $forum_id The ID of the forum
      * @return \Bolt\Content
      */
     public function lastPost($record = false)
