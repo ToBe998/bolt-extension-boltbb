@@ -149,7 +149,7 @@ class Notifications
          */
         $this->message = \Swift_Message::newInstance()
                 ->setSubject($subject)
-                ->setFrom($this->from_address)
+                ->setFrom(array($this->from_address, $this->config['boltbb']['title']))
                 ->setBody(strip_tags($body))
                 ->addPart($body, 'text/html');
     }
