@@ -2,7 +2,7 @@
 {% block breadcrumbs %}
 <ul class="breadcrumbs">
     <li><a href="/">Home</a></li>
-    {% if forum.title is empty %}
+    {% if forum is empty or forum.title is empty %}
         <li class="current"><a href="/{{ boltbb.base_uri }}/">Forums</a></li>
     {% else %}
         <li><a href="/{{ boltbb.base_uri }}/">Forums</a></li>
