@@ -29,11 +29,39 @@ class Discussions
      */
     private $data;
 
+    /**
+     * @var array Options to pass to Maid
+     */
+    private $maidOptions;
+
     public function __construct(Silex\Application $app)
     {
         $this->app = $app;
         $this->config = $this->app['extensions.' . Extension::NAME]->config;
         $this->data = new Data($this->app);
+
+        $this->maidOptions = array(
+            'allowed-tags' => array(
+                'section', 'footer',
+                'div', 'p', 'strong', 'em',
+                'i', 'b', 'u', 's', 'sup', 'sub',
+                'li', 'ul', 'ol', 'menu',
+                'blockquote', 'pre', 'code', 'tt',
+                'hr', 'br',
+                'h1', 'h2', 'h3', 'h4', 'h5', 'h6',
+                'dd', 'dl', 'dh',
+                'table', 'tbody', 'thead', 'tfoot', 'th', 'td', 'tr',
+                'img', 'header', 'cite', 'a', 'iframe'
+            ),
+            'allowed-attribs' => array(
+                'id', 'class', 'name', 'value', 'href', 'target', 'rel', 'src',
+                'data-footnote-id',
+                'data-resizetype', 'data-align', 'data-oembed',
+                'allowfullscreen', 'allowscriptaccess',
+                'scrolling', 'frameborder',
+                'width', 'height'
+            )
+        );
     }
 
     /**
@@ -45,7 +73,7 @@ class Discussions
     public function doTopicNew(Request $request, $forum)
     {
         // Hire a maid
-        $maid = new Maid();
+        $maid = new Maid($this->maidOptions);
 
         // Get form
         $form = $request->get('form');
@@ -87,7 +115,7 @@ class Discussions
     public function doReplyNew(Request $request, $topic)
     {
         // Hire a maid
-        $maid = new Maid();
+        $maid = new Maid($this->maidOptions);
 
         // Get form
         $form = $request->get('form');
