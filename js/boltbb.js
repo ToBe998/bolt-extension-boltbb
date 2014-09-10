@@ -1,8 +1,18 @@
 /*
- * CKEditor configuration
+ * Insert CKEditor
  */
 CKEDITOR.replace( "form[editor]" );
 
+/*
+ * BoltBB Specific CKEditor extensions
+ */
+CKEDITOR.plugins.addExternal('codeTag',     boltbb_basepath + 'js/ckeditor/plugins/codeTag/', 'plugin.js');
+CKEDITOR.plugins.addExternal('codesnippet', boltbb_basepath + 'js/ckeditor/plugins/codesnippet/', 'plugin.js');
+CKEDITOR.plugins.addExternal('footnotes',   boltbb_basepath + 'js/ckeditor/plugins/footnotes/', 'plugin.js');
+
+/*
+ * CKEditor configuration
+ */
 CKEDITOR.editorConfig = function( config ) {
     config.language = ckeditor_lang || 'en';
     config.uiColor = '#DDDDDD';
@@ -17,6 +27,11 @@ CKEDITOR.editorConfig = function( config ) {
     
     /* Text Clear Formatting */
     config.toolbar = config.toolbar.concat({ name: 'format', items: [ 'RemoveFormat' ] });
+    
+    /* Subscript / Superscript */
+    if (wysiwyg.subsuper) {
+        config.toolbar = config.toolbar.concat({ name: 'subsuper', items: [ 'Subscript', 'Superscript' ] });
+    }
 
     /* Link generation */
     if (wysiwyg.anchor) {
@@ -25,11 +40,24 @@ CKEDITOR.editorConfig = function( config ) {
         config.toolbar = config.toolbar.concat({ name: 'links', items: [ 'Link', 'Unlink' ] });
     }
 
-    /* Subscript / Superscript */
-    if (wysiwyg.subsuper) {
-        config.toolbar = config.toolbar.concat({ name: 'subsuper', items: [ 'Subscript', 'Superscript' ] });
+    /* CodeTag */
+    if (wysiwyg.codetag) {
+        config.extraPlugins = config.extraPlugins + ',codeTag';
+        config.toolbar = config.toolbar.concat({ name: 'codetag', items: [ 'Code' ] });
+    }
+
+    /* CodeSnippet */
+    if (wysiwyg.codesnippet) {
+        config.extraPlugins = config.extraPlugins + ',codesnippet';
+        config.toolbar = config.toolbar.concat({ name: 'codesnippet', items: [ 'CodeSnippet' ] });
     }
     
+    /* Footnotes */
+    if (wysiwyg.footnotes) {
+        config.extraPlugins = config.extraPlugins + ',footnotes';
+        config.toolbar = config.toolbar.concat({ name: 'footnotes', items: [ 'Footnotes' ] });
+    }
+
     /* Images & Embedded Media */
     if (wysiwyg.images || wysiwyg.embed ) {
         
@@ -71,6 +99,14 @@ CKEDITOR.editorConfig = function( config ) {
     /* Display Source */
     config.toolbar = config.toolbar.concat({ name: 'source', items: [ 'Source' ] });
 
+    /* Parse override settings from config */
+    for (var key in wysiwyg.ck){
+        if (wysiwyg.ck.hasOwnProperty(key)) {
+             config[key] = wysiwyg.ck[key];
+        }
+    }
+
+    /* Codemirror settings */
     config.codemirror = {
         theme: 'default',
         lineNumbers: true,

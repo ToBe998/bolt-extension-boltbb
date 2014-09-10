@@ -267,19 +267,24 @@ class Extension extends \Bolt\BaseExtension
             ),
             'csrf' => true,
             'editor' => array(
-                'images' => true,
-                'anchor' => false,
-                'tables' => true,
-                'fontcolor' => false,
-                'align' => false,
-                'subsuper' => false,
-                'embed' => true,
-                'ck' => array(
-                    'allowedContent'          => true,
+                'addons' => array(
+                    'images'      => true,
+                    'anchor'      => false,
+                    'tables'      => true,
+                    'fontcolor'   => false,
+                    'align'       => false,
+                    'subsuper'    => false,
+                    'embed'       => true,
+                    'codetag'     => false,
+                    'codesnippet' => false,
+                    'footnotes'   => false
+                ),
+                'internal' => array(
+                    'allowedContent'          => false,
                     'autoParagraph'           => true,
                     'contentsCss'             => array(
-                        $this->paths['app'] . 'view/lib/ckeditor/contents.css',
-                        $this->paths['app'] . 'view/css/ckeditor.css',
+                        $this->app->paths['app'] . 'view/lib/ckeditor/contents.css',
+                        $this->app->paths['app'] . 'view/css/ckeditor.css',
                     )
                 )
             )

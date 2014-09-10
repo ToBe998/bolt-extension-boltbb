@@ -1,19 +1,22 @@
-
 <script>
-    var ckeditor_lang="{{ app.locale|default('en') }}";
+var boltbb_basepath = "{{ app.paths.rooturl }}{{ boltbb_basepath }}";
 
-    var wysiwyg = {
-        images: {{ 0 + ckconfig.images }},
-        tables: {{ 0 + ckconfig.tables }},
-        anchor: {{ 0 + ckconfig.anchor }},
-        fontcolor: {{ 0 + ckconfig.fontcolor }},
-        align: {{ 0 + ckconfig.align }},
-        subsuper: {{ 0 + ckconfig.subsuper }},
-        embed: {{ 0 + ckconfig.embed }},
-        {% spaceless %}{% if ckconfig.ck is iterable %}
-        ck: {{ ckconfig.ck|json_encode()|raw }},
-        {% endif %}{% endspaceless %}
+var ckeditor_lang="{{ app.locale|default('en') }}";
 
-        filebrowser: false
-        };
+var wysiwyg = {
+    images:      {{ 0 + ckconfig.addons.images|default(0) }},
+    tables:      {{ 0 + ckconfig.addons.tables|default(0) }},
+    anchor:      {{ 0 + ckconfig.addons.anchor|default(0) }},
+    fontcolor:   {{ 0 + ckconfig.addons.fontcolor|default(0) }},
+    align:       {{ 0 + ckconfig.addons.align|default(0) }},
+    subsuper:    {{ 0 + ckconfig.addons.subsuper|default(0) }},
+    embed:       {{ 0 + ckconfig.addons.embed|default(0) }},
+    codetag:     {{ 0 + ckconfig.addons.codetag|default(0) }},
+    codesnippet: {{ 0 + ckconfig.addons.codesnippet|default(0) }},
+    footnotes:   {{ 0 + ckconfig.addons.footnotes|default(0) }},
+    filebrowser: 0,
+    {% spaceless %}{% if ckconfig.internal is iterable %}
+    ck: {{ ckconfig.internal|json_encode()|raw }}
+    {% endif %}{% endspaceless %}
+    };
 </script>

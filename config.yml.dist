@@ -59,13 +59,17 @@ csrf: true
 
 # Editor
 editor:
-  images: true
-  anchor: false
-  tables: true
-  fontcolor: false
-  align: false
-  subsuper: false
-  embed: true
-  ck:
-    allowedContent: true # If set to 'true', any elements and attributes are allowed in Wysiwg Elements
+  addons:
+    images: true
+    anchor: false
+    tables: false
+    fontcolor: false
+    align: false
+    subsuper: false
+    embed: true
+    codetag: false
+    codesnippet: false
+    footnotes: false
+  internal:
+    allowedContent: false # [WARNING] If set to 'true', any elements and attributes are allowed in Wysiwg Elements, including <script>
     autoParagraph: true # If set to 'true', any pasted content is wrapped in <p> tags for multiple line-breaks

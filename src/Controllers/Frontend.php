@@ -150,6 +150,14 @@ class Frontend
             return $view;
         }
 
+        // Add CKEditor config javascript
+        $js = $this->app['render']->render(
+            '_editorconfig.twig', array(
+                'ckconfig' => $this->config['editor'],
+                'boltbb_basepath' => $this->app['extensions.' . Extension::NAME]->getBaseUrl()
+        ));
+        $this->app['extensions.' . Extension::NAME]->addSnippet(SnippetLocation::BEFORE_JS, $js);
+
         $html = $this->app['render']->render(
             $this->config['templates']['forums']['forum'], array(
                 'form' => $view,
@@ -171,13 +179,6 @@ class Frontend
                 'boltbb' => $this->config['boltbb'],
                 'base_uri'  => $this->config['base_uri'],
         ));
-
-        // Add CKEditor config javascript
-        $js = $this->app['render']->render(
-            '_editorconfig.twig', array(
-                'ckconfig' => $this->config['editor']
-        ));
-        $this->app['extensions.' . Extension::NAME]->addSnippet(SnippetLocation::END_OF_BODY, $js);
 
         return new \Twig_Markup($html, 'UTF-8');
     }
@@ -206,6 +207,14 @@ class Frontend
             return $view;
         }
 
+        // Add CKEditor config javascript
+        $js = $this->app['render']->render(
+            '_editorconfig.twig', array(
+                'ckconfig' => $this->config['editor'],
+                'boltbb_basepath' => $this->app['extensions.' . Extension::NAME]->getBaseUrl()
+        ));
+        $this->app['extensions.' . Extension::NAME]->addSnippet(SnippetLocation::BEFORE_JS, $js);
+
         $html = $this->app['render']->render(
             $this->config['templates']['forums']['topic'], array(
                 'form' => $view,
@@ -218,13 +227,6 @@ class Frontend
                 'boltbb' => $this->config['boltbb'],
                 'base_uri'  => $this->config['base_uri'],
         ));
-
-        // Add CKEditor config javascript
-        $js = $this->app['render']->render(
-            '_editorconfig.twig', array(
-                'ckconfig' => $this->config['editor']
-        ));
-        $this->app['extensions.' . Extension::NAME]->addSnippet(SnippetLocation::END_OF_BODY, $js);
 
         return new \Twig_Markup($html, 'UTF-8');
     }
