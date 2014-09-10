@@ -54,7 +54,8 @@ class Discussions
                 'img', 'header', 'cite', 'a', 'iframe'
             ),
             'allowed-attribs' => array(
-                'id', 'class', 'name', 'value', 'href', 'target', 'rel', 'src',
+                'id', 'class', 'style', 'name', 'value',
+                'href', 'target', 'rel', 'src',
                 'data-footnote-id',
                 'data-resizetype', 'data-align', 'data-oembed',
                 'allowfullscreen', 'allowscriptaccess',
