@@ -52,8 +52,8 @@ class Frontend
         $this->app['extensions']->addJavascript($this->app['paths']['app'] . 'view/lib/ckeditor/ckeditor.js', true);
         $this->app['extensions.' . Extension::NAME]->addJavascript($this->config['javascript'], true);
 
-        $this->app['extensions.' . Extension::NAME]->addCSS('/css/jquery.cssemoticons.css', false);
-        $this->app['extensions.' . Extension::NAME]->addJavascript('/js/jquery.cssemoticons.min.js', true);
+        $this->app['extensions.' . Extension::NAME]->addCSS('css/jquery.cssemoticons.css', false);
+        $this->app['extensions.' . Extension::NAME]->addJavascript('js/jquery.cssemoticons.min.js', true);
     }
 
     /**
