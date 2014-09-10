@@ -5,6 +5,7 @@ namespace Bolt\Extension\Bolt\BoltBB\Controllers;
 use Silex;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RedirectResponse;
+use Bolt\Extensions\Snippets\Location as SnippetLocation;
 use Bolt\Extension\Bolt\BoltBB\Extension;
 use Bolt\Extension\Bolt\BoltBB\Data;
 use Bolt\Extension\Bolt\BoltBB\Discussions;
@@ -171,6 +172,13 @@ class Frontend
                 'base_uri'  => $this->config['base_uri'],
         ));
 
+        // Add CKEditor config javascript
+        $js = $this->app['render']->render(
+            '_editorconfig.twig', array(
+                'ckconfig' => $this->config['editor']
+        ));
+        $this->app['extensions.' . Extension::NAME]->addSnippet(SnippetLocation::END_OF_BODY, $js);
+
         return new \Twig_Markup($html, 'UTF-8');
     }
 
@@ -210,6 +218,13 @@ class Frontend
                 'boltbb' => $this->config['boltbb'],
                 'base_uri'  => $this->config['base_uri'],
         ));
+
+        // Add CKEditor config javascript
+        $js = $this->app['render']->render(
+            '_editorconfig.twig', array(
+                'ckconfig' => $this->config['editor']
+        ));
+        $this->app['extensions.' . Extension::NAME]->addSnippet(SnippetLocation::END_OF_BODY, $js);
 
         return new \Twig_Markup($html, 'UTF-8');
     }

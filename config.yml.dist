@@ -41,7 +41,6 @@ templates:
     body:    boltbb_email_body.twig
   breadcrumbs: boltbb_breadcrumbs.twig
 
-
 # Web assets
 #
 # If you are generating your own CSS, they should use '.custom.' in the file name
@@ -57,3 +56,16 @@ notifications:
 # Enable CSRF protection for forms. You should leave this set to 'true', unless
 # you know what you're doing.
 csrf: true
+
+# Editor
+editor:
+  images: true
+  anchor: false
+  tables: true
+  fontcolor: false
+  align: false
+  subsuper: false
+  embed: true
+  ck:
+    allowedContent: true # If set to 'true', any elements and attributes are allowed in Wysiwg Elements
+    autoParagraph: true # If set to 'true', any pasted content is wrapped in <p> tags for multiple line-breaks

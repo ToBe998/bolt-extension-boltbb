@@ -265,7 +265,24 @@ class Extension extends \Bolt\BaseExtension
                 'debug_address' => 'noreply@example.com',
                 'from_address'  => 'noreply@example.com'
             ),
-            'csrf' => true
+            'csrf' => true,
+            'editor' => array(
+                'images' => true,
+                'anchor' => false,
+                'tables' => true,
+                'fontcolor' => false,
+                'align' => false,
+                'subsuper' => false,
+                'embed' => true,
+                'ck' => array(
+                    'allowedContent'          => true,
+                    'autoParagraph'           => true,
+                    'contentsCss'             => array(
+                        $this->paths['app'] . 'view/lib/ckeditor/contents.css',
+                        $this->paths['app'] . 'view/css/ckeditor.css',
+                    )
+                )
+            )
         );
     }
 }

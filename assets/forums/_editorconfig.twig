@@ -1,0 +1,19 @@
+
+<script>
+    var ckeditor_lang="{{ app.locale|default('en') }}";
+
+    var wysiwyg = {
+        images: {{ 0 + ckconfig.images }},
+        tables: {{ 0 + ckconfig.tables }},
+        anchor: {{ 0 + ckconfig.anchor }},
+        fontcolor: {{ 0 + ckconfig.fontcolor }},
+        align: {{ 0 + ckconfig.align }},
+        subsuper: {{ 0 + ckconfig.subsuper }},
+        embed: {{ 0 + ckconfig.embed }},
+        {% spaceless %}{% if ckconfig.ck is iterable %}
+        ck: {{ ckconfig.ck|json_encode()|raw }},
+        {% endif %}{% endspaceless %}
+
+        filebrowser: false
+        };
+</script>
