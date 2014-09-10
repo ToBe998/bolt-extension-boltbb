@@ -56,6 +56,12 @@ class Frontend
         // Add jQuery CSS Emoticons Plugin @see: http://os.alfajango.com/css-emoticons/
         $this->app['extensions.' . Extension::NAME]->addCSS('css/jquery.cssemoticons.css', false);
         $this->app['extensions.' . Extension::NAME]->addJavascript('js/jquery.cssemoticons.min.js', true);
+
+        // If using CKEditor CodeSnippet, enable Highlight.js
+        if ($this->config['editor']['addons']['codesnippet']) {
+            $this->app['extensions.' . Extension::NAME]->addCSS('js/ckeditor/plugins/codesnippet/lib/highlight/styles/default.css', false);
+            $this->app['extensions.' . Extension::NAME]->addJavascript('js/ckeditor/plugins/codesnippet/lib/highlight/highlight.pack.js', true);
+        }
     }
 
     /**
@@ -214,6 +220,12 @@ class Frontend
                 'boltbb_basepath' => $this->app['extensions.' . Extension::NAME]->getBaseUrl()
         ));
         $this->app['extensions.' . Extension::NAME]->addSnippet(SnippetLocation::BEFORE_JS, $js);
+
+        // If using CKEditor CodeSnippet, enable Highlight.js
+        if ($this->config['editor']['addons']['codesnippet']) {
+            $js = '<script>hljs.initHighlightingOnLoad();</script>';
+            $this->app['extensions.' . Extension::NAME]->addSnippet(SnippetLocation::END_OF_BODY, $js);
+        }
 
         $html = $this->app['render']->render(
             $this->config['templates']['forums']['topic'], array(
