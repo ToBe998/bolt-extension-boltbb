@@ -2,6 +2,7 @@
 
 namespace Bolt\Extension\Bolt\BoltBB;
 
+use Maid\Maid;
 use Silex;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -43,6 +44,9 @@ class Discussions
      */
     public function doTopicNew(Request $request, $forum)
     {
+        // Hire a maid
+        $maid = new Maid();
+
         // Get form
         $form = $request->get('form');
 
@@ -54,7 +58,7 @@ class Discussions
             'forum'       => $form['forum'],
             'state'       => 'open',
             'visibility'  => 'normal',
-            'body'        => $form['editor'],
+            'body'        => $maid->clean($form['editor']),
             'subscribers' => json_encode(array($form['author']))
         );
 
@@ -82,6 +86,9 @@ class Discussions
      */
     public function doReplyNew(Request $request, $topic)
     {
+        // Hire a maid
+        $maid = new Maid();
+
         // Get form
         $form = $request->get('form');
 
@@ -92,7 +99,7 @@ class Discussions
             'authorip' => $request->getClientIp(),
             'forum'    => $topic['forum'],
             'topic'    => $form['topic'],
-            'body'     => $form['editor']
+            'body'     => $maid->clean($form['editor'])
         );
 
         $record = $this->app['storage']->getEmptyContent($this->config['contenttypes']['replies']);
