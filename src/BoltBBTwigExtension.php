@@ -155,9 +155,15 @@ class BoltBBTwigExtension extends \Twig_Extension
     public function lastPost($record = false)
     {
         if (gettype($record) == 'object') {
-            return $this->data->getTopicLastPost($record->values['id']);
-        } else {
-            return $this->data->getForumLastPost($record['id']);
+            $lastpost = $this->data->getTopicLastPost($record->values['id']);
+
+            if ($lastpost) {
+                return $lastpost;
+            }
+
+            // We are the last post, return ourselves
+            return $record;
         }
+        return $this->data->getForumLastPost($record['id']);
     }
 }
