@@ -100,7 +100,7 @@ class Subscriptions
         }
 
         if (! in_array($id, $subscribers)) {
-            $subscribers[] = $id;
+            $subscribers[] = (int) $id;
             $subscribers = json_encode($subscribers);
 
             $this->app['db']->update(
@@ -119,7 +119,7 @@ class Subscriptions
      * @param mixed $topic
      * @param int   $id    ID to add to subscription array
      */
-    public function addSubscriberTopic($topic,  $id, $subscribers = array())
+    public function addSubscriberTopic($topic, $id, $subscribers = array())
     {
         $topic = $this->data->getTopic($topic);
 
@@ -132,7 +132,7 @@ class Subscriptions
         }
 
         if (! in_array($id, $subscribers)) {
-            $subscribers[] = $id;
+            $subscribers[] = (int) $id;
             $subscribers = json_encode($subscribers);
 
             $this->app['db']->update(

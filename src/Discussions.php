@@ -88,7 +88,7 @@ class Discussions
             'state'       => 'open',
             'visibility'  => 'normal',
             'body'        => $maid->clean($form['editor']),
-            'subscribers' => json_encode(array($form['author']))
+            'subscribers' => json_encode(array((int) $form['author']))
         );
 
         $record = $this->app['storage']->getEmptyContent($this->config['contenttypes']['topics']);
@@ -141,6 +141,12 @@ class Discussions
 
             return null;
         } else {
+            // Check if the author wanted to subscribe and do as asked
+            if (isset($form['notify'])) {
+                $subs = new Subscriptions($this->app);
+                $subs->addSubscriberTopic($form['topic'], $form['author']);
+            }
+
             $this->app['session']->getFlashBag()->set('success', 'Reply posted.');
 
             return $id;
@@ -189,7 +195,8 @@ class Discussions
                             ->add('topic',  'hidden',   array('data'  => $topic['id']))
                             ->add('author', 'hidden',   array('data'  => '-1'))
                             ->add('notify', 'checkbox', array('label' => 'Notify me of updates to this topic',
-                                                              'data'  => true))
+                                                              'data'  => true,
+                                                              'required' => false,))
                             ->add('post',   'submit',   array('label' => 'Post reply'))
                             ->getForm();
 
