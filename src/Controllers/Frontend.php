@@ -78,10 +78,10 @@ class Frontend
         $forums['all'] = array(
             'id'          => 0,
             'slug'        => 'all',
-            'state'       => 'open',
+            'state'       => 'closed',
             'subscribers' => '',
             'title'       => __('All Discussions'),
-            'description' => __('The uncategorised version'),
+            'description' => __('The uncategorised version')
         );
 
         // Combine YAML and database information about each forum
@@ -116,7 +116,14 @@ class Frontend
                 'form' => '',
                 'twigparent' => $this->config['templates']['parent'],
                 'contenttypes' => $this->config['contenttypes'],
-                'forum' => 0,
+                'forum' => array(
+                    'id'          => 0,
+                    'slug'        => 'all',
+                    'state'       => 'closed',
+                    'subscribers' => '',
+                    'title'       => __('All Discussions'),
+                    'description' => __('The uncategorised version')
+                ),
                 'global' => $this->data->getForumTopics(false,
                     array('visibility' => 'global')
                 ),
