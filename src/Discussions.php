@@ -207,7 +207,7 @@ class Discussions
             $replyid = $this->doReplyNew($request, $topic);
 
             // Redirect
-            return $this->app->redirect($request->getRequestUri() . '#reply-' . $forum['id'] . '-' . $topic['id'] . '-' . $replyid);
+            return $this->app->redirect($request->getRequestUri() . '#reply-' . $topic['id'] . '-' . $replyid);
         }
 
         return $form->createView();
