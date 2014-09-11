@@ -283,8 +283,8 @@ class Extension extends \Bolt\BaseExtension
                     'allowedContent'          => false,
                     'autoParagraph'           => true,
                     'contentsCss'             => array(
-                        $this->app->paths['app'] . 'view/lib/ckeditor/contents.css',
-                        $this->app->paths['app'] . 'view/css/ckeditor.css',
+                        $this->app['paths']['app'] . 'view/lib/ckeditor/contents.css',
+                        $this->app['paths']['app'] . 'view/css/ckeditor.css',
                     )
                 )
             )
