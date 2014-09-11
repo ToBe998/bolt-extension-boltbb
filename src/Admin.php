@@ -147,7 +147,7 @@ class Admin
             $this->app['db']->update(
                 $this->config['tables']['replies'],
                 array(
-                    'title' => '[' . __('Reply') . ']:' . $topic['title'],
+                    'title' => '[' . __('Reply') . ']: ' . $topic['title'],
                     'slug' => makeSlug($topic['title'], 128) . '-' . $i
                 ),
                 array('topic' => $topic['id'])

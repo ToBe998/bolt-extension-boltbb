@@ -123,7 +123,7 @@ class Discussions
 
         $values = array(
             'slug'     => makeSlug($topic['title'], 128),
-            'title'    => '[' . __('Reply') . ']:' . $topic['title'],
+            'title'    => '[' . __('Reply') . ']: ' . $topic['title'],
             'author'   => $form['author'],
             'authorip' => $request->getClientIp(),
             'forum'    => $topic['forum'],
