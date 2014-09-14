@@ -13,6 +13,7 @@ use Bolt\Extension\Bolt\BoltBB\Entity\Topic;
 use Bolt\Extension\Bolt\BoltBB\Entity\Reply;
 use Bolt\Extension\Bolt\BoltBB\Form\TopicType;
 use Bolt\Extension\Bolt\BoltBB\Form\ReplyType;
+use Bolt\Extension\Bolt\Members\Members;
 
 class Frontend
 {
@@ -93,6 +94,7 @@ class Frontend
             $forums[$key] = $this->data->getForum($key);
         }
 
+        // Render the Twig
         $html = $this->app['render']->render(
             $this->config['templates']['forums']['index'], array(
                 'twigparent' => $this->config['templates']['parent'],
@@ -115,6 +117,7 @@ class Frontend
         // Add assets to Twig path
         $this->addTwigPath();
 
+        // Render the Twig
         $html = $this->app['render']->render(
             $this->config['templates']['forums']['forum'], array(
                 'form' => '',
@@ -162,8 +165,9 @@ class Frontend
         $forum = $this->data->getForum($forum);
 
         // Create new reply submission form
+        $members = new Members($this->app);
         $topic = new Topic();
-        $data = array('data' => array('forum_id' => $forum['id']));
+        $data = array('data' => array('forum_id' => $forum['id'], 'author' => $members->isAuth()));
         $form = $this->app['form.factory']->createBuilder(new TopicType(), $topic, $data)
                                           ->getForm();
 
@@ -192,6 +196,7 @@ class Frontend
         ));
         $this->app['extensions.' . Extension::NAME]->addSnippet(SnippetLocation::BEFORE_JS, $js);
 
+        // Render the Twig
         $html = $this->app['render']->render(
             $this->config['templates']['forums']['forum'], array(
                 'form' => $view,
@@ -236,8 +241,9 @@ class Frontend
         $topic = $this->data->getTopic($topic);
 
         // Create new reply submission form
+        $members = new Members($this->app);
         $reply = new Reply();
-        $data = array('data' => array('topic_id' => $topic['id']));
+        $data = array('data' => array('topic_id' => $topic['id'], 'author' => $members->isAuth()));
         $form = $this->app['form.factory']->createBuilder(new ReplyType(), $reply, $data)
                                           ->getForm();
 
@@ -269,6 +275,7 @@ class Frontend
             $this->app['extensions.' . Extension::NAME]->addSnippet(SnippetLocation::END_OF_BODY, $js);
         }
 
+        // Render the Twig
         $html = $this->app['render']->render(
             $this->config['templates']['forums']['topic'], array(
                 'form' => $form->createView(),

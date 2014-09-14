@@ -14,7 +14,7 @@ class ReplyType extends AbstractType
             ->add('editor', 'textarea', array('label' => false,
                                               'attr'  => array('style' => 'height: 150px;')))
             ->add('topic',  'hidden',   array('data'  => $options['data']['topic_id']))
-            ->add('author', 'hidden',   array('data'  => '-1'))
+            ->add('author', 'hidden',   array('data'  => $options['data']['author']))
             ->add('notify', 'checkbox', array('label' => 'Notify me of updates to this topic',
                                               'data'  => true,
                                               'required' => false,))

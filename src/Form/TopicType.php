@@ -15,7 +15,7 @@ class TopicType extends AbstractType
             ->add('editor', 'textarea', array('label' => false,
                                               'attr'  => array('style' => 'height: 150px;')))
             ->add('forum',  'hidden',   array('data'  => $options['data']['forum_id']))
-            ->add('author', 'hidden',   array('data'  => '-1'))
+            ->add('author', 'hidden',   array('data'  => $options['data']['author']))
             ->add('post',   'submit',   array('label' => 'Post new topic'));
     }
 
