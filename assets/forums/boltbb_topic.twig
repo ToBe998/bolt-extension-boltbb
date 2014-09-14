@@ -116,7 +116,7 @@
             {% if memberauth() %}
                 {{ form_start(form) }}
                     {{ form_row(form.editor) }}
-                    {{ form_row(form.author, {value : client.id}) }}
+                    {{ form_row(form.author) }}
                     <br>
                     {{ form_widget(form.notify) }}
                     {{ form_label(form.notify) }}
