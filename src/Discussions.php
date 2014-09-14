@@ -77,7 +77,7 @@ class Discussions
         $maid = new Maid($this->maidOptions);
 
         // Get form
-        $form = $request->get('form');
+        $form = $request->get('topic');
 
         $values = array(
             'slug'        => makeSlug($form['title'], 128),
@@ -87,7 +87,7 @@ class Discussions
             'forum'       => $form['forum'],
             'state'       => 'open',
             'visibility'  => 'normal',
-            'body'        => $maid->clean($form['editor']),
+            'body'        => $maid->clean($form['body']),
             'subscribers' => json_encode(array((int) $form['author']))
         );
 
@@ -119,7 +119,7 @@ class Discussions
         $maid = new Maid($this->maidOptions);
 
         // Get form
-        $form = $request->get('form');
+        $form = $request->get('reply');
 
         $values = array(
             'slug'     => makeSlug($topic['title'], 128),
@@ -128,7 +128,7 @@ class Discussions
             'authorip' => $request->getClientIp(),
             'forum'    => $topic['forum'],
             'topic'    => $form['topic'],
-            'body'     => $maid->clean($form['editor'])
+            'body'     => $maid->clean($form['body'])
         );
 
         $record = $this->app['storage']->getEmptyContent($this->config['contenttypes']['replies']);

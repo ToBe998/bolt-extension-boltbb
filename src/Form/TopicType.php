@@ -12,7 +12,7 @@ class TopicType extends AbstractType
     {
         $builder
             ->add('title',  'text')
-            ->add('editor', 'textarea', array('label' => false,
+            ->add('body',   'textarea', array('label' => false,
                                               'attr'  => array('style' => 'height: 150px;')))
             ->add('forum',  'hidden',   array('data'  => $options['data']['forum_id']))
             ->add('author', 'hidden',   array('data'  => $options['data']['author']))
