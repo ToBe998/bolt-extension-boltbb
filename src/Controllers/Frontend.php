@@ -199,7 +199,7 @@ class Frontend
         // Render the Twig
         $html = $this->app['render']->render(
             $this->config['templates']['forums']['forum'], array(
-                'form' => $view,
+                'form' => $form,
                 'twigparent' => $this->config['templates']['parent'],
                 'contenttypes' => $this->config['contenttypes'],
                 'forum' => $forum,
