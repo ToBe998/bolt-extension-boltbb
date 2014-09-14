@@ -1,10 +1,10 @@
 {% macro author(author, ip) %}
 
     <div class="row text-center">
-        <img src="{{ author.avatar }}" alt="{{ author.username }}" class="avatar">
+        <img src="{{ author.avatar }}" alt="{{ author.displayname }}" class="avatar">
     </div>
     <div class="row text-center">
-        {{ author.username }}
+        {{ author.displayname }}
     </div>
 
     {% set geoip = geoip(ip) %}
@@ -27,7 +27,7 @@
 
         <div class="small-6 columns text-left topic-title">
             <p><a href="/{{ base_uri }}/{{ forum.slug }}/{{ topic.slug }}">{{ topic.title }}</a></p>
-            <div>Posted by {{ topic.authorprofile.username }}</div>
+            <div>Posted by {{ topic.authorprofile.displayname }}</div>
             <div>{{ topic.datecreated|date('M j, Y H:i:s') }}</div>
         </div>
 
@@ -41,7 +41,7 @@
                 <div>{{ lastpost.datecreated|date('M j, Y H:i:s') }}</div>
 
                 {% if lastpost.authorprofile is not empty %}
-                    <div><img src="{{ lastpost.authorprofile.avatar }}" alt="{{ lastpost.authorprofile.username }}" class="avatar">&nbsp;{{ lastpost.authorprofile.username }}</div>
+                    <div><img src="{{ lastpost.authorprofile.avatar }}" alt="{{ lastpost.authorprofile.displayname }}" class="avatar">&nbsp;{{ lastpost.authorprofile.displayname }}</div>
                 {% endif %}
             {% endif %}
         </div>

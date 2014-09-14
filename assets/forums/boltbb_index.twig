@@ -13,7 +13,7 @@
  # Called variables
  #   lastpost       - Array of details on the last post in the forum
  #     .datecreated
- #     .author.username
+ #     .author.displayname
  #     .author.avatar
  #     .author.email
  #}
@@ -65,7 +65,7 @@
                             <div>{{ lastpost.datecreated|date('M j, Y H:i:s') }}</div>
 
                             {% if lastpost.authorprofile is not empty %}
-                                <div><img src="{{ lastpost.authorprofile.avatar }}" alt="{{ lastpost.authorprofile.username }}" class="avatar">&nbsp;{{ lastpost.authorprofile.username }}</div>
+                                <div><img src="{{ lastpost.authorprofile.avatar }}" alt="{{ lastpost.authorprofile.displayname }}" class="avatar">&nbsp;{{ lastpost.authorprofile.displayname }}</div>
                             {% endif %}
                         {% endif %}
                     </div>
