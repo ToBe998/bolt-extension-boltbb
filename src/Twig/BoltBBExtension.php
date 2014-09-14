@@ -1,11 +1,11 @@
 <?php
 
-namespace Bolt\Extension\Bolt\BoltBB;
+namespace Bolt\Extension\Bolt\BoltBB\Twig;
 
 /**
  * Twig functions
  */
-class BoltBBTwigExtension extends \Twig_Extension
+class BoltBBExtension extends \Twig_Extension
 {
     /**
      * @var Application
@@ -44,7 +44,7 @@ class BoltBBTwigExtension extends \Twig_Extension
      */
     public function getName()
     {
-        return 'forums';
+        return 'boltbb.extension';
     }
 
     /**
