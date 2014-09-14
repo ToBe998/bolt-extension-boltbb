@@ -1,6 +1,6 @@
 <?php
 
-namespace Bolt\Extension\Bolt\BoltBB\Controllers;
+namespace Bolt\Extension\Bolt\BoltBB\Controller;
 
 use Silex;
 use Silex\Application;

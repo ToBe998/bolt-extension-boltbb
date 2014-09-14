@@ -132,7 +132,7 @@ class Extension extends \Bolt\BaseExtension
      */
     private function setControllerFrontend()
     {
-        $this->controller = new Controllers\Frontend($this->app);
+        $this->controller = new Controller\Frontend($this->app);
 
         /*
          * Routes for forum base, individual forums and individual topics
@@ -173,7 +173,7 @@ class Extension extends \Bolt\BaseExtension
         }
 
         if ($this->authorized) {
-            $this->controller = new Controllers\Backend($this->app);
+            $this->controller = new Controller\Backend($this->app);
 
             $this->path = $this->app['config']->get('general/branding/path') . '/extensions/boltbb';
 
