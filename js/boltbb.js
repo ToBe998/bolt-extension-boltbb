@@ -1,7 +1,7 @@
 /*
  * Insert CKEditor
  */
-CKEDITOR.replace( "form[editor]" );
+CKEDITOR.replace(ckfield);
 
 /*
  * BoltBB Specific CKEditor extensions

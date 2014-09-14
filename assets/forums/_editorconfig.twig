@@ -3,6 +3,8 @@ var boltbb_basepath = "{{ app.paths.rooturl }}{{ boltbb_basepath }}";
 
 var ckeditor_lang="{{ app.locale|default('en') }}";
 
+var ckfield = "{{ ckfield }}";
+
 var wysiwyg = {
     images:      {{ 0 + ckconfig.addons.images|default(0) }},
     tables:      {{ 0 + ckconfig.addons.tables|default(0) }},

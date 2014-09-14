@@ -192,6 +192,7 @@ class Frontend
         $js = $this->app['render']->render(
             '_editorconfig.twig', array(
                 'ckconfig' => $this->config['editor'],
+                'ckfield'  => 'topic[body]',
                 'boltbb_basepath' => $this->app['extensions.' . Extension::NAME]->getBaseUrl()
         ));
         $this->app['extensions.' . Extension::NAME]->addSnippet(SnippetLocation::BEFORE_JS, $js);
@@ -199,10 +200,10 @@ class Frontend
         // Render the Twig
         $html = $this->app['render']->render(
             $this->config['templates']['forums']['forum'], array(
-                'form' => $form,
+                'form' => $form->createView(),
                 'twigparent' => $this->config['templates']['parent'],
                 'contenttypes' => $this->config['contenttypes'],
-                'form' => $form->createView(),
+                'forum' => $forum,
                 'global' => $this->data->getForumTopics(false,
                     array('visibility' => 'global')
                 ),
@@ -265,6 +266,7 @@ class Frontend
         $js = $this->app['render']->render(
             '_editorconfig.twig', array(
                 'ckconfig' => $this->config['editor'],
+                'ckfield'  => 'reply[body]',
                 'boltbb_basepath' => $this->app['extensions.' . Extension::NAME]->getBaseUrl()
         ));
         $this->app['extensions.' . Extension::NAME]->addSnippet(SnippetLocation::BEFORE_JS, $js);
