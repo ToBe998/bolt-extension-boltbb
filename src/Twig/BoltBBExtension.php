@@ -79,7 +79,7 @@ class BoltBBExtension extends \Twig_Extension
             $forum = $this->data->getForum($forum_id);
         }
 
-        $this->app['twig.loader.filesystem']->addPath(dirname(__DIR__) . '/assets/navigation');
+        $this->app['twig.loader.filesystem']->addPath(dirname(dirname(__DIR__)) . '/assets/navigation');
 
         $html = $this->app['render']->render($this->config['templates']['navigation']['crumbs'], array(
             'forum' => $forum,
