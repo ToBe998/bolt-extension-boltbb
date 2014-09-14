@@ -9,6 +9,10 @@ use Bolt\Extensions\Snippets\Location as SnippetLocation;
 use Bolt\Extension\Bolt\BoltBB\Extension;
 use Bolt\Extension\Bolt\BoltBB\Data;
 use Bolt\Extension\Bolt\BoltBB\Discussions;
+use Bolt\Extension\Bolt\BoltBB\Entity\Topic;
+use Bolt\Extension\Bolt\BoltBB\Entity\Reply;
+use Bolt\Extension\Bolt\BoltBB\Form\TopicType;
+use Bolt\Extension\Bolt\BoltBB\Form\ReplyType;
 
 class Frontend
 {
@@ -157,10 +161,27 @@ class Frontend
         $this->addTwigPath();
         $forum = $this->data->getForum($forum);
 
-        // Create and handle submission form
-        $view = $this->discuss->doTopicForm($request, $forum);
-        if (get_class($view) == 'Symfony\Component\HttpFoundation\RedirectResponse') {
-            return $view;
+        // Create new reply submission form
+        $topic = new Topic();
+        $data = array('data' => array('forum_id' => $forum['id']));
+        $form = $this->app['form.factory']->createBuilder(new TopicType(), $topic, $data)
+                                          ->getForm();
+
+        // Handle the form request data
+        $form->handleRequest($request);
+
+        // If we're in a POST, validate the form
+        if ($request->getMethod() == 'POST') {
+            if ($form->isValid()) {
+                // Create the new topic
+                $topicid = $this->discuss->doTopicNew($request, $forum);
+
+                // Get the new topic's URI
+                $uri = $this->data->getTopicURI($topicid);
+
+                // Redirect to the new topic
+                return $this->app->redirect($uri);
+            }
         }
 
         // Add CKEditor config javascript
@@ -214,10 +235,24 @@ class Frontend
         $forum = $this->data->getForum($forum);
         $topic = $this->data->getTopic($topic);
 
-        // Create and handle submission form
-        $view = $this->discuss->doReplyForm($request, $forum, $topic);
-        if (get_class($view) == 'Symfony\Component\HttpFoundation\RedirectResponse') {
-            return $view;
+        // Create new reply submission form
+        $reply = new Reply();
+        $data = array('data' => array('topic_id' => $topic['id']));
+        $form = $this->app['form.factory']->createBuilder(new ReplyType(), $reply, $data)
+                                          ->getForm();
+
+        // Handle the form request data
+        $form->handleRequest($request);
+
+        // If we're in a POST, validate the form
+        if ($request->getMethod() == 'POST') {
+            if ($form->isValid()) {
+                // Create new reply
+                $replyid = $this->discuss->doReplyNew($request, $topic);
+
+                // Redirect
+                return $this->app->redirect($request->getRequestUri() . '#reply-' . $topic['id'] . '-' . $replyid);
+            }
         }
 
         // Add CKEditor config javascript
@@ -236,7 +271,7 @@ class Frontend
 
         $html = $this->app['render']->render(
             $this->config['templates']['forums']['topic'], array(
-                'form' => $view,
+                'form' => $form->createView(),
                 'twigparent' => $this->config['templates']['parent'],
                 'contenttypes' => $this->config['contenttypes'],
                 'forum' => $forum,
