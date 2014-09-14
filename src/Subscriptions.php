@@ -3,7 +3,7 @@
 namespace Bolt\Extension\Bolt\BoltBB;
 
 use Silex;
-use Bolt\Extension\Bolt\ClientProfiles\ClientProfiles;
+use Bolt\Extension\Bolt\Members\Members;
 
 /**
  * Subscriptions management for BoltBB
@@ -71,10 +71,10 @@ class Subscriptions
 
         // Add the profiles for subscribers
         if (! empty($subscribers)) {
-            $profiles = new ClientProfiles($this->app);
+            $members = new Members($this->app);
 
             foreach ($subscribers as $id => $value) {
-                $subscribers[$id] = $profiles->getClientProfile($id);
+                $subscribers[$id] = $members->getMember('id', $id);
             }
         }
 

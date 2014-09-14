@@ -3,7 +3,7 @@
 namespace Bolt\Extension\Bolt\BoltBB;
 
 use Silex;
-use Bolt\Extension\Bolt\ClientProfiles\ClientProfiles;
+use Bolt\Extension\Bolt\Members\Members;
 
 /**
  *
@@ -107,8 +107,8 @@ class Notifications
          * Author information
          */
         if (! isset($this->record->values['authorprofile'])) {
-            $profiles = new ClientProfiles($this->app);
-            $this->record->values['authorprofile'] = $profiles->getClientProfile($this->record->values['author']);
+            $members = new Members($this->app);
+            $this->record->values['authorprofile'] = $members->getMember('id', $this->record->values['author']);
         }
 
         /*
@@ -118,7 +118,7 @@ class Notifications
             'forum'       => $forum['title'],
             'contenttype' => $this->record->contenttype['singular_name'],
             'title'       => $this->record->values['title'],
-            'author'      => $this->record->values['authorprofile']['displayName']
+            'author'      => $this->record->values['authorprofile']['displayname']
         ));
 
         $subject = new \Twig_Markup($html, 'UTF-8');
@@ -137,7 +137,7 @@ class Notifications
             'forum'       => $forum['title'],
             'contenttype' => $this->record->contenttype['singular_name'],
             'title'       => $this->record->values['title'],
-            'author'      => $this->record->values['authorprofile']['displayName'],
+            'author'      => $this->record->values['authorprofile']['displayname'],
             'uri'         => $uri,
             'body'        => $this->record->values['body']
         ));
