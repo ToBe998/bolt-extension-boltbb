@@ -113,21 +113,16 @@
         {% if topic.state == 'open' %}
             <h4>Create a new reply</h4>
 
-            {% if hasauth() %}
-                {% set client = clientprofile() %}
-                {% if client %}
-                    {{ form_start(form) }}
-                        {{ form_row(form.editor) }}
-                        {{ form_row(form.author, {value : client.id}) }}
-                        <br>
-                        {{ form_widget(form.notify) }}
-                        {{ form_label(form.notify) }}
-                        <br>
-                        {{ form_row(form.post) }}
-                    {{ form_end(form) }}
-                {% else %}
-                    <p>Error loading your client profile</p>
-                {% endif %}
+            {% if memberauth() %}
+                {{ form_start(form) }}
+                    {{ form_row(form.editor) }}
+                    {{ form_row(form.author, {value : client.id}) }}
+                    <br>
+                    {{ form_widget(form.notify) }}
+                    {{ form_label(form.notify) }}
+                    <br>
+                    {{ form_row(form.post) }}
+                {{ form_end(form) }}
             {% else %}
                 {{ displayauth(true) }}
             {% endif %}
