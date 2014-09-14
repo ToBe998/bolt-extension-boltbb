@@ -2,6 +2,9 @@
 
 namespace Bolt\Extension\Bolt\BoltBB\Twig;
 
+use Bolt\Extension\Bolt\BoltBB\Data;
+use Bolt\Extension\Bolt\BoltBB\Extension;
+
 /**
  * Twig functions
  */
