@@ -202,7 +202,7 @@ class Frontend
                 'form' => $form,
                 'twigparent' => $this->config['templates']['parent'],
                 'contenttypes' => $this->config['contenttypes'],
-                'forum' => $forum,
+                'form' => $form->createView(),
                 'global' => $this->data->getForumTopics(false,
                     array('visibility' => 'global')
                 ),
