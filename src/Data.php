@@ -3,7 +3,7 @@
 namespace Bolt\Extension\Bolt\BoltBB;
 
 use Silex;
-use Bolt\Extension\Bolt\Members\Members;
+use Bolt\Extension\Bolt\Members\MembersProfiles;
 
 class Data
 {
@@ -87,8 +87,8 @@ class Data
         }
 
         // Fill in the author information if exists
-        $members = new Members($this->app);
-        $record->values['authorprofile'] = $members->getMember($record->values['author']);
+        $profiles = new MembersProfiles($this->app);
+        $record->values['authorprofile'] = $profiles->getMembersProfiles($record->values['author']);
 
         return $record;
     }
@@ -131,8 +131,8 @@ class Data
         }
 
         // Fill in the author information if exists
-        $members = new Members($this->app);
-        $topic->values['authorprofile'] = $members->getMember('id', $topic->values['author']);
+        $profiles = new MembersProfiles($this->app);
+        $topic->values['authorprofile'] = $profiles->getMembersProfiles($topic->values['author']);
 
         return $topic;
     }
@@ -166,9 +166,9 @@ class Data
         $records = $this->app['storage']->getContent($this->config['contenttypes']['topics'], $query, $pager, $params);
 
         if (! empty($records)) {
-            $members = new Members($this->app);
+            $profiles = new MembersProfiles($this->app);
             foreach ($records as $record) {
-                $record->values['authorprofile'] = $members->getMember('id', $record->values['author']);
+                $record->values['authorprofile'] = $profiles->getMembersProfiles($record->values['author']);
             }
         }
 
@@ -265,10 +265,10 @@ class Data
         }
 
         // Fill in the author information if exists
-        $members = new Members($this->app);
+        $profiles = new MembersProfiles($this->app);
 
         foreach ($replies as $reply) {
-            $reply->values['authorprofile'] = $members->getMember('id', $reply->values['author']);
+            $reply->values['authorprofile'] = $profiles->getMembersProfiles($reply->values['author']);
         }
 
         return $replies;
@@ -318,8 +318,8 @@ class Data
 
         // Fill in the author information if exists
         if (! empty($record)) {
-            $members = new Members($this->app);
-            $record->values['authorprofile'] = $members->getMember($record->values['author']);
+            $profiles = new MembersProfiles($this->app);
+            $record->values['authorprofile'] = $profiles->getMembersProfiles($record->values['author']);
         }
 
         return $record;
