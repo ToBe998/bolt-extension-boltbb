@@ -73,3 +73,4 @@ editor:
   internal:
     allowedContent: false # [WARNING] If set to 'true', any elements and attributes are allowed in Wysiwg Elements, including <script>
     autoParagraph: true # If set to 'true', any pasted content is wrapped in <p> tags for multiple line-breaks
+    disableNativeSpellChecker: false # If set to 'true' it will stop browsers from underlining spelling mistakes

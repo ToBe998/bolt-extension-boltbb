@@ -280,9 +280,10 @@ class Extension extends \Bolt\BaseExtension
                     'footnotes'   => false
                 ),
                 'internal' => array(
-                    'allowedContent'          => false,
-                    'autoParagraph'           => true,
-                    'contentsCss'             => array(
+                    'allowedContent'            => false,
+                    'autoParagraph'             => true,
+                    'disableNativeSpellChecker' => false,
+                    'contentsCss'               => array(
                         $this->app['paths']['app'] . 'view/lib/ckeditor/contents.css',
                         $this->app['paths']['app'] . 'view/css/ckeditor.css',
                     )
