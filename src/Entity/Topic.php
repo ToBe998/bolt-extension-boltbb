@@ -14,7 +14,7 @@ class Topic
     /**
      * @Assert\NotBlank()
      */
-    protected $editor;
+    protected $body;
 
     /**
      * @Assert\NotBlank()
@@ -36,14 +36,14 @@ class Topic
         $this->title = $title;
     }
 
-    public function getEditor()
+    public function getBody()
     {
-        return $this->editor;
+        return $this->body;
     }
 
-    public function setEditor($editor)
+    public function setBody($body)
     {
-        $this->editor = $editor;
+        $this->body = $body;
     }
 
     public function getForum()
