@@ -71,7 +71,7 @@ class Discussions
      * @since 1.0
      *
      */
-    public function doTopicNew(Request $request, $forum)
+    public function doTopicNew(Request $request, $forum, $author)
     {
         // Hire a maid
         $maid = new Maid($this->maidOptions);
@@ -82,9 +82,9 @@ class Discussions
         $values = array(
             'slug'        => makeSlug($form['title'], 128),
             'title'       => $form['title'],
-            'author'      => $form['author'],
+            'author'      => $author,
             'authorip'    => $request->getClientIp(),
-            'forum'       => $form['forum'],
+            'forum'       => $forum['id'],
             'state'       => 'open',
             'visibility'  => 'normal',
             'body'        => $maid->clean($form['body']),
@@ -113,7 +113,7 @@ class Discussions
      * @since 1.0
      *
      */
-    public function doReplyNew(Request $request, $topic)
+    public function doReplyNew(Request $request, $topic, $author)
     {
         // Hire a maid
         $maid = new Maid($this->maidOptions);
@@ -124,10 +124,10 @@ class Discussions
         $values = array(
             'slug'     => makeSlug($topic['title'], 128),
             'title'    => '[' . __('Reply') . ']: ' . $topic['title'],
-            'author'   => $form['author'],
+            'author'   => $author,
             'authorip' => $request->getClientIp(),
             'forum'    => $topic['forum'],
-            'topic'    => $form['topic'],
+            'topic'    => $topic['id'],
             'body'     => $maid->clean($form['body'])
         );
 

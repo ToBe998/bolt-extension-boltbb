@@ -165,9 +165,8 @@ class Frontend
         $forum = $this->data->getForum($forum);
 
         // Create new reply submission form
-        $members = new Members($this->app);
         $topic = new Topic();
-        $data = array('data' => array('forum_id' => $forum['id'], 'author' => $members->isAuth()));
+        $data = array();
         $form = $this->app['form.factory']->createBuilder(new TopicType(), $topic, $data)
                                           ->getForm();
 
@@ -177,14 +176,19 @@ class Frontend
         // If we're in a POST, validate the form
         if ($request->getMethod() == 'POST') {
             if ($form->isValid()) {
-                // Create the new topic
-                $topicid = $this->discuss->doTopicNew($request, $forum);
+                // Check that we've got a valid member
+                $author = $this->getMemberID();
 
-                // Get the new topic's URI
-                $uri = $this->data->getTopicURI($topicid);
+                if ($author) {
+                    // Create the new topic
+                    $topicid = $this->discuss->doTopicNew($request, $forum);
 
-                // Redirect to the new topic
-                return $this->app->redirect($uri);
+                    // Get the new topic's URI
+                    $uri = $this->data->getTopicURI($topicid);
+
+                    // Redirect to the new topic
+                    return $this->app->redirect($uri);
+                }
             }
         }
 
@@ -242,9 +246,8 @@ class Frontend
         $topic = $this->data->getTopic($topic);
 
         // Create new reply submission form
-        $members = new Members($this->app);
         $reply = new Reply();
-        $data = array('data' => array('topic_id' => $topic['id'], 'author' => $members->isAuth()));
+        $data = array();
         $form = $this->app['form.factory']->createBuilder(new ReplyType(), $reply, $data)
                                           ->getForm();
 
@@ -254,11 +257,16 @@ class Frontend
         // If we're in a POST, validate the form
         if ($request->getMethod() == 'POST') {
             if ($form->isValid()) {
-                // Create new reply
-                $replyid = $this->discuss->doReplyNew($request, $topic);
+                // Check that we've got a valid member
+                $author = $this->getMemberID();
 
-                // Redirect
-                return $this->app->redirect($request->getRequestUri() . '#reply-' . $topic['id'] . '-' . $replyid);
+                if ($author) {
+                    // Create new reply
+                    $replyid = $this->discuss->doReplyNew($request, $topic, $author);
+
+                    // Redirect
+                    return $this->app->redirect($request->getRequestUri() . '#reply-' . $topic['id'] . '-' . $replyid);
+                }
             }
         }
 
@@ -298,6 +306,12 @@ class Frontend
     {
         $this->app['twig.loader.filesystem']->addPath(dirname(dirname(__DIR__)) . '/assets');
         $this->app['twig.loader.filesystem']->addPath(dirname(dirname(__DIR__)) . '/assets/forums');
+    }
+
+    private function getMemberID()
+    {
+        $members = new Members($this->app);
+        return $members->isAuth();
     }
 
 }
