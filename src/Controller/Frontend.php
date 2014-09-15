@@ -181,7 +181,7 @@ class Frontend
 
                 if ($author) {
                     // Create the new topic
-                    $topicid = $this->discuss->doTopicNew($request, $forum);
+                    $topicid = $this->discuss->doTopicNew($request, $forum, $author);
 
                     // Get the new topic's URI
                     $uri = $this->data->getTopicURI($topicid);
