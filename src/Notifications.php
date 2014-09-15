@@ -112,7 +112,10 @@ class Notifications
         }
 
 
-        // @TODO Replies are not guaranteed to be on page 1
+        /*
+         * Title and slug
+         * @TODO Replies are not guaranteed to be on page 1
+         */
         if ($this->record->contenttype['slug'] == $this->config['contenttypes']['topics']) {
             $title = $this->record->values['title'];
             $uri = $this->config['base_uri'] . '/' . $forum['slug'] . '/' . $this->record->values['slug'];
