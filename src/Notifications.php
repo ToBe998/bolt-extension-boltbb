@@ -93,7 +93,7 @@ class Notifications
     }
 
     /**
-     *
+     * Compose the email data to be sent
      */
     private function doCompose()
     {
@@ -111,24 +111,28 @@ class Notifications
             $this->record->values['authorprofile'] = $members->getMember('id', $this->record->values['author']);
         }
 
+
+        // @TODO Replies are not guaranteed to be on page 1
+        if ($this->record->contenttype['slug'] == $this->config['contenttypes']['topics']) {
+            $title = $this->record->values['title'];
+            $uri = $this->config['base_uri'] . '/' . $forum['slug'] . '/' . $this->record->values['slug'];
+        } else {
+            $topic = $data->getTopic($this->record->values['topic']);
+            $title = $topic->values['title'];
+            $uri = $this->config['base_uri'] . '/' . $forum['slug'] . '/' . $this->record->values['slug'];
+        }
+
         /*
          * Subject
          */
         $html = $this->app['render']->render($this->config['templates']['email']['subject'], array(
             'forum'       => $forum['title'],
             'contenttype' => $this->record->contenttype['singular_name'],
-            'title'       => $this->record->values['title'],
+            'title'       => $title,
             'author'      => $this->record->values['authorprofile']['displayname']
         ));
 
         $subject = new \Twig_Markup($html, 'UTF-8');
-
-        // @TODO Replies are not guaranteed to be on page 1
-        if ($this->record->contenttype['slug'] == $this->config['contenttypes']['topics']) {
-            $uri = $this->config['base_uri'] . '/' . $forum['slug'] . '/' . $this->record->values['slug'];
-        } else {
-            $uri = $this->config['base_uri'] . '/' . $forum['slug'] . '/' . $this->record->values['slug'];
-        }
 
         /*
          * Body
@@ -136,7 +140,7 @@ class Notifications
         $html = $this->app['render']->render($this->config['templates']['email']['body'], array(
             'forum'       => $forum['title'],
             'contenttype' => $this->record->contenttype['singular_name'],
-            'title'       => $this->record->values['title'],
+            'title'       => $title,
             'author'      => $this->record->values['authorprofile']['displayname'],
             'uri'         => $uri,
             'body'        => $this->record->values['body']

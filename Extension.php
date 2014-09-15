@@ -97,7 +97,7 @@ class Extension extends \Bolt\BaseExtension
 
             // Launch the notification
             $notify = new Notifications($this->app, $record);
-            $notify->doNotification($record);
+            $notify->doNotification();
         }
     }
 
