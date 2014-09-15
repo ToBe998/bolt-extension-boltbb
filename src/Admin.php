@@ -161,10 +161,25 @@ class Admin
      */
     public function doTestNotification()
     {
-        $data = new Data($this->app);
+        // Get some random default values from our good friends at http://loripsum.net/
+        $guzzleclient = new \Guzzle\Service\Client('http://loripsum.net/api/');
+        $params = 'medium/decorate/link/ol/ul/dl/bq/code/headers/3';
 
-        // Get a topic record
-        $record = $data->getTopic(4);
+        $values = array(
+            'slug'        => '',
+            'title'       => trim(strip_tags($guzzleclient->get('1/veryshort')->send()->getBody(true))),
+            'author'      => 1,
+            'authorip'    => '',
+            'forum'       => 1,
+            'state'       => 'open',
+            'visibility'  => 'normal',
+            'body'        => trim($guzzleclient->get($params)->send()->getBody(true)),
+            'subscribers' => ''
+        );
+
+        // Create and fill a record object
+        $record = $this->app['storage']->getEmptyContent($this->config['contenttypes']['topics']);
+        $record->setValues($values);
 
         // Ensure during this instance we're in debug mode!
         $this->config['notifications']['debug'] = true;
