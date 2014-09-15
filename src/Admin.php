@@ -31,33 +31,46 @@ class Admin
     {
         $data = new Data($this->app);
 
+        // Fourm config
         $conf = $this->config['forums'];
-        $rows = $this->app['db']->fetchAll('SELECT * FROM ' . $this->config['tables']['forums']);
+
+        // Defaults for return array
         $return = array(
             'needsync' => false,
-            'forums' => $conf
+            'hasrows'  => false,
+            'forums'   => $conf
         );
 
-        // Format an array of return values with details fo the forums
-        foreach ($rows as $row) {
-            $slug = $row['slug'];
+        // Database rows
+        try {
+            $rows = $this->app['db']->fetchAll('SELECT * FROM ' . $this->config['tables']['forums']);
 
-            $return['forums'][$slug] = array(
-                'title'       => isset($conf[$slug]) ? $conf[$slug]['title'] : $slug,
-                'description' => $conf[$slug]['description'],
-                'subscribers' => empty($row['subscribers']) ? '' : json_decode($row['subscribers'], true),
-                'state'       => isset($conf[$slug]) ? $row['state'] : 'abandoned',
-                'topics'      => $data->getForumTopicCount($row['id']),
-                'replies'     => $data->getForumReplyCount($row['id'])
-            );
-        }
+            // Format an array of return values with details fo the forums
+            foreach ($rows as $row) {
+                $slug = $row['slug'];
 
-        // If any of the forums in the config file are not in the database, set
-        // a flag in the return parameters
-        foreach ($conf as $key => $value) {
-            if (! isset($return['forums'][$key]['state'])) {
-                $return['needsync'] = true;
+                $return['forums'][$slug] = array(
+                    'title'       => isset($conf[$slug]) ? $conf[$slug]['title'] : $slug,
+                    'description' => $conf[$slug]['description'],
+                    'subscribers' => empty($row['subscribers']) ? '' : json_decode($row['subscribers'], true),
+                    'state'       => isset($conf[$slug]) ? $row['state'] : 'abandoned',
+                    'topics'      => $data->getForumTopicCount($row['id']),
+                    'replies'     => $data->getForumReplyCount($row['id'])
+                );
+
+                // Not enough forums to warrant the extra if()
+                $return['hasrows'] = true;
             }
+
+            // If any of the forums in the config file are not in the database, set
+            // a flag in the return parameters
+            foreach ($conf as $key => $value) {
+                if (! isset($return['forums'][$key]['state'])) {
+                    $return['needsync'] = true;
+                }
+            }
+
+        } catch (Exception $e) {
         }
 
         return $return;

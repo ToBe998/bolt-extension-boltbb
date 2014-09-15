@@ -76,11 +76,12 @@ class Backend
         }
 
         $html = $this->app['render']->render('boltbb.twig', array(
-            'boltbb' => $this->config['boltbb'],
-            'base_uri' => $this->config['base_uri'],
-            'forums' => $forums['forums'],
-            'needsync' => $forums['needsync'],
-            'needtypes' => $needtypes
+            'boltbb'    => $this->config['boltbb'],
+            'base_uri'  => $this->config['base_uri'],
+            'forums'    => $forums['forums'],
+            'needsync'  => $forums['needsync'],
+            'needtypes' => $needtypes,
+            'hasrows'   => $forums['hasrows']
         ));
 
         return new \Twig_Markup($html, 'UTF-8');

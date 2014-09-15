@@ -130,9 +130,13 @@
 
                         <div class="row">
                             <div class="col-md-12">
+                                {% if hasrows %}
                                 <a class="btn btn-tertiary" data-action="boltbb-test-notify">
                                     <i class="fa fa-send-o"></i> {{ __('Send Test Notification') }}
                                 </a>
+                                {% else %}
+                                <p>Define & sync the first forum to enable tests</p>
+                                {% endif %}
                             </div>
                         </div>
                 </div>
