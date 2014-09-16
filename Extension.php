@@ -111,20 +111,6 @@ class Extension extends \Bolt\BaseExtension
         $this->config['tables']['forums'] = $prefix . 'forums';
         $this->config['tables']['topics'] = $prefix . $this->config['contenttypes']['topics'];
         $this->config['tables']['replies'] = $prefix . $this->config['contenttypes']['replies'];
-
-        // CSS
-        if (isset($this->config['stylesheet'])) {
-            $this->config['stylesheet'] = 'css/' . $this->config['stylesheet'];
-        } else {
-            $this->config['stylesheet'] = 'css/boltbb.min.css';
-        }
-
-        // JS
-        if (isset($this->config['javascript'])) {
-            $this->config['javascript'] = 'js/' . $this->config['javascript'];
-        } else {
-            $this->config['javascript'] = 'js/boltbb.min.js';
-        }
     }
 
     /**

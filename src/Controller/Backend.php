@@ -44,7 +44,6 @@ class Backend
         $this->app['htmlsnippets'] = true;
 
         // Add our JS & CSS
-//         $this->app['extensions.' . Extension::NAME]->addCSS($this->config['stylesheet'] , false);
         $this->app['extensions.' . Extension::NAME]->addJavascript('js/boltbb.admin.js', true);
     }
 

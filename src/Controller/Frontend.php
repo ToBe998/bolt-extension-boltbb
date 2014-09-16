@@ -54,9 +54,9 @@ class Frontend
         $this->app['htmlsnippets'] = true;
 
         // Add our JS & CSS and CKeditor
-        $this->app['extensions.' . Extension::NAME]->addCSS($this->config['stylesheet'], false);
+        $this->app['extensions.' . Extension::NAME]->addCSS('css/' . $this->config['webassets']['stylesheet'], false);
         $this->app['extensions']->addJavascript($this->app['paths']['app'] . 'view/lib/ckeditor/ckeditor.js', true);
-        $this->app['extensions.' . Extension::NAME]->addJavascript($this->config['javascript'], true);
+        $this->app['extensions.' . Extension::NAME]->addJavascript('js/' . $this->config['webassets']['javascript'], true);
 
         // Add jQuery CSS Emoticons Plugin @see: http://os.alfajango.com/css-emoticons/
         $this->app['extensions.' . Extension::NAME]->addCSS('css/jquery.cssemoticons.css', false);
