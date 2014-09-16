@@ -211,7 +211,7 @@ class BoltBBController implements ControllerProviderInterface
 
         // Create new reply submission form
         $topic = new Topic();
-        $data = array();
+        $data = array('csrf_protection' => $this->config['csrf']);
         $form = $app['form.factory']->createBuilder(new TopicType(), $topic, $data)
                                     ->getForm();
 
@@ -292,7 +292,7 @@ class BoltBBController implements ControllerProviderInterface
 
         // Create new reply submission form
         $reply = new Reply();
-        $data = array();
+        $data = array('csrf_protection' => $this->config['csrf']);
         $form = $app['form.factory']->createBuilder(new ReplyType(), $reply, $data)
                                     ->getForm();
 
