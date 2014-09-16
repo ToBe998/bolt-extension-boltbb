@@ -3,6 +3,8 @@
 namespace Bolt\Extension\Bolt\BoltBB\Controller;
 
 use Silex;
+use Silex\Application;
+use Silex\ControllerProviderInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Bolt\Extensions\Snippets\Location as SnippetLocation;
 use Bolt\Extension\Bolt\BoltBB\Extension;
@@ -14,7 +16,7 @@ use Bolt\Extension\Bolt\BoltBB\Form\TopicType;
 use Bolt\Extension\Bolt\BoltBB\Form\ReplyType;
 use Bolt\Extension\Bolt\Members\Members;
 
-class BoltBBController
+class BoltBBController implements ControllerProviderInterface
 {
     /**
      * @var Application
@@ -36,47 +38,89 @@ class BoltBBController
      */
     private $discuss;
 
-    public function __construct(Silex\Application $app)
+    /**
+     *
+     * @param  Silex\Application           $app
+     * @return \Silex\ControllerCollection
+     */
+    public function connect(Silex\Application $app)
     {
-        $this->app = $app;
-        $this->config = $this->app['extensions.' . Extension::NAME]->config;
-        $this->data = new Data($this->app);
-        $this->discuss = new Discussions($this->app);
+        $this->config = $app['extensions.' . Extension::NAME]->config;
+        $this->data = new Data($app);
+        $this->discuss = new Discussions($app);
+
+        /**
+         * @var $ctr \Silex\ControllerCollection
+         */
+        $ctr = $app['controllers_factory'];
+
+        /*
+         * Routes for forum base, individual forums and individual topics
+         */
+        $ctr->get('/', array($this, 'index'))
+            ->before(array($this, 'before'))
+            ->bind('index');
+
+        $ctr->get('/all', array($this, 'all'))
+            ->before(array($this, 'before'))
+            ->bind('all');
+
+        $ctr->match('/{forum}', array($this, 'forum'))
+            ->before(array($this, 'before'))
+            ->assert('forum', '[a-zA-Z0-9_\-]+')
+            ->bind('forum')
+            ->method('GET|POST');
+
+        $ctr->match('/{forum}/{topic}', array($this, 'topic'))
+            ->before(array($this, 'before'))
+            ->assert('forum', '[a-zA-Z0-9_\-]+')
+            ->assert('topic', '[a-zA-Z0-9_\-]+')
+            ->bind('topic')
+            ->method('GET|POST');
+
+        return $ctr;
     }
 
     /**
      * Controller before render
+     *
+     * @param Request           $request
+     * @param \Bolt\Application $app
      */
-    public function before()
+    public function before(Request $request, \Bolt\Application $app)
     {
         // Enable HTML snippets in our routes so that JS & CSS gets inserted
-        $this->app['htmlsnippets'] = true;
+        $app['htmlsnippets'] = true;
 
         // Add our JS & CSS and CKeditor
-        $this->app['extensions.' . Extension::NAME]->addCSS('css/' . $this->config['webassets']['stylesheet'], false);
-        $this->app['extensions']->addJavascript($this->app['paths']['app'] . 'view/lib/ckeditor/ckeditor.js', true);
-        $this->app['extensions.' . Extension::NAME]->addJavascript('js/' . $this->config['webassets']['javascript'], true);
+        $app['extensions.' . Extension::NAME]->addCSS('css/' . $this->config['webassets']['stylesheet'], false);
+        $app['extensions']->addJavascript($app['paths']['app'] . 'view/lib/ckeditor/ckeditor.js', true);
+        $app['extensions.' . Extension::NAME]->addJavascript('js/' . $this->config['webassets']['javascript'], true);
 
         // Add jQuery CSS Emoticons Plugin @see: http://os.alfajango.com/css-emoticons/
-        $this->app['extensions.' . Extension::NAME]->addCSS('css/jquery.cssemoticons.css', false);
-        $this->app['extensions.' . Extension::NAME]->addJavascript('js/jquery.cssemoticons.min.js', true);
+        $app['extensions.' . Extension::NAME]->addCSS('css/jquery.cssemoticons.css', false);
+        $app['extensions.' . Extension::NAME]->addJavascript('js/jquery.cssemoticons.min.js', true);
 
         // If using CKEditor CodeSnippet, enable Highlight.js
         if ($this->config['editor']['addons']['codesnippet']) {
-            $this->app['extensions.' . Extension::NAME]->addCSS('js/ckeditor/plugins/codesnippet/lib/highlight/styles/default.css', false);
-            $this->app['extensions.' . Extension::NAME]->addJavascript('js/ckeditor/plugins/codesnippet/lib/highlight/highlight.pack.js', true);
+            $app['extensions.' . Extension::NAME]->addCSS('js/ckeditor/plugins/codesnippet/lib/highlight/styles/default.css', false);
+            $app['extensions.' . Extension::NAME]->addJavascript('js/ckeditor/plugins/codesnippet/lib/highlight/highlight.pack.js', true);
         }
     }
 
     /**
      * Default route callback for forums
      *
-     * @since 1.0
+     * @param  Silex\Application $app
+     * @param  Request           $request
+     * @return \Twig_Markup
      */
-    public function index($forums = array())
+    public function index(Silex\Application $app, Request $request)
     {
         // Add assets to Twig path
-        $this->addTwigPath();
+        $this->addTwigPath($app);
+
+        $forums = array();
 
         // Add the uncategorised version
         $forums['all'] = array(
@@ -94,7 +138,7 @@ class BoltBBController
         }
 
         // Render the Twig
-        $html = $this->app['render']->render(
+        $html = $app['render']->render(
             $this->config['templates']['forums']['index'], array(
                 'twigparent' => $this->config['templates']['parent'],
                 'contenttypes' => $this->config['contenttypes'],
@@ -109,15 +153,17 @@ class BoltBBController
     /**
      * Default route callback for uncategorised forum feed
      *
-     * @since 1.0
+     * @param  Silex\Application $app
+     * @param  Request           $request
+     * @return \Twig_Markup
      */
-    public function all($forums = array())
+    public function all(Silex\Application $app, Request $request)
     {
         // Add assets to Twig path
-        $this->addTwigPath();
+        $this->addTwigPath($app);
 
         // Render the Twig
-        $html = $this->app['render']->render(
+        $html = $app['render']->render(
             $this->config['templates']['forums']['forum'], array(
                 'form' => '',
                 'twigparent' => $this->config['templates']['parent'],
@@ -141,7 +187,7 @@ class BoltBBController
                         'state' => 'open || closed'
                     ),
                     $this->config['pagercount']),
-                'showpager' => $this->app['storage']->isEmptyPager() ? false : true,
+                'showpager' => $app['storage']->isEmptyPager() ? false : true,
                 'boltbb' => $this->config['boltbb'],
                 'base_uri'  => $this->config['base_uri'],
         ));
@@ -152,21 +198,21 @@ class BoltBBController
     /**
      * Individual forum route callback
      *
-     * @since 1.0
-     *
-     * @param object $request The Symonfy request object
-     * @param mixed  $forum   Either ID or slug of the forum
+     * @param  Silex\Application $app
+     * @param  Request           $request
+     * @param  mixed             $forum   Either ID or slug of the forum
+     * @return \Twig_Markup
      */
-    public function forum(Request $request, $forum)
+    public function forum(Silex\Application $app, Request $request, $forum)
     {
         // Add assets to Twig path
-        $this->addTwigPath();
+        $this->addTwigPath($app);
         $forum = $this->data->getForum($forum);
 
         // Create new reply submission form
         $topic = new Topic();
         $data = array();
-        $form = $this->app['form.factory']->createBuilder(new TopicType(), $topic, $data)
+        $form = $app['form.factory']->createBuilder(new TopicType(), $topic, $data)
                                           ->getForm();
 
         // Handle the form request data
@@ -176,7 +222,7 @@ class BoltBBController
         if ($request->getMethod() == 'POST') {
             if ($form->isValid()) {
                 // Check that we've got a valid member
-                $author = $this->getMemberID();
+                $author = $this->getMemberID($app);
 
                 if ($author) {
                     // Create the new topic
@@ -186,22 +232,22 @@ class BoltBBController
                     $uri = $this->data->getTopicURI($topicid);
 
                     // Redirect to the new topic
-                    return $this->app->redirect($uri);
+                    return $app->redirect($uri);
                 }
             }
         }
 
         // Add CKEditor config javascript
-        $js = $this->app['render']->render(
+        $js = $app['render']->render(
             '_editorconfig.twig', array(
                 'ckconfig' => $this->config['editor'],
                 'ckfield'  => 'topic[body]',
-                'boltbb_basepath' => $this->app['extensions.' . Extension::NAME]->getBaseUrl()
+                'boltbb_basepath' => $app['extensions.' . Extension::NAME]->getBaseUrl()
         ));
-        $this->app['extensions.' . Extension::NAME]->addSnippet(SnippetLocation::BEFORE_JS, $js);
+        $app['extensions.' . Extension::NAME]->addSnippet(SnippetLocation::BEFORE_JS, $js);
 
         // Render the Twig
-        $html = $this->app['render']->render(
+        $html = $app['render']->render(
             $this->config['templates']['forums']['forum'], array(
                 'form' => $form->createView(),
                 'twigparent' => $this->config['templates']['parent'],
@@ -218,7 +264,7 @@ class BoltBBController
                           'state' => 'open || closed'
                     ),
                     $this->config['pagercount']),
-                'showpager' => $this->app['storage']->isEmptyPager() ? false : true,
+                'showpager' => $app['storage']->isEmptyPager() ? false : true,
                 'boltbb' => $this->config['boltbb'],
                 'base_uri'  => $this->config['base_uri'],
         ));
@@ -229,16 +275,16 @@ class BoltBBController
     /**
      * Individual topic route callback
      *
-     * @since 1.0
-     *
-     * @param object $request The Symonfy request object
-     * @param mixed  $forum   Either ID or slug of the forum
-     * @param mixed  $topic   Either ID or slug of the topic
+     * @param  Silex\Application $app
+     * @param  Request           $request
+     * @param  mixed             $forum   Either ID or slug of the forum
+     * @param  mixed             $topic   Either ID or slug of the topic
+     * @return \Twig_Markup
      */
-    public function topic(Request $request, $forum, $topic)
+    public function topic(Silex\Application $app, Request $request, $forum, $topic)
     {
         // Add assets to Twig path
-        $this->addTwigPath();
+        $this->addTwigPath($app);
 
         // Get consistent info for forum and topic
         $forum = $this->data->getForum($forum);
@@ -247,7 +293,7 @@ class BoltBBController
         // Create new reply submission form
         $reply = new Reply();
         $data = array();
-        $form = $this->app['form.factory']->createBuilder(new ReplyType(), $reply, $data)
+        $form = $app['form.factory']->createBuilder(new ReplyType(), $reply, $data)
                                           ->getForm();
 
         // Handle the form request data
@@ -257,35 +303,35 @@ class BoltBBController
         if ($request->getMethod() == 'POST') {
             if ($form->isValid()) {
                 // Check that we've got a valid member
-                $author = $this->getMemberID();
+                $author = $this->getMemberID($app);
 
                 if ($author) {
                     // Create new reply
                     $replyid = $this->discuss->doReplyNew($request, $topic, $author);
 
                     // Redirect
-                    return $this->app->redirect($request->getRequestUri() . '#reply-' . $topic['id'] . '-' . $replyid);
+                    return $app->redirect($request->getRequestUri() . '#reply-' . $topic['id'] . '-' . $replyid);
                 }
             }
         }
 
         // Add CKEditor config javascript
-        $js = $this->app['render']->render(
+        $js = $app['render']->render(
             '_editorconfig.twig', array(
                 'ckconfig' => $this->config['editor'],
                 'ckfield'  => 'reply[body]',
-                'boltbb_basepath' => $this->app['extensions.' . Extension::NAME]->getBaseUrl()
+                'boltbb_basepath' => $app['extensions.' . Extension::NAME]->getBaseUrl()
         ));
-        $this->app['extensions.' . Extension::NAME]->addSnippet(SnippetLocation::BEFORE_JS, $js);
+        $app['extensions.' . Extension::NAME]->addSnippet(SnippetLocation::BEFORE_JS, $js);
 
         // If using CKEditor CodeSnippet, enable Highlight.js
         if ($this->config['editor']['addons']['codesnippet']) {
             $js = '<script>hljs.initHighlightingOnLoad();</script>';
-            $this->app['extensions.' . Extension::NAME]->addSnippet(SnippetLocation::END_OF_BODY, $js);
+            $app['extensions.' . Extension::NAME]->addSnippet(SnippetLocation::END_OF_BODY, $js);
         }
 
         // Render the Twig
-        $html = $this->app['render']->render(
+        $html = $app['render']->render(
             $this->config['templates']['forums']['topic'], array(
                 'form' => $form->createView(),
                 'twigparent' => $this->config['templates']['parent'],
@@ -293,7 +339,7 @@ class BoltBBController
                 'forum' => $forum,
                 'topic' => $topic,
                 'replies' => $this->data->getTopicReplies($topic->values['id'], $this->config['pagercount']),
-                'showpager' => $this->app['storage']->isEmptyPager() ? false : true,
+                'showpager' => $app['storage']->isEmptyPager() ? false : true,
                 'boltbb' => $this->config['boltbb'],
                 'base_uri'  => $this->config['base_uri'],
         ));
@@ -301,15 +347,23 @@ class BoltBBController
         return new \Twig_Markup($html, 'UTF-8');
     }
 
-    private function addTwigPath()
+    /**
+     *
+     * @param Silex\Application $app
+     */
+    private function addTwigPath(Silex\Application $app)
     {
-        $this->app['twig.loader.filesystem']->addPath(dirname(dirname(__DIR__)) . '/assets');
-        $this->app['twig.loader.filesystem']->addPath(dirname(dirname(__DIR__)) . '/assets/forums');
+        $app['twig.loader.filesystem']->addPath(dirname(dirname(__DIR__)) . '/assets');
+        $app['twig.loader.filesystem']->addPath(dirname(dirname(__DIR__)) . '/assets/forums');
     }
 
-    private function getMemberID()
+    /**
+     *
+     * @param Silex\Application $app
+     */
+    private function getMemberID(Silex\Application $app)
     {
-        $members = new Members($this->app);
+        $members = new Members($app);
 
         return $members->isAuth();
     }

@@ -50,8 +50,8 @@ class Extension extends \Bolt\BaseExtension
          */
         if ($this->app['config']->getWhichEnd() == 'frontend') {
 
-            // Set up routes
-            $this->setControllerFrontend();
+            // Set up controller routes
+            $this->app->mount('/' . $this->config['base_uri'], new Controller\BoltBBController());
 
             // Twig functions
             $this->app['twig']->addExtension(new Twig\BoltBBExtension($this->app));
@@ -111,35 +111,6 @@ class Extension extends \Bolt\BaseExtension
         $this->config['tables']['forums'] = $prefix . 'forums';
         $this->config['tables']['topics'] = $prefix . $this->config['contenttypes']['topics'];
         $this->config['tables']['replies'] = $prefix . $this->config['contenttypes']['replies'];
-    }
-
-    /**
-     * Create controller and define routes
-     */
-    private function setControllerFrontend()
-    {
-        $this->controller = new Controller\BoltBBController($this->app);
-
-        /*
-         * Routes for forum base, individual forums and individual topics
-         */
-        $this->app->get("/{$this->config['base_uri']}/", array($this->controller, 'index'))
-                    ->before(array($this->controller, 'before'))
-                    ->bind('index');
-        $this->app->get("/{$this->config['base_uri']}/all/", array($this->controller, 'all'))
-                    ->before(array($this->controller, 'before'))
-                    ->bind('all');
-        $this->app->match("/{$this->config['base_uri']}/{forum}/", array($this->controller, 'forum'))
-                    ->before(array($this->controller, 'before'))
-                    ->assert('forum', '[a-zA-Z0-9_\-]+')
-                    ->bind('forum')
-                    ->method('GET|POST');
-        $this->app->match("/{$this->config['base_uri']}/{forum}/{topic}", array($this->controller, 'topic'))
-                    ->before(array($this->controller, 'before'))
-                    ->assert('forum', '[a-zA-Z0-9_\-]+')
-                    ->assert('topic', '[a-zA-Z0-9_\-]+')
-                    ->bind('topic')
-                    ->method('GET|POST');
     }
 
     /**
