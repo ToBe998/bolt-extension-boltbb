@@ -52,7 +52,7 @@ class Contenttypes
     public function __construct(Application $app)
     {
         $this->app = $app;
-        $this->config = $this->app['extensions.' . Extension::NAME]->config;
+        $this->config = $this->app[Extension::CONTAINER]->config;
 
         $this->parser = new Parser();
     }

@@ -86,7 +86,7 @@ class BoltBBAdminController implements ControllerProviderInterface
         $app['htmlsnippets'] = true;
 
         // Add our JS & CSS
-        $app['extensions.' . Extension::NAME]->addJavascript('js/boltbb.admin.js', true);
+        $app[Extension::CONTAINER]->addJavascript('js/boltbb.admin.js', true);
     }
 
     /**

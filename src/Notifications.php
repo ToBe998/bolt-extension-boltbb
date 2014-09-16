@@ -50,7 +50,7 @@ class Notifications
     public function __construct(Silex\Application $app, \Bolt\Content $record)
     {
         $this->app = $app;
-        $this->config = $this->app['extensions.' . Extension::NAME]->config;
+        $this->config = $this->app[Extension::CONTAINER]->config;
 
         $this->debug = $this->config['notifications']['debug'];
         $this->debug_address = $this->config['notifications']['debug_address'];

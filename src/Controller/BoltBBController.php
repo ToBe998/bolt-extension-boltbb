@@ -45,7 +45,7 @@ class BoltBBController implements ControllerProviderInterface
      */
     public function connect(Silex\Application $app)
     {
-        $this->config = $app['extensions.' . Extension::NAME]->config;
+        $this->config = $app[Extension::CONTAINER]->config;
         $this->data = new Data($app);
         $this->discuss = new Discussions($app);
 
@@ -93,18 +93,18 @@ class BoltBBController implements ControllerProviderInterface
         $app['htmlsnippets'] = true;
 
         // Add our JS & CSS and CKeditor
-        $app['extensions.' . Extension::NAME]->addCSS('css/' . $this->config['webassets']['stylesheet'], false);
+        $app[Extension::CONTAINER]->addCSS('css/' . $this->config['webassets']['stylesheet'], false);
         $app['extensions']->addJavascript($app['paths']['app'] . 'view/lib/ckeditor/ckeditor.js', true);
-        $app['extensions.' . Extension::NAME]->addJavascript('js/' . $this->config['webassets']['javascript'], true);
+        $app[Extension::CONTAINER]->addJavascript('js/' . $this->config['webassets']['javascript'], true);
 
         // Add jQuery CSS Emoticons Plugin @see: http://os.alfajango.com/css-emoticons/
-        $app['extensions.' . Extension::NAME]->addCSS('css/jquery.cssemoticons.css', false);
-        $app['extensions.' . Extension::NAME]->addJavascript('js/jquery.cssemoticons.min.js', true);
+        $app[Extension::CONTAINER]->addCSS('css/jquery.cssemoticons.css', false);
+        $app[Extension::CONTAINER]->addJavascript('js/jquery.cssemoticons.min.js', true);
 
         // If using CKEditor CodeSnippet, enable Highlight.js
         if ($this->config['editor']['addons']['codesnippet']) {
-            $app['extensions.' . Extension::NAME]->addCSS('js/ckeditor/plugins/codesnippet/lib/highlight/styles/default.css', false);
-            $app['extensions.' . Extension::NAME]->addJavascript('js/ckeditor/plugins/codesnippet/lib/highlight/highlight.pack.js', true);
+            $app[Extension::CONTAINER]->addCSS('js/ckeditor/plugins/codesnippet/lib/highlight/styles/default.css', false);
+            $app[Extension::CONTAINER]->addJavascript('js/ckeditor/plugins/codesnippet/lib/highlight/highlight.pack.js', true);
         }
     }
 
@@ -242,9 +242,9 @@ class BoltBBController implements ControllerProviderInterface
             '_editorconfig.twig', array(
                 'ckconfig' => $this->config['editor'],
                 'ckfield'  => 'topic[body]',
-                'boltbb_basepath' => $app['extensions.' . Extension::NAME]->getBaseUrl()
+                'boltbb_basepath' => $app[Extension::CONTAINER]->getBaseUrl()
         ));
-        $app['extensions.' . Extension::NAME]->addSnippet(SnippetLocation::BEFORE_JS, $js);
+        $app[Extension::CONTAINER]->addSnippet(SnippetLocation::BEFORE_JS, $js);
 
         // Render the Twig
         $html = $app['render']->render(
@@ -320,14 +320,14 @@ class BoltBBController implements ControllerProviderInterface
             '_editorconfig.twig', array(
                 'ckconfig' => $this->config['editor'],
                 'ckfield'  => 'reply[body]',
-                'boltbb_basepath' => $app['extensions.' . Extension::NAME]->getBaseUrl()
+                'boltbb_basepath' => $app[Extension::CONTAINER]->getBaseUrl()
         ));
-        $app['extensions.' . Extension::NAME]->addSnippet(SnippetLocation::BEFORE_JS, $js);
+        $app[Extension::CONTAINER]->addSnippet(SnippetLocation::BEFORE_JS, $js);
 
         // If using CKEditor CodeSnippet, enable Highlight.js
         if ($this->config['editor']['addons']['codesnippet']) {
             $js = '<script>hljs.initHighlightingOnLoad();</script>';
-            $app['extensions.' . Extension::NAME]->addSnippet(SnippetLocation::END_OF_BODY, $js);
+            $app[Extension::CONTAINER]->addSnippet(SnippetLocation::END_OF_BODY, $js);
         }
 
         // Render the Twig
