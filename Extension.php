@@ -15,9 +15,18 @@ use Bolt\StorageEvents;
 class Extension extends \Bolt\BaseExtension
 {
     /**
-     * @var Extension name
+     * Extension name
+     *
+     * @var string
      */
     const NAME = 'BoltBB';
+
+    /**
+     * Extension's container
+     *
+     * @var string
+     */
+    const CONTAINER = 'extensions.BoltBB';
 
     public function getName()
     {
@@ -42,7 +51,8 @@ class Extension extends \Bolt\BaseExtension
             $this->dbCheck();
 
             // Create the admin page and routes
-            $this->setControllerBackend();
+            $path = $this->app['config']->get('general/branding/path') . '/extensions/boltbb';
+            $this->app->mount($path, new Controller\BoltBBAdminController());
         }
 
         /*
@@ -111,43 +121,6 @@ class Extension extends \Bolt\BaseExtension
         $this->config['tables']['forums'] = $prefix . 'forums';
         $this->config['tables']['topics'] = $prefix . $this->config['contenttypes']['topics'];
         $this->config['tables']['replies'] = $prefix . $this->config['contenttypes']['replies'];
-    }
-
-    /**
-     * Create admin controller and define routes
-     */
-    private function setControllerBackend()
-    {
-        // check if user has allowed role(s)
-        $user    = $this->app['users']->getCurrentUser();
-        $userid  = $user['id'];
-
-        foreach ($this->config['admin_roles'] as $role) {
-            if ($this->app['users']->hasRole($userid, $role)) {
-                $this->authorized = true;
-                break;
-            }
-        }
-
-        if ($this->authorized) {
-            $this->controller = new Controller\BoltBBAdminController($this->app);
-
-            $this->path = $this->app['config']->get('general/branding/path') . '/extensions/boltbb';
-
-            // Admin page
-            $this->app->match($this->path, array($this->controller, 'admin'))
-                      ->before(array($this->controller, 'before'))
-                      ->bind('admin')
-                      ->method('GET');
-
-            // AJAX requests
-            $this->app->match($this->path . '/ajax', array($this->controller, 'ajax'))
-                      ->before(array($this->controller, 'before'))
-                      ->bind('ajax')
-                      ->method('GET|POST');
-
-            $this->addMenuOption(__('BoltBB'), $this->app['paths']['bolt'] . 'extensions/boltbb', "fa fa-cog");
-        }
     }
 
     /**

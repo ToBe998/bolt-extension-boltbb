@@ -4,6 +4,7 @@ namespace Bolt\Extension\Bolt\BoltBB\Controller;
 
 use Silex;
 use Silex\Application;
+use Silex\ControllerProviderInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -11,7 +12,7 @@ use Bolt\Extension\Bolt\BoltBB\Extension;
 use Bolt\Extension\Bolt\BoltBB\Admin;
 use Bolt\Extension\Bolt\BoltBB\Contenttypes;
 
-class BoltBBAdminController
+class BoltBBAdminController implements ControllerProviderInterface
 {
     /**
      * @var Application
@@ -28,53 +29,96 @@ class BoltBBAdminController
      */
     private $admin;
 
-    public function __construct(Application $app)
+    /**
+     *
+     * @param Silex\Application $app
+     * @return \Silex\ControllerCollection
+     */
+    public function connect(Silex\Application $app)
     {
-        $this->app = $app;
-        $this->config = $this->app['extensions.' . Extension::NAME]->config;
-        $this->admin = new Admin($this->app);
+        $this->config = $app[Extension::CONTAINER]->config;
+        $this->admin = new Admin($app);
+
+        // check if user has allowed role(s)
+        $user    = $app['users']->getCurrentUser();
+        $userid  = $user['id'];
+
+        foreach ($this->config['admin_roles'] as $role) {
+            if ($app['users']->hasRole($userid, $role)) {
+                $this->authorized = true;
+                break;
+            }
+        }
+
+        if ($this->authorized) {
+            /**
+             * @var $ctr \Silex\ControllerCollection
+             */
+            $ctr = $app['controllers_factory'];
+
+            // Admin page
+            $ctr->match('/', array($this, 'admin'))
+                ->before(array($this, 'before'))
+                ->bind('admin')
+                ->method('GET');
+
+            // AJAX requests
+            $ctr->match('/ajax', array($this, 'ajax'))
+                ->before(array($this, 'before'))
+                ->bind('ajax')
+                ->method('GET|POST');
+
+            $app[Extension::CONTAINER]->addMenuOption(__('BoltBB'), $app['paths']['bolt'] . 'extensions/boltbb', "fa fa-cog");
+
+            return $ctr;
+        }
     }
 
     /**
      * Controller before render
+     *
+     * @param Request           $request
+     * @param \Bolt\Application $app
      */
-    public function before()
+    public function before(Request $request, \Bolt\Application $app)
     {
         // Enable HTML snippets in our routes so that JS & CSS gets inserted
-        $this->app['htmlsnippets'] = true;
+        $app['htmlsnippets'] = true;
 
         // Add our JS & CSS
-        $this->app['extensions.' . Extension::NAME]->addJavascript('js/boltbb.admin.js', true);
+        $app['extensions.' . Extension::NAME]->addJavascript('js/boltbb.admin.js', true);
     }
 
     /**
      * The main admin page
      *
+     * @param Silex\Application $app
+     * @param Request $request
      * @return \Twig_Markup
      */
-    public function admin(Application $app, Request $request)
+    public function admin(Silex\Application $app, Request $request)
     {
-        $this->addTwigPath();
+        $this->addTwigPath($app);
 
         $forums = $this->admin->getForums();
         $needtypes = false;
 
         // Test to see if contenttypes have been set up
         foreach ($this->config['contenttypes'] as $type) {
-            if (!$this->app['storage']->getContentType($type)) {
+            if (!$app['storage']->getContentType($type)) {
                 $needtypes = true;
             }
         }
 
         // Set a flashbag if there is missing data
         if ($forums['needsync']) {
-            $this->app['session']->getFlashBag()->add('error', "Configured forums are missing from the database table.  Run 'Sync Table' to resolve.<br>" );
+            $app['session']->getFlashBag()->add('error', "Configured forums are missing from the database table.  Run 'Sync Table' to resolve.<br>" );
         }
         if ($needtypes) {
-            $this->app['session']->getFlashBag()->add('error', "BoltBB contenttypes are missing from contenttypes.yml.  Run 'Setup Contenttypes' to resolve.<br>" );
+            $app['session']->getFlashBag()->add('error', "BoltBB contenttypes are missing from contenttypes.yml.  Run 'Setup Contenttypes' to resolve.<br>" );
         }
 
-        $html = $this->app['render']->render('boltbb.twig', array(
+        $html = $app['render']->render('boltbb.twig', array(
             'boltbb'    => $this->config['boltbb'],
             'base_uri'  => $this->config['base_uri'],
             'forums'    => $forums['forums'],
@@ -86,12 +130,19 @@ class BoltBBAdminController
         return new \Twig_Markup($html, 'UTF-8');
     }
 
-    public function ajax(Application $app, Request $request)
+    /**
+     * BoltBB Admin AJAX controller
+     *
+     * @param Silex\Application $app
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\Response|\Symfony\Component\HttpFoundation\JsonResponse
+     */
+    public function ajax(Silex\Application $app, Request $request)
     {
         if ($request->getMethod() == "POST" && $app['request']->get('task')) {
             //
-            //if (!$this->app['users']->checkAntiCSRFToken()) {
-            //    $this->app->abort(400, __("Something went wrong"));
+            //if (!$app['users']->checkAntiCSRFToken()) {
+            //    $app->abort(400, __("Something went wrong"));
             //}
 
             //
@@ -177,7 +228,7 @@ class BoltBBAdminController
                 /*
                  * Write our missing contenttypes into contentypes.yml
                  */
-                $bbct = new Contenttypes($this->app);
+                $bbct = new Contenttypes($app);
 
                 foreach ($this->config['contenttypes'] as $type => $values) {
                     if (! $bbct->isContenttype($type)) {
@@ -197,9 +248,9 @@ class BoltBBAdminController
         }
     }
 
-    private function addTwigPath()
+    private function addTwigPath(Silex\Application $app)
     {
-        $this->app['twig.loader.filesystem']->addPath(dirname(dirname(__DIR__)) . '/assets/admin');
+        $app['twig.loader.filesystem']->addPath(dirname(dirname(__DIR__)) . '/assets/admin');
     }
 
 }
