@@ -5,7 +5,6 @@ namespace Bolt\Extension\Bolt\BoltBB;
 use Maid\Maid;
 use Silex;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  *

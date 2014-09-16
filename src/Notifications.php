@@ -111,7 +111,6 @@ class Notifications
             $this->record->values['authorprofile'] = $members->getMember('id', $this->record->values['author']);
         }
 
-
         /*
          * Title and slug
          * @TODO Replies are not guaranteed to be on page 1

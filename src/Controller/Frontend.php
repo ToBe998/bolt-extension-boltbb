@@ -4,7 +4,6 @@ namespace Bolt\Extension\Bolt\BoltBB\Controller;
 
 use Silex;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\RedirectResponse;
 use Bolt\Extensions\Snippets\Location as SnippetLocation;
 use Bolt\Extension\Bolt\BoltBB\Extension;
 use Bolt\Extension\Bolt\BoltBB\Data;
@@ -311,6 +310,7 @@ class Frontend
     private function getMemberID()
     {
         $members = new Members($this->app);
+
         return $members->isAuth();
     }
 

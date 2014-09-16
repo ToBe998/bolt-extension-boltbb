@@ -167,6 +167,7 @@ class BoltBBExtension extends \Twig_Extension
             // We are the last post, return ourselves
             return $record;
         }
+
         return $this->data->getForumLastPost($record['id']);
     }
 }
