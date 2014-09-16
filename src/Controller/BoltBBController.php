@@ -213,7 +213,7 @@ class BoltBBController implements ControllerProviderInterface
         $topic = new Topic();
         $data = array();
         $form = $app['form.factory']->createBuilder(new TopicType(), $topic, $data)
-                                          ->getForm();
+                                    ->getForm();
 
         // Handle the form request data
         $form->handleRequest($request);
@@ -294,7 +294,7 @@ class BoltBBController implements ControllerProviderInterface
         $reply = new Reply();
         $data = array();
         $form = $app['form.factory']->createBuilder(new ReplyType(), $reply, $data)
-                                          ->getForm();
+                                    ->getForm();
 
         // Handle the form request data
         $form->handleRequest($request);
