@@ -11,7 +11,7 @@ use Bolt\Extension\Bolt\BoltBB\Extension;
 use Bolt\Extension\Bolt\BoltBB\Admin;
 use Bolt\Extension\Bolt\BoltBB\Contenttypes;
 
-class Backend
+class BoltBBAdminController
 {
     /**
      * @var Application

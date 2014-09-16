@@ -14,7 +14,7 @@ use Bolt\Extension\Bolt\BoltBB\Form\TopicType;
 use Bolt\Extension\Bolt\BoltBB\Form\ReplyType;
 use Bolt\Extension\Bolt\Members\Members;
 
-class Frontend
+class BoltBBController
 {
     /**
      * @var Application
