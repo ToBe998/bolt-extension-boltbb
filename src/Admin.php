@@ -65,6 +65,12 @@ class Admin
 
         // Database rows
         try {
+            // Check to see if the site admin has created our table
+            $sm = $this->app['db']->getSchemaManager();
+            if (! $sm->tablesExist(array($this->config['tables']['forums']))) {
+                return $return;
+            }
+
             $rows = $this->app['db']->fetchAll('SELECT * FROM ' . $this->config['tables']['forums']);
 
             // Format an array of return values with details fo the forums
