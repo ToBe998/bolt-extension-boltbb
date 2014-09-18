@@ -6,6 +6,14 @@ BoltBB is a simple discussion forum extension for Bolt.
 The base install has templates that you can adapt for your own theme, and is base off Bolt's 
 `base-2014` theme.
 
+Dependencies
+------------
+
+BoltBB requires the following Bolt extensions to be installed and configured:
+  * Client Login - `bolt/clientlogin`
+  * Members      - `bolt/members`
+  
+Please see the documentation for each of those for more information on configuring them for your site.
 
 Initial Set Up
 --------------
