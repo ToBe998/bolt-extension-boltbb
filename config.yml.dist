@@ -35,7 +35,6 @@ templates:
     index: boltbb_index.twig
     forum: boltbb_forum.twig
     topic: boltbb_topic.twig
-    all:   boltbb_all.twig
   email:
     subject: boltbb_email_subject.twig
     body:    boltbb_email_body.twig
@@ -57,20 +56,20 @@ notifications:
 # you know what you're doing.
 csrf: true
 
-# Editor
+# CKEditor Options
 editor:
   addons:
-    images: true
-    anchor: false
-    tables: false
-    fontcolor: false
-    align: false
-    subsuper: false
-    embed: true
-    codetag: false
-    codesnippet: false
-    footnotes: false
+    images: true          # Create <img> links
+    anchor: false         # Anchor tags
+    tables: false         # HTML tables
+    fontcolor: false      # Font colour
+    align: false          #
+    subsuper: false       #
+    embed: true           # Embed videos, etc
+    codetag: false        # Wrap selected text in <code></code> tags
+    codesnippet: false    # Insert and format code snippets in a variety of programming languages 
+    footnotes: false      # Insert footnotes
   internal:
     allowedContent: false # [WARNING] If set to 'true', any elements and attributes are allowed in Wysiwg Elements, including <script>
-    autoParagraph: true # If set to 'true', any pasted content is wrapped in <p> tags for multiple line-breaks
+    autoParagraph: true   # If set to 'true', any pasted content is wrapped in <p> tags for multiple line-breaks
     disableNativeSpellChecker: false # If set to 'true' it will stop browsers from underlining spelling mistakes
