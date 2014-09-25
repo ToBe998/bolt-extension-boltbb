@@ -161,8 +161,8 @@ class Extension extends \Bolt\BaseExtension
                 $table->setPrimaryKey(array('id'));
 
                 // Add working columns
-                $table->addColumn('slug', 'string', array('length' => 256, 'default' => ''));
-                $table->addColumn('state', 'string', array('length' => 32, 'default' => 'open'));
+                $table->addColumn('slug',        'string', array('length' => 256,  'default' => ''));
+                $table->addColumn('state',       'string', array('length' => 32,   'default' => 'open'));
                 $table->addColumn('subscribers', 'string', array('length' => 2048, 'default' => ''));
 
                 // Index column(s)
