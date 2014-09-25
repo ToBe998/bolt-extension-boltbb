@@ -177,7 +177,8 @@ class BoltBBAdminController implements ControllerProviderInterface
                 /*
                  * Open a forum
                  */
-                if (! empty($request->request->get('forums'))) {
+                $forums = $request->request->get('forums');
+                if ($forums && is_array($forums)) {
                     foreach ($request->request->get('forums') as $forum) {
                         try {
                             $this->admin->doForumOpen($forum);
@@ -192,7 +193,8 @@ class BoltBBAdminController implements ControllerProviderInterface
                 /*
                  * Close a forum
                  */
-                if (! empty($request->request->get('forums'))) {
+                $forums = $request->request->get('forums');
+                if ($forums && is_array($forums)) {
                     foreach ($request->request->get('forums') as $forum) {
                         try {
                             $this->admin->doForumClose($forum);
