@@ -241,8 +241,11 @@ class Admin
     {
         $data = new Data($this->app);
 
-        if (empty($data->getForum($forum))) {
-            //
+        // Check we don't already have an existing record
+        $record = $data->getForum($forum);
+
+        if (empty($record)) {
+            // Default data for the new forum record
             $data = array(
                 'slug'  => $forum,
                 'state' => 'open'
