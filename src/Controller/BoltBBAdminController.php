@@ -228,7 +228,7 @@ class BoltBBAdminController implements ControllerProviderInterface
             }
 
             // Yeah, nah
-            return new Response($e->getMessage(), Response::HTTP_BAD_REQUEST);
+            return new Response('Bad request!', Response::HTTP_BAD_REQUEST);
 
         } elseif ($request->getMethod() == "GET" && $app['request']->get('task')) {
             if ($app['request']->get('task') == 'forumSync') {
