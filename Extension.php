@@ -133,7 +133,7 @@ class Extension extends \Bolt\BaseExtension
     private function setConfig()
     {
         // Database table names
-        $prefix = $this->app['config']->get('general/database/prefix', "bolt_");
+        $prefix = $this->app['config']->get('general/database/prefix', 'bolt_');
         $this->config['tables']['forums'] = $prefix . 'forums';
         $this->config['tables']['topics'] = $prefix . $this->config['contenttypes']['topics'];
         $this->config['tables']['replies'] = $prefix . $this->config['contenttypes']['replies'];
@@ -147,7 +147,7 @@ class Extension extends \Bolt\BaseExtension
      */
     private function dbCheck()
     {
-        $prefix = $this->app['config']->get('general/database/prefix', "bolt_");
+        $prefix = $this->app['config']->get('general/database/prefix', 'bolt_');
         $me = $this;
 
         $this->forums_table_name = $prefix . 'forums';
@@ -157,13 +157,13 @@ class Extension extends \Bolt\BaseExtension
                 $table = $schema->createTable($me->forums_table_name);
 
                 // Add primary column
-                $table->addColumn("id", "integer", array('autoincrement' => true));
-                $table->setPrimaryKey(array("id"));
+                $table->addColumn('id', 'integer', array('autoincrement' => true));
+                $table->setPrimaryKey(array('id'));
 
                 // Add working columns
-                $table->addColumn("slug", "string", array("length" => 256, "default" => ""));
-                $table->addColumn("state", "string", array("length" => 32, "default" => "open"));
-                $table->addColumn("subscribers", "string", array("length" => 2048, "default" => ""));
+                $table->addColumn('slug', 'string', array('length' => 256, 'default' => ''));
+                $table->addColumn('state', 'string', array('length' => 32, 'default' => 'open'));
+                $table->addColumn('subscribers', 'string', array('length' => 2048, 'default' => ''));
 
                 // Index column(s)
                 $table->addIndex(array('subscribers'));
