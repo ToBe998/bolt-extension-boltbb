@@ -38,7 +38,7 @@ templates:
   email:
     subject: boltbb_email_subject.twig
     body:    boltbb_email_body.twig
-  breadcrumbs: boltbb_breadcrumbs.twig
+  crumbs: boltbb_breadcrumbs.twig
 
 # Web assets
 #
