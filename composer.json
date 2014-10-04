@@ -11,7 +11,7 @@
 		"bolt/members" : "dev-master",
 		"bolt/geoip" : "dev-master"
 	},
-	"license" : "GPL",
+	"license" : "GPL-3.0+",
 	"authors" : [{
 			"name" : "Gawain Lynch",
 			"email" : "gawain.lynch@gmail.com"
