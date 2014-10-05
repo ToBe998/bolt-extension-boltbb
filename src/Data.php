@@ -3,7 +3,7 @@
 namespace Bolt\Extension\Bolt\BoltBB;
 
 use Silex;
-use Bolt\Extension\Bolt\Members\MembersProfiles;
+use Bolt\Extension\Bolt\Members\Profiles as MembersProfiles;
 
 /**
  * BoltBB data management
