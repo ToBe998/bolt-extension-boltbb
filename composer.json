@@ -3,7 +3,9 @@
 	"description" : "A bulletin board extension",
 	"type" : "bolt-extension",
 	"keywords" : [
-		"lock"
+		"discussion",
+		"bulletin board",
+		"members"
 	],
 	"require" : {
 		"bolt/bolt" : ">=2.0.0,<3.0.0",
