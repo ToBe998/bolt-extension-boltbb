@@ -36,7 +36,7 @@ templates:
     forum: boltbb_forum.twig
     topic: boltbb_topic.twig
   navigation:
-    crumbs: boltbb_breadcrumbs.twig
+    crumbs: boltbb_crumbs.twig
   email:
     subject: boltbb_email_subject.twig
     body:    boltbb_email_body.twig
