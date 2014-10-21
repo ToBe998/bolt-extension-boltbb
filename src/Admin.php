@@ -65,10 +65,21 @@ class Admin
 
         // Database rows
         try {
+            $hastopics = false;
+            $hasreplies = false;
+
             // Check to see if the site admin has created our table
             $sm = $this->app['db']->getSchemaManager();
             if (! $sm->tablesExist(array($this->config['tables']['forums']))) {
                 return $return;
+            }
+
+            if ($sm->tablesExist(array($this->config['tables']['topics']))) {
+                $hastopics = true;
+            }
+
+            if ($sm->tablesExist(array($this->config['tables']['replies']))) {
+                $hasreplies = true;
             }
 
             $rows = $this->app['db']->fetchAll('SELECT * FROM ' . $this->config['tables']['forums']);
@@ -82,8 +93,8 @@ class Admin
                     'description' => $conf[$slug]['description'],
                     'subscribers' => empty($row['subscribers']) ? '' : json_decode($row['subscribers'], true),
                     'state'       => isset($conf[$slug]) ? $row['state'] : 'abandoned',
-                    'topics'      => $data->getForumTopicCount($row['id']),
-                    'replies'     => $data->getForumReplyCount($row['id'])
+                    'topics'      => $hastopics ? $data->getForumTopicCount($row['id']) : 0,
+                    'replies'     => $hasreplies ? $data->getForumReplyCount($row['id']) : 0
                 );
 
                 // Not enough forums to warrant the extra if()
