@@ -65,6 +65,8 @@ class BoltBBAdminController implements ControllerProviderInterface
         $user    = $app['users']->getCurrentUser();
         $userid  = $user['id'];
 
+        $this->authorized = false;
+
         foreach ($this->config['admin_roles'] as $role) {
             if ($app['users']->hasRole($userid, $role)) {
                 $this->authorized = true;
