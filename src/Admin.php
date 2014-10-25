@@ -3,6 +3,7 @@
 namespace Bolt\Extension\Bolt\BoltBB;
 
 use Silex;
+use Bolt\Translation\Translation as Trans;
 
 /**
  * BoltBB administration functions
@@ -199,7 +200,7 @@ class Admin
             $this->app['db']->update(
                 $this->config['tables']['replies'],
                 array(
-                    'title' => '[' . __('Reply') . ']: ' . $topic['title'],
+                    'title' => '[' . Trans::__('Reply') . ']: ' . $topic['title'],
                     'slug' => makeSlug($topic['title'], 128) . '-' . $i
                 ),
                 array('topic' => $topic['id'])

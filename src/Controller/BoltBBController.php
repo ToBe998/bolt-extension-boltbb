@@ -7,6 +7,7 @@ use Silex\Application;
 use Silex\ControllerProviderInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Bolt\Extensions\Snippets\Location as SnippetLocation;
+use Bolt\Translation\Translation as Trans;
 use Bolt\Extension\Bolt\BoltBB\Extension;
 use Bolt\Extension\Bolt\BoltBB\Data;
 use Bolt\Extension\Bolt\BoltBB\Discussions;
@@ -150,8 +151,8 @@ class BoltBBController implements ControllerProviderInterface
             'slug'        => 'all',
             'state'       => 'closed',
             'subscribers' => '',
-            'title'       => __('All Discussions'),
-            'description' => __('The uncategorised version')
+            'title'       => Trans::__('All Discussions'),
+            'description' => Trans::__('The uncategorised version')
         );
 
         // Combine YAML and database information about each forum
@@ -195,8 +196,8 @@ class BoltBBController implements ControllerProviderInterface
                     'slug'        => 'all',
                     'state'       => 'closed',
                     'subscribers' => '',
-                    'title'       => __('All Discussions'),
-                    'description' => __('The uncategorised version')
+                    'title'       => Trans::__('All Discussions'),
+                    'description' => Trans::__('The uncategorised version')
                 ),
                 'global' => $this->data->getForumTopics(false,
                     array('visibility' => 'global')

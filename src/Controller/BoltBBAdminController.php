@@ -8,6 +8,7 @@ use Silex\ControllerProviderInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Bolt\Translation\Translation as Trans;
 use Bolt\Extension\Bolt\BoltBB\Extension;
 use Bolt\Extension\Bolt\BoltBB\Admin;
 use Bolt\Extension\Bolt\BoltBB\Contenttypes;
@@ -92,7 +93,7 @@ class BoltBBAdminController implements ControllerProviderInterface
                 ->bind('ajax')
                 ->method('GET|POST');
 
-            $app[Extension::CONTAINER]->addMenuOption(__('BoltBB'), $app['paths']['bolt'] . 'extensions/boltbb', "fa fa-cog");
+            $app[Extension::CONTAINER]->addMenuOption(Trans::__('BoltBB'), $app['paths']['bolt'] . 'extensions/boltbb', "fa fa-cog");
 
             return $ctr;
         }
@@ -166,7 +167,7 @@ class BoltBBAdminController implements ControllerProviderInterface
         if ($request->getMethod() == "POST" && $app['request']->get('task')) {
             //
             //if (!$app['users']->checkAntiCSRFToken()) {
-            //    $app->abort(400, __("Something went wrong"));
+            //    $app->abort(400, Trans::__("Something went wrong"));
             //}
 
             //
