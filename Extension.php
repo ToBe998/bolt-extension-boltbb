@@ -3,8 +3,10 @@
 namespace Bolt\Extension\Bolt\BoltBB;
 
 use Doctrine\DBAL\Schema\Schema;
-use Bolt\CronEvents;
-use Bolt\StorageEvents;
+use Bolt\Events\CronEvent;
+use Bolt\Events\CronEvents;
+use Bolt\Events\StorageEvent;
+use Bolt\Events\StorageEvents;
 
 /**
  * BoltBB discussion extension for Bolt
@@ -104,9 +106,9 @@ class Extension extends \Bolt\BaseExtension
     /**
      * Post-save hook for topic and reply creations
      *
-     * @param \Bolt\StorageEvent $event
+     * @param \Bolt\Events\StorageEvent $event
      */
-    public function hookPostSave(\Bolt\StorageEvent $event)
+    public function hookPostSave(StorageEvent $event)
     {
         // Get contenttype
         $contenttype = $event->getContentType();
