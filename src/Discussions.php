@@ -5,7 +5,7 @@ namespace Bolt\Extension\Bolt\BoltBB;
 use Maid\Maid;
 use Silex;
 use Symfony\Component\HttpFoundation\Request;
-use Bolt\Translation\Translation as Trans;
+use Bolt\Translation\Translator as Trans;
 
 /**
  * BoltBB discussion class

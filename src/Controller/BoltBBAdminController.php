@@ -8,7 +8,7 @@ use Silex\ControllerProviderInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Bolt\Translation\Translation as Trans;
+use Bolt\Translation\Translator as Trans;
 use Bolt\Extension\Bolt\BoltBB\Extension;
 use Bolt\Extension\Bolt\BoltBB\Admin;
 use Bolt\Extension\Bolt\BoltBB\Contenttypes;

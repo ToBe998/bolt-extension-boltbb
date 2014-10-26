@@ -3,7 +3,7 @@
 namespace Bolt\Extension\Bolt\BoltBB;
 
 use Silex;
-use Bolt\Translation\Translation as Trans;
+use Bolt\Translation\Translator as Trans;
 
 /**
  * BoltBB administration functions
