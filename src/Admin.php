@@ -3,6 +3,7 @@
 namespace Bolt\Extension\Bolt\BoltBB;
 
 use Silex;
+use Bolt\String;
 use Bolt\Translation\Translator as Trans;
 
 /**
@@ -201,7 +202,7 @@ class Admin
                 $this->config['tables']['replies'],
                 array(
                     'title' => '[' . Trans::__('Reply') . ']: ' . $topic['title'],
-                    'slug' => makeSlug($topic['title'], 128) . '-' . $i
+                    'slug' => String::slug($topic['title'], 128) . '-' . $i
                 ),
                 array('topic' => $topic['id'])
             );

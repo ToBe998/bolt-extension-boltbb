@@ -5,6 +5,7 @@ namespace Bolt\Extension\Bolt\BoltBB;
 use Maid\Maid;
 use Silex;
 use Symfony\Component\HttpFoundation\Request;
+use Bolt\String;
 use Bolt\Translation\Translator as Trans;
 
 /**
@@ -97,7 +98,7 @@ class Discussions
         $form = $request->get('topic');
 
         $values = array(
-            'slug'        => makeSlug($form['title'], 128),
+            'slug'        => String::slug($form['title'], 128),
             'title'       => $form['title'],
             'author'      => $author,
             'authorip'    => $request->getClientIp(),
@@ -139,7 +140,7 @@ class Discussions
         $form = $request->get('reply');
 
         $values = array(
-            'slug'     => makeSlug($topic['title'], 128),
+            'slug'     => String::slug($topic['title'], 128),
             'title'    => '[' . Trans::__('Reply') . ']: ' . $topic['title'],
             'author'   => $author,
             'authorip' => $request->getClientIp(),
