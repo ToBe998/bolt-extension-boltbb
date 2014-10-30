@@ -93,7 +93,7 @@ class BoltBBAdminController implements ControllerProviderInterface
                 ->bind('ajax')
                 ->method('GET|POST');
 
-            $app[Extension::CONTAINER]->addMenuOption(Trans::__('BoltBB'), $app['paths']['bolt'] . 'extensions/boltbb', "fa fa-cog");
+            $app[Extension::CONTAINER]->addMenuOption(Trans::__('BoltBB'), $app['paths']['bolt'] . 'extensions/boltbb', "fa:cog");
 
             return $ctr;
         }
