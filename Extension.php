@@ -69,8 +69,7 @@ class Extension extends \Bolt\BaseExtension
             $this->dbCheck();
 
             // Create the admin page and routes
-            $path = $this->app['config']->get('general/branding/path') . '/extensions/boltbb';
-            $this->app->mount($path, new Controller\BoltBBAdminController());
+            $this->adminController();
         }
 
         /*
@@ -126,6 +125,30 @@ class Extension extends \Bolt\BaseExtension
             // Launch the notification
             $notify = new Notifications($this->app, $record);
             $notify->doNotification();
+        }
+    }
+
+    /**
+     * Conditionally load the admin controller if the user has the valid role
+     */
+    private function adminController()
+    {
+        // check if user has allowed role(s)
+        $user    = $this->app['users']->getCurrentUser();
+        $userid  = $user['id'];
+
+        $this->authorized = false;
+
+        foreach ($this->config['admin_roles'] as $role) {
+            if ($this->app['users']->hasRole($userid, $role)) {
+                $this->authorized = true;
+                break;
+            }
+        }
+
+        if ($this->authorized) {
+            $path = $this->app['config']->get('general/branding/path') . '/extensions/boltbb';
+            $this->app->mount($path, new Controller\BoltBBAdminController());
         }
     }
 

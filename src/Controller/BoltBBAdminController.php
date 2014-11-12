@@ -62,41 +62,26 @@ class BoltBBAdminController implements ControllerProviderInterface
         $this->config = $app[Extension::CONTAINER]->config;
         $this->admin = new Admin($app);
 
-        // check if user has allowed role(s)
-        $user    = $app['users']->getCurrentUser();
-        $userid  = $user['id'];
+        /**
+         * @var $ctr \Silex\ControllerCollection
+         */
+        $ctr = $app['controllers_factory'];
 
-        $this->authorized = false;
+        // Admin page
+        $ctr->match('/', array($this, 'admin'))
+            ->before(array($this, 'before'))
+            ->bind('admin')
+            ->method('GET');
 
-        foreach ($this->config['admin_roles'] as $role) {
-            if ($app['users']->hasRole($userid, $role)) {
-                $this->authorized = true;
-                break;
-            }
-        }
+        // AJAX requests
+        $ctr->match('/ajax', array($this, 'ajax'))
+            ->before(array($this, 'before'))
+            ->bind('ajax')
+            ->method('GET|POST');
 
-        if ($this->authorized) {
-            /**
-             * @var $ctr \Silex\ControllerCollection
-             */
-            $ctr = $app['controllers_factory'];
+        $app[Extension::CONTAINER]->addMenuOption(Trans::__('BoltBB'), $app['paths']['bolt'] . 'extensions/boltbb', "fa:cog");
 
-            // Admin page
-            $ctr->match('/', array($this, 'admin'))
-                ->before(array($this, 'before'))
-                ->bind('admin')
-                ->method('GET');
-
-            // AJAX requests
-            $ctr->match('/ajax', array($this, 'ajax'))
-                ->before(array($this, 'before'))
-                ->bind('ajax')
-                ->method('GET|POST');
-
-            $app[Extension::CONTAINER]->addMenuOption(Trans::__('BoltBB'), $app['paths']['bolt'] . 'extensions/boltbb', "fa:cog");
-
-            return $ctr;
-        }
+        return $ctr;
     }
 
     /**
