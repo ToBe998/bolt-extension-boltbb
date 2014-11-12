@@ -153,18 +153,6 @@ class Extension extends \Bolt\BaseExtension
     }
 
     /**
-     * Set up config and defaults
-     */
-    private function setConfig()
-    {
-        // Database table names
-        $prefix = $this->app['config']->get('general/database/prefix', 'bolt_');
-        $this->config['tables']['forums'] = $prefix . 'forums';
-        $this->config['tables']['topics'] = $prefix . $this->config['contenttypes']['topics'];
-        $this->config['tables']['replies'] = $prefix . $this->config['contenttypes']['replies'];
-    }
-
-    /**
      * Register, setup and index our database table
      *
      * @since 1.0
@@ -195,6 +183,18 @@ class Extension extends \Bolt\BaseExtension
 
                 return $table;
             });
+    }
+
+    /**
+     * Set up config and defaults
+     */
+    private function setConfig()
+    {
+        // Database table names
+        $prefix = $this->app['config']->get('general/database/prefix', 'bolt_');
+        $this->config['tables']['forums'] = $prefix . 'forums';
+        $this->config['tables']['topics'] = $prefix . $this->config['contenttypes']['topics'];
+        $this->config['tables']['replies'] = $prefix . $this->config['contenttypes']['replies'];
     }
 
     /**
