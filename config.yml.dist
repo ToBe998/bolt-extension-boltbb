@@ -57,6 +57,9 @@ notifications:
 # you know what you're doing.
 csrf: true
 
+# Access role(s) required to access the BoltBB Administation page
+admin_roles: [ 'root', 'admin', 'developer', 'chief-editor' ]
+
 # CKEditor Options
 editor:
   addons:
