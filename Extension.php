@@ -186,6 +186,18 @@ class Extension extends \Bolt\BaseExtension
     }
 
     /**
+     * Add our required roles to Members
+     */
+    private function addRoles()
+    {
+        if (is_object($this->app['members'])) {
+            foreach ($this->config['roles'] as $role => $name) {
+                $this->app['members']->addRole($role, $name);
+            }
+        }
+    }
+
+    /**
      * Set up config and defaults
      */
     private function setConfig()
@@ -259,6 +271,11 @@ class Extension extends \Bolt\BaseExtension
                         $this->app['paths']['app'] . 'view/css/ckeditor.css',
                     )
                 )
+            ),
+            'roles' => array(
+                'boltbb_admin'       => 'BoltBB Admin',
+                'boltbb_moderator'   => 'BoltBB Moderator',
+                'boltbb_participant' => 'BoltBB Participant'
             )
         );
     }
