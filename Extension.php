@@ -197,7 +197,7 @@ class Extension extends \Bolt\BaseExtension
     {
         if (is_object($this->app['members'])) {
             foreach ($this->config['roles'] as $role => $name) {
-                $this->app['members']->addRole($role, $name);
+                $this->app['members']->addAvailableRole($role, $name);
             }
         }
     }
