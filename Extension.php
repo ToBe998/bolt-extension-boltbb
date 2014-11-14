@@ -62,6 +62,11 @@ class Extension extends \Bolt\BaseExtension
         $this->setConfig();
 
         /*
+         * Roles
+         */
+        $this->addRoles();
+
+        /*
          * Backend
          */
         if ($this->app['config']->getWhichEnd() == 'backend') {
