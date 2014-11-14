@@ -81,10 +81,12 @@ class BoltBBController implements ControllerProviderInterface
          * Routes for forum base, individual forums and individual topics
          */
         $ctr->get('/', array($this, 'index'))
-            ->before(array($this, 'before'));
+            ->before(array($this, 'before'))
+            ->bind('boltbb');
 
         $ctr->get('/all', array($this, 'all'))
-            ->before(array($this, 'before'));
+            ->before(array($this, 'before'))
+            ->bind('alltopics');
 
         $ctr->match('/{forum}', array($this, 'forum'))
             ->before(array($this, 'before'))
