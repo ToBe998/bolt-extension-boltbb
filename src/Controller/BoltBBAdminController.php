@@ -70,11 +70,11 @@ class BoltBBAdminController implements ControllerProviderInterface
         // Admin page
         $ctr->match('/', array($this, 'admin'))
             ->before(array($this, 'before'))
+            ->bind('BoltBBAdmin')
             ->method('GET');
 
         // AJAX requests
         $ctr->match('/ajax', array($this, 'ajax'))
-            ->before(array($this, 'before'))
             ->method('GET|POST');
 
         $app[Extension::CONTAINER]->addMenuOption(Trans::__('BoltBB'), $app['paths']['bolt'] . 'extensions/boltbb', "fa:pencil-square-o");
