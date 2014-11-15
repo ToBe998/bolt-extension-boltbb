@@ -147,7 +147,10 @@ class BoltBBAdminController implements ControllerProviderInterface
      */
     public function ajax(Silex\Application $app, Request $request)
     {
-        if ($request->getMethod() == "POST" && $app['request']->get('task')) {
+        // Get the task name
+        $task = $app['request']->get('task');
+
+        if ($request->getMethod() == "POST" && $task) {
             //
             //if (!$app['users']->checkAntiCSRFToken()) {
             //    $app->abort(400, Trans::__("Something went wrong"));
@@ -155,11 +158,12 @@ class BoltBBAdminController implements ControllerProviderInterface
 
             //
             $values = array(
-                'job' => $app['request']->get('task'),
-                'result' => true
+                'job' => $task,
+                'result' => true,
+                'data'   => ''
             );
 
-            if ($app['request']->get('task') == 'forumOpen') {
+            if ($task == 'forumOpen') {
                 /*
                  * Open a forum
                  */
@@ -175,7 +179,7 @@ class BoltBBAdminController implements ControllerProviderInterface
                 }
 
                 return new JsonResponse($values);
-            } elseif ($app['request']->get('task') == 'forumClose') {
+            } elseif ($task == 'forumClose') {
                 /*
                  * Close a forum
                  */
@@ -191,7 +195,7 @@ class BoltBBAdminController implements ControllerProviderInterface
                 }
 
                 return new JsonResponse($values);
-            } elseif ($app['request']->get('task') == 'repairRelation') {
+            } elseif ($task == 'repairRelation') {
                 /*
                  * Repair forum/reply relationships
                  */
@@ -202,7 +206,7 @@ class BoltBBAdminController implements ControllerProviderInterface
                 }
 
                 return new JsonResponse($values);
-            } elseif ($app['request']->get('task') == 'testNotify') {
+            } elseif ($task == 'testNotify') {
                 /*
                  * Send a test notification
                  */
@@ -218,8 +222,8 @@ class BoltBBAdminController implements ControllerProviderInterface
             // Yeah, nah
             return new Response('Bad request!', Response::HTTP_BAD_REQUEST);
 
-        } elseif ($request->getMethod() == "GET" && $app['request']->get('task')) {
-            if ($app['request']->get('task') == 'forumSync') {
+        } elseif ($request->getMethod() == "GET" && $task) {
+            if ($task == 'forumSync') {
 
                 /*
                  * Sync our database table with the configuration files defined forums
@@ -233,7 +237,7 @@ class BoltBBAdminController implements ControllerProviderInterface
                 } catch (\Exception $e) {
                     return new Response($e->getMessage(), Response::HTTP_INTERNAL_SERVER_ERROR, array('content-type' => 'text/html'));
                 }
-            } elseif ($app['request']->get('task') == 'forumContenttypes') {
+            } elseif ($task == 'forumContenttypes') {
 
                 /*
                  * Write our missing contenttypes into contentypes.yml
