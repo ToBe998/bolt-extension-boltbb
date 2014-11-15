@@ -168,7 +168,7 @@ class BoltBBAdminController implements ControllerProviderInterface
                     foreach ($request->request->get('forums') as $forum) {
                         try {
                             $this->admin->doForumOpen($forum);
-                        } catch (Exception $e) {
+                        } catch (\Exception $e) {
                             return new Response($e->getMessage(), Response::HTTP_INTERNAL_SERVER_ERROR, array('content-type' => 'text/html'));
                         }
                     }
@@ -184,7 +184,7 @@ class BoltBBAdminController implements ControllerProviderInterface
                     foreach ($request->request->get('forums') as $forum) {
                         try {
                             $this->admin->doForumClose($forum);
-                        } catch (Exception $e) {
+                        } catch (\Exception $e) {
                             return new Response($e->getMessage(), Response::HTTP_INTERNAL_SERVER_ERROR, array('content-type' => 'text/html'));
                         }
                     }
@@ -197,7 +197,7 @@ class BoltBBAdminController implements ControllerProviderInterface
                  */
                 try {
                     $this->admin->doRepairReplyRelationships();
-                } catch (Exception $e) {
+                } catch (\Exception $e) {
                     return new Response($e->getMessage(), Response::HTTP_INTERNAL_SERVER_ERROR, array('content-type' => 'text/html'));
                 }
 
@@ -208,7 +208,7 @@ class BoltBBAdminController implements ControllerProviderInterface
                  */
                 try {
                     $this->admin->doTestNotification();
-                } catch (Exception $e) {
+                } catch (\Exception $e) {
                     return new Response($e->getMessage(), Response::HTTP_INTERNAL_SERVER_ERROR, array('content-type' => 'text/html'));
                 }
 
@@ -230,7 +230,7 @@ class BoltBBAdminController implements ControllerProviderInterface
                     $values = $this->admin->getForums();
 
                     return new JsonResponse($values);
-                } catch (Exception $e) {
+                } catch (\Exception $e) {
                     return new Response($e->getMessage(), Response::HTTP_INTERNAL_SERVER_ERROR, array('content-type' => 'text/html'));
                 }
             } elseif ($app['request']->get('task') == 'forumContenttypes') {
@@ -244,7 +244,7 @@ class BoltBBAdminController implements ControllerProviderInterface
                     if (! $bbct->isContenttype($type)) {
                         try {
                             $bbct->insertContenttype($type);
-                        } catch (Exception $e) {
+                        } catch (\Exception $e) {
                             return new Response($e->getMessage(), Response::HTTP_INTERNAL_SERVER_ERROR, array('content-type' => 'text/html'));
                         }
                     }
