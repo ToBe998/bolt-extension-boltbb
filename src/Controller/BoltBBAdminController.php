@@ -173,12 +173,12 @@ class BoltBBAdminController implements ControllerProviderInterface
                         try {
                             $this->admin->doForumOpen($forum);
                         } catch (\Exception $e) {
-                            return new Response($e->getMessage(), Response::HTTP_INTERNAL_SERVER_ERROR, array('content-type' => 'text/html'));
+                            return new JsonResponse($this->getResult($task, $e), Response::HTTP_INTERNAL_SERVER_ERROR);
                         }
                     }
                 }
 
-                return new JsonResponse($values);
+                return new JsonResponse($this->getResult($task));
             } elseif ($task == 'forumClose') {
                 /*
                  * Close a forum
@@ -189,12 +189,12 @@ class BoltBBAdminController implements ControllerProviderInterface
                         try {
                             $this->admin->doForumClose($forum);
                         } catch (\Exception $e) {
-                            return new Response($e->getMessage(), Response::HTTP_INTERNAL_SERVER_ERROR, array('content-type' => 'text/html'));
+                            return new JsonResponse($this->getResult($task, $e), Response::HTTP_INTERNAL_SERVER_ERROR);
                         }
                     }
                 }
 
-                return new JsonResponse($values);
+                return new JsonResponse($this->getResult($task));
             } elseif ($task == 'repairRelation') {
                 /*
                  * Repair forum/reply relationships
@@ -202,10 +202,10 @@ class BoltBBAdminController implements ControllerProviderInterface
                 try {
                     $this->admin->doRepairReplyRelationships();
                 } catch (\Exception $e) {
-                    return new Response($e->getMessage(), Response::HTTP_INTERNAL_SERVER_ERROR, array('content-type' => 'text/html'));
+                    return new JsonResponse($this->getResult($task, $e), Response::HTTP_INTERNAL_SERVER_ERROR);
                 }
 
-                return new JsonResponse($values);
+                return new JsonResponse($this->getResult($task));
             } elseif ($task == 'testNotify') {
                 /*
                  * Send a test notification
@@ -213,10 +213,10 @@ class BoltBBAdminController implements ControllerProviderInterface
                 try {
                     $this->admin->doTestNotification();
                 } catch (\Exception $e) {
-                    return new Response($e->getMessage(), Response::HTTP_INTERNAL_SERVER_ERROR, array('content-type' => 'text/html'));
+                    return new JsonResponse($this->getResult($task, $e), Response::HTTP_INTERNAL_SERVER_ERROR);
                 }
 
-                return new JsonResponse($values);
+                return new JsonResponse($this->getResult($task));
             }
 
             // Yeah, nah
@@ -233,9 +233,9 @@ class BoltBBAdminController implements ControllerProviderInterface
 
                     $values = $this->admin->getForums();
 
-                    return new JsonResponse($values);
+                    return new JsonResponse($this->getResult($task));
                 } catch (\Exception $e) {
-                    return new Response($e->getMessage(), Response::HTTP_INTERNAL_SERVER_ERROR, array('content-type' => 'text/html'));
+                    return new JsonResponse($this->getResult($task, $e), Response::HTTP_INTERNAL_SERVER_ERROR);
                 }
             } elseif ($task == 'forumContenttypes') {
 
@@ -249,7 +249,7 @@ class BoltBBAdminController implements ControllerProviderInterface
                         try {
                             $bbct->insertContenttype($type);
                         } catch (\Exception $e) {
-                            return new Response($e->getMessage(), Response::HTTP_INTERNAL_SERVER_ERROR, array('content-type' => 'text/html'));
+                            return new JsonResponse($this->getResult($task, $e), Response::HTTP_INTERNAL_SERVER_ERROR);
                         }
                     }
                 }
@@ -260,6 +260,29 @@ class BoltBBAdminController implements ControllerProviderInterface
             // Yeah, nah
             return new Response('Invalid request parameters', Response::HTTP_BAD_REQUEST);
         }
+    }
+
+    /**
+     *
+     * @param  string     $task
+     * @param  \Exception $e
+     * @return array
+     */
+    private function getResult($task, \Exception $e = null)
+    {
+        if (is_null($e)) {
+            return array(
+                'job'    => $task,
+                'result' => true,
+                'data'   => ''
+            );
+        }
+
+        return array(
+            'job'    => $task,
+            'result' => true,
+            'data'   => $e->getMessage()
+        );
     }
 
     private function addTwigPath(Silex\Application $app)
