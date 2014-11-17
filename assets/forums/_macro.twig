@@ -1,16 +1,18 @@
 {% macro author(author, ip) %}
 
-    <div class="row text-center">
+    <div class="row text-center boltbb-author-avatar">
         <img src="{{ author.avatar }}" alt="{{ author.displayname }}" class="avatar">
     </div>
-    <div class="row text-center">
+    <div class="row text-center boltbb-author-name">
         {{ author.displayname }}
     </div>
 
     {% set geoip = geoip(ip) %}
     <div class="row text-center">
-        <div class="small-12 columns">{{ ip }}</div>
-        <div class="small-12 columns"><img src="{{ geoip.flag }}">&nbsp;{{ geoip.country }}</div>
+        <div class="small-12 columns boltbb-author-ip">{{ ip }}</div>
+    </div>
+    <div class="row text-center">
+        <div class="small-12 columns boltbb-author-country"><img src="{{ geoip.flag }}">&nbsp;{{ geoip.country }}</div>
     </div>
 
 {% endmacro %}
