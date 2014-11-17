@@ -27,8 +27,8 @@
  * Author
  */
 
-.topic .author,
-.reply .author {
+.topic .boltbb-author,
+.reply .boltbb-author {
 	text-align: center;
 	margin-top: 4px;
 }
@@ -39,8 +39,8 @@
     height: 18px;
 }
 
-.topic .author .avatar,
-.reply .author .avatar {
+.topic .boltbb-author .avatar,
+.reply .boltbb-author .avatar {
     width: 80px;
     height: 80px;
 }

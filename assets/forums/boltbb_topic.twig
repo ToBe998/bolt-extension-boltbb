@@ -51,12 +51,12 @@
             <div class="row topic-body">
 
                 {# Author box #}
-                <div class="small-3 columns author">
+                <div class="small-3 columns boltbb-author">
                     {{ element.author(topic.authorprofile, topic.authorip) }}
                 </div>
 
                 {# Body #}
-                <div class="small-9 columns body">
+                <div class="small-9 columns boltbb-body">
                     {{ topic.body }}
                 </div>
 
@@ -87,11 +87,11 @@
             {# Reply content #}
             <div class="row reply-body">
 
-                <div class="small-3 columns author">
+                <div class="small-3 columns boltbb-author">
                     {{ element.author(reply.authorprofile, reply.authorip) }}
                 </div>
 
-                <div class="small-9 columns body">
+                <div class="small-9 columns boltbb-body">
                     {{ reply.body }}
                 </div>
 
