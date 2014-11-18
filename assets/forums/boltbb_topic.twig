@@ -34,7 +34,7 @@
     </div>
 
     {# Only show the topic text if we're on the first page #}
-    {% if (request('page') == 1) or (request('page') is empty) %}
+    {% if (request('page_replies') == 1) or (request('page_replies') is empty) %}
 
     {# Topic #}
     <div class="row topic" id="topic-{{ forum.id }}-{{ topic.id }}">
