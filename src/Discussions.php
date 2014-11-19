@@ -98,6 +98,8 @@ class Discussions
         $form = $request->get('topic');
 
         $values = array(
+            'datecreated' => date('Y-m-d H:i:s'),
+            'datepublish' => date('Y-m-d H:i:s'),
             'slug'        => String::slug($form['title'], 128),
             'title'       => $form['title'],
             'author'      => $author,
@@ -140,6 +142,8 @@ class Discussions
         $form = $request->get('reply');
 
         $values = array(
+            'datecreated' => date('Y-m-d H:i:s'),
+            'datepublish' => date('Y-m-d H:i:s'),
             'slug'     => String::slug($topic['title'], 128),
             'title'    => '[' . Trans::__('Reply') . ']: ' . $topic['title'],
             'author'   => $author,
