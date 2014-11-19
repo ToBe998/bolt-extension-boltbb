@@ -267,7 +267,7 @@ class BoltBBController implements ControllerProviderInterface
                 'ckfield'  => 'topic[body]',
                 'boltbb_basepath' => $app[Extension::CONTAINER]->getBaseUrl()
         ));
-        $app[Extension::CONTAINER]->addSnippet(SnippetLocation::BEFORE_JS, $js);
+        $app[Extension::CONTAINER]->addSnippet(SnippetLocation::END_OF_BODY, $js);
 
         // Render the Twig
         $html = $app['render']->render(
@@ -345,7 +345,7 @@ class BoltBBController implements ControllerProviderInterface
                 'ckfield'  => 'reply[body]',
                 'boltbb_basepath' => $app[Extension::CONTAINER]->getBaseUrl()
         ));
-        $app[Extension::CONTAINER]->addSnippet(SnippetLocation::BEFORE_JS, $js);
+        $app[Extension::CONTAINER]->addSnippet(SnippetLocation::END_OF_BODY, $js);
 
         // If using CKEditor CodeSnippet, enable Highlight.js
         if ($this->config['editor']['addons']['codesnippet']) {
