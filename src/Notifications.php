@@ -78,9 +78,6 @@ class Notifications
 
     /**
      *
-     *
-     * @since 1.0
-     *
      */
     public function doNotification()
     {
@@ -138,7 +135,7 @@ class Notifications
         } else {
             $topic = $data->getTopic($this->record->values['topic']);
             $title = $topic->values['title'];
-            $uri = $this->config['base_uri'] . '/' . $forum['slug'] . '/' . $this->record->values['slug'];
+            $uri = $this->config['base_uri'] . '/' . $forum['slug'] . '/' . $topic->values['slug'];
         }
 
         /*
