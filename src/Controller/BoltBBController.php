@@ -232,6 +232,11 @@ class BoltBBController implements ControllerProviderInterface
         $this->addTwigPath($app);
         $forum = $this->data->getForum($forum);
 
+        // If there is no ID, well assume a 404
+        if (empty($forum->values['id'])) {
+            $app->abort(404, "Forum not found.");
+        }
+
         // Create new reply submission form
         $topic = new Topic();
         $data = array('csrf_protection' => $this->config['csrf']);
@@ -312,6 +317,11 @@ class BoltBBController implements ControllerProviderInterface
         // Get consistent info for forum and topic
         $forum = $this->data->getForum($forum);
         $topic = $this->data->getTopic($topic);
+
+        // If there is no ID, well assume a 404
+        if (empty($topic->values['id'])) {
+            $app->abort(404, "Topic not found.");
+        }
 
         // Create new reply submission form
         $reply = new Reply();
