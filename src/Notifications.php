@@ -118,6 +118,14 @@ class Notifications
         $forum = $data->getForum($this->record['forum']);
 
         /*
+         * From
+         */
+        $sender = array(
+            'from_email'   => $this->from_address,
+            'from_name' => isset($this->config['boltbb']['title']) ? $this->config['boltbb']['title'] : 'BoltBB'
+        );
+
+        /*
          * Author information
          */
         if (! isset($this->record->values['authorprofile'])) {
@@ -169,11 +177,9 @@ class Notifications
          */
         $this->message = \Swift_Message::newInstance()
                 ->setSubject($subject)
-                ->setFrom($this->from_address)
+                ->setFrom(array($sender['from_email'] => $sender['from_name']))
                 ->setBody(strip_tags($body))
                 ->addPart($body, 'text/html');
-        // SwiftMail barfs on this, despite it being documented to work!
-        //->setFrom(array($this->from_address, $this->config['boltbb']['title']))
     }
 
     /**
