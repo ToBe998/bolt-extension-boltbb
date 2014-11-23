@@ -233,7 +233,7 @@ class BoltBBController implements ControllerProviderInterface
         $forum = $this->data->getForum($forum);
 
         // If there is no ID, well assume a 404
-        if (empty($forum->values['id'])) {
+        if (empty($forum['id'])) {
             $app->abort(404, "Forum not found.");
         }
 
