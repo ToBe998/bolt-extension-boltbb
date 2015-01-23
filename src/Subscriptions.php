@@ -74,15 +74,15 @@ class Subscriptions
 
         // Get the topic subscribers
         if (! empty($topic->values['subscribers'])) {
-            foreach (json_decode($this->topic->values['subscribers'], true) as $key => $value) {
-                $subscribers[$value] = false;
+            foreach (json_decode($topic->values['subscribers'], true) as $sub) {
+                $subscribers[$sub] = false;
             }
         }
 
         // Get & combine the topic's forum subscribers
         if (! empty($forum['subscribers'])) {
-            foreach (json_decode($this->forum['subscribers'], true) as $key => $value) {
-                $subscribers[$value] = false;
+            foreach (json_decode($forum['subscribers'], true) as $sub) {
+                $subscribers[$sub] = false;
             }
         }
 

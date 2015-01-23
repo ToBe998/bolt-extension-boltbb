@@ -94,7 +94,7 @@ class Notifications
         } else {
             // Get the subscribers to the topic and it's forum
             $subscriptions = new Subscriptions($this->app);
-            $this->recipients = $subscriptions->getSubscribers($this->record->values['topic']);
+            $this->recipients = $subscriptions->getSubscribers($this->record->values['id']);
         }
 
         // Get the email template
