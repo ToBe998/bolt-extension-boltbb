@@ -36,10 +36,7 @@ var BoltBBAdmin = Object.extend(Object, {
         jQuery(this.selector).on("click", this, this.events.click);
         
         jQuery(document).ajaxStart(function() {
-            // show loader on start
-            active_interval = setInterval(function(){
-                active_console.append(".");
-            },1000);
+
         }).ajaxSuccess(function() {
             clearInterval(active_interval);
         });
@@ -72,8 +69,8 @@ var BoltBBAdmin = Object.extend(Object, {
                 location.reload(true);
                 })
             .fail(function() {
-                alert( "There was an error" );
-                })
+                alert("There was an error");
+                });
     },
     
     doContenttypes: function(e) {
@@ -86,10 +83,7 @@ var BoltBBAdmin = Object.extend(Object, {
                 location.reload(true);
                 })
             .fail(function() {
-                alert( "There was an error" );
-                })
-            .always(function() {
-                //alert( "This always get called" );
+                alert("There was an error");
                 });
     },
     
@@ -108,10 +102,7 @@ var BoltBBAdmin = Object.extend(Object, {
                 location.reload(true);
                 })
             .fail(function() {
-                alert( "There was an error" );
-                })
-            .always(function() {
-                //alert( "This always get called" );
+                alert("There was an error");
                 });
     },
     
@@ -130,10 +121,7 @@ var BoltBBAdmin = Object.extend(Object, {
                 location.reload(true);
                 })
             .fail(function() {
-                alert( "There was an error" );
-                })
-            .always(function() {
-                //alert( "This always get called" );
+                alert("There was an error");
                 });
     },
     
@@ -149,10 +137,7 @@ var BoltBBAdmin = Object.extend(Object, {
                 console.debug(data);
                 })
             .fail(function() {
-                alert( "There was an error" );
-                })
-            .always(function() {
-                //alert( "This always get called" );
+                alert("There was an error");
                 });
     },
     
@@ -160,25 +145,20 @@ var BoltBBAdmin = Object.extend(Object, {
         var controller = this;
         
         console.debug("Sending test notification");
-        
+
         $.post(baseurl + '/ajax?task=testNotify', '', function(data){})
             .done(function() {
-                //location.reload(true);
                 alert('Notification sent');
                 console.debug(data);
                 })
             .fail(function() {
-                alert( "There was an error" );
-                })
-            .always(function() {
-                //alert( "This always get called" );
+                alert("There was an error");
                 });
     },
         
     events: {
         change: function(e, t){
             var controller = e.data;
-            
         },
         
         click: function(e, t){

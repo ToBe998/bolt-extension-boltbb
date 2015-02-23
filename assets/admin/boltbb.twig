@@ -146,16 +146,16 @@
     </div>
 
     <script>
-        var baseurl = "{{paths.bolt}}extensions/boltbb";
+        var baseurl = "{{ paths.bolt }}extensions/boltbb";
 
         var active_console;
         var active_interval;
 
         jQuery(document).ready(function($) {
             var boltExt = new BoltBBAdmin();
-            boltExt.setMessage('repair', '{{__('Repairing forums database table...')}}' );
-            boltExt.setMessage('open',   '{{__('Opening selected forums...')}}');
-            boltExt.setMessage('close',  '{{__('Closing selected forums...')}}');
+            boltExt.setMessage('repair', '{{ __('Repairing forums database table…') }}' );
+            boltExt.setMessage('open',   '{{ __('Opening selected forums…') }}');
+            boltExt.setMessage('close',  '{{ __('Closing selected forums…') }}');
         });
     </script>
 
