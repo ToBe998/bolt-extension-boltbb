@@ -12,6 +12,7 @@ use Bolt\Translation\Translator as Trans;
 use Bolt\Extension\Bolt\BoltBB\Extension;
 use Bolt\Extension\Bolt\BoltBB\Admin;
 use Bolt\Extension\Bolt\BoltBB\Contenttypes;
+use Bolt\Extension\Bolt\BoltBB\AdminAjaxRequest;
 
 /**
  * BoltBB admin area controller
@@ -75,6 +76,7 @@ class BoltBBAdminController implements ControllerProviderInterface
 
         // AJAX requests
         $ctr->match('/ajax', array($this, 'ajax'))
+            ->bind('BoltBBAdminAjax')
             ->method('GET|POST');
 
         $app[Extension::CONTAINER]->addMenuOption(Trans::__('BoltBB'), $app['paths']['bolt'] . 'extensions/boltbb', "fa:pencil-square-o");
@@ -150,141 +152,53 @@ class BoltBBAdminController implements ControllerProviderInterface
         // Get the task name
         $task = $app['request']->get('task');
 
-        if ($request->getMethod() == "POST" && $task) {
-            //
-            //if (!$app['users']->checkAntiCSRFToken()) {
-            //    $app->abort(400, Trans::__("Something went wrong"));
-            //}
+        $allowedTasks = array('forumOpen', 'forumClose', 'forumSync', 'forumContenttypes', 'repairRelation', 'testNotify');
 
-            //
-            $values = array(
-                'job' => $task,
-                'result' => true,
-                'data'   => ''
-            );
-
-            if ($task == 'forumOpen') {
-                /*
-                 * Open a forum
-                 */
-                $forums = $request->request->get('forums');
-                if ($forums && is_array($forums)) {
-                    foreach ($request->request->get('forums') as $forum) {
-                        try {
-                            $this->admin->doForumOpen($forum);
-                        } catch (\Exception $e) {
-                            return new JsonResponse($this->getResult($task, $e), Response::HTTP_INTERNAL_SERVER_ERROR);
-                        }
-                    }
-                }
-
-                return new JsonResponse($this->getResult($task));
-            } elseif ($task == 'forumClose') {
-                /*
-                 * Close a forum
-                 */
-                $forums = $request->request->get('forums');
-                if ($forums && is_array($forums)) {
-                    foreach ($request->request->get('forums') as $forum) {
-                        try {
-                            $this->admin->doForumClose($forum);
-                        } catch (\Exception $e) {
-                            return new JsonResponse($this->getResult($task, $e), Response::HTTP_INTERNAL_SERVER_ERROR);
-                        }
-                    }
-                }
-
-                return new JsonResponse($this->getResult($task));
-            } elseif ($task == 'repairRelation') {
-                /*
-                 * Repair forum/reply relationships
-                 */
-                try {
-                    $this->admin->doRepairReplyRelationships();
-                } catch (\Exception $e) {
-                    return new JsonResponse($this->getResult($task, $e), Response::HTTP_INTERNAL_SERVER_ERROR);
-                }
-
-                return new JsonResponse($this->getResult($task));
-            } elseif ($task == 'testNotify') {
-                /*
-                 * Send a test notification
-                 */
-                try {
-                    $this->admin->doTestNotification();
-                } catch (\Exception $e) {
-                    return new JsonResponse($this->getResult($task, $e), Response::HTTP_INTERNAL_SERVER_ERROR);
-                }
-
-                return new JsonResponse($this->getResult($task));
-            }
-
-            // Yeah, nah
-            return new Response('Bad request!', Response::HTTP_BAD_REQUEST);
-
-        } elseif ($request->getMethod() == "GET" && $task) {
-            if ($task == 'forumSync') {
-
-                /*
-                 * Sync our database table with the configuration files defined forums
-                 */
-                try {
-                    $this->admin->syncForumDbTables();
-
-                    $values = $this->admin->getForums();
-
-                    return new JsonResponse($this->getResult($task));
-                } catch (\Exception $e) {
-                    return new JsonResponse($this->getResult($task, $e), Response::HTTP_INTERNAL_SERVER_ERROR);
-                }
-            } elseif ($task == 'forumContenttypes') {
-
-                /*
-                 * Write our missing contenttypes into contentypes.yml
-                 */
-                $bbct = new Contenttypes($app);
-
-                foreach ($this->config['contenttypes'] as $type => $values) {
-                    if (! $bbct->isContenttype($type)) {
-                        try {
-                            $bbct->insertContenttype($type);
-                        } catch (\Exception $e) {
-                            return new JsonResponse($this->getResult($task, $e), Response::HTTP_INTERNAL_SERVER_ERROR);
-                        }
-                    }
-                }
-
-                return new Response('', Response::HTTP_OK, array('content-type' => 'text/html'));
-            }
-
+        if (!$task || !in_array($task, $allowedTasks)) {
             // Yeah, nah
             return new Response('Invalid request parameters', Response::HTTP_BAD_REQUEST);
+        }
+
+        $ar = new AdminAjaxRequest($app);
+
+        if ($request->getMethod() === 'POST') {
+
+            if ($task == 'forumOpen') {
+                // Open a forum
+                $forums = $request->request->get('forums');
+
+                return $ar->forumOpen($forums);
+            } elseif ($task == 'forumClose') {
+                // Close a forum
+                $forums = $request->request->get('forums');
+
+                return $ar->forumClose($forums);
+            } elseif ($task == 'repairRelation') {
+                // Repair forum/reply relationships
+                $ar->repairRelation();
+            } elseif ($task == 'testNotify') {
+                // Send a test notification
+                $ar->testNotify();
+            }
+
+        } elseif ($request->getMethod() === 'GET') {
+
+            if ($task == 'forumSync') {
+                // Sync our database table with the configuration files defined forums
+                return $ar->forumSync();
+            } elseif ($task == 'forumContenttypes') {
+                // Write our missing contenttypes into contentypes.yml
+                return $ar->forumContenttypes();
+            }
+
         }
     }
 
     /**
+     * Add our Twig path
      *
-     * @param  string     $task
-     * @param  \Exception $e
-     * @return array
+     * @param Silex\Application $app
      */
-    private function getResult($task, \Exception $e = null)
-    {
-        if (is_null($e)) {
-            return array(
-                'job'    => $task,
-                'result' => true,
-                'data'   => ''
-            );
-        }
-
-        return array(
-            'job'    => $task,
-            'result' => true,
-            'data'   => $e->getMessage()
-        );
-    }
-
     private function addTwigPath(Silex\Application $app)
     {
         $app['twig.loader.filesystem']->addPath(dirname(dirname(__DIR__)) . '/assets/admin');
