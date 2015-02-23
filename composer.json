@@ -8,7 +8,7 @@
 		"members"
 	],
 	"require" : {
-		"bolt/bolt" : ">=2.0.0,<3.0.0",
+		"bolt/bolt" : ">=2.1.0,<3.0.0",
 		"bolt/clientlogin" : ">=2.0.0",
 		"bolt/members" : ">=2.0.0",
 		"bolt/geoip" : ">=2.0.0"
