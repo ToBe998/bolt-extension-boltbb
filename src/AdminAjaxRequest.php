@@ -158,6 +158,9 @@ class AdminAjaxRequest
     public function testNotify()
     {
         try {
+            // Add the theme directory to the Twig path in case someone is using overrides
+            $this->app['twig.loader.filesystem']->addPath($this->app['resources']->getPath('theme'));
+
             $this->admin->doTestNotification();
         } catch (\Exception $e) {
             return new JsonResponse($this->getResult($task, $e), Response::HTTP_INTERNAL_SERVER_ERROR);
