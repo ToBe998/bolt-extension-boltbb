@@ -2,11 +2,10 @@
 
 namespace Bolt\Extension\Bolt\BoltBB;
 
+use Bolt\Translation\Translator as Trans;
 use Maid\Maid;
 use Silex;
 use Symfony\Component\HttpFoundation\Request;
-use Bolt\Helpers\String;
-use Bolt\Translation\Translator as Trans;
 
 /**
  * BoltBB discussion class
@@ -100,7 +99,7 @@ class Discussions
         $values = array(
             'datecreated' => date('Y-m-d H:i:s'),
             'datepublish' => date('Y-m-d H:i:s'),
-            'slug'        => String::slug($form['title'], 128),
+            'slug'        => $this->app['slugify']->slugify($form['title']),
             'title'       => $form['title'],
             'author'      => $author,
             'authorip'    => $request->getClientIp(),
@@ -144,7 +143,7 @@ class Discussions
         $values = array(
             'datecreated' => date('Y-m-d H:i:s'),
             'datepublish' => date('Y-m-d H:i:s'),
-            'slug'     => String::slug($topic['title'], 128),
+            'slug'     => $this->app['slugify']->slugify($topic['title']),
             'title'    => '[' . Trans::__('Reply') . ']: ' . $topic['title'],
             'author'   => $author,
             'authorip' => $request->getClientIp(),
