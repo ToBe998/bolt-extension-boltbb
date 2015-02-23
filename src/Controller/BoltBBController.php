@@ -15,6 +15,7 @@ use Silex;
 use Silex\Application;
 use Silex\ControllerProviderInterface;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 /**
  * BoltBB front end controller
@@ -233,7 +234,7 @@ class BoltBBController implements ControllerProviderInterface
 
         // If there is no ID, well assume a 404
         if (empty($forum['id'])) {
-            $app->abort(404, "Forum not found.");
+            $app->abort(Response::HTTP_NOT_FOUND, "Forum not found.");
         }
 
         // Create new reply submission form
@@ -319,14 +320,15 @@ class BoltBBController implements ControllerProviderInterface
 
         // If there is no ID, well assume a 404
         if (empty($topic->values['id'])) {
-            $app->abort(404, "Topic not found.");
+            $app->abort(Response::HTTP_NOT_FOUND, "Topic not found.");
         }
 
         // Create new reply submission form
         $reply = new Reply();
         $data = array('csrf_protection' => $this->config['csrf']);
-        $form = $app['form.factory']->createBuilder(new ReplyType(), $reply, $data)
-                                    ->getForm();
+        $form = $app['form.factory']
+            ->createBuilder(new ReplyType(), $reply, $data)
+            ->getForm();
 
         // Handle the form request data
         $form->handleRequest($request);
