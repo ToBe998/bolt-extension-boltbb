@@ -75,7 +75,8 @@ class Data
     }
 
     /**
-     * G
+     * Get last post in a forum
+     *
      * @param  string|int $forum
      * @return array
      */
@@ -159,8 +160,6 @@ class Data
     /**
      * Lookup a forum's topics
      *
-     * @since 1.0
-     *
      * @param  int           $forum_id The ID of the forum to get topics for
      * @param  arary         $params   An optional associative array of WHERE parameters
      * @param  int           $limit    If set, page the output to the passed limit
@@ -196,8 +195,6 @@ class Data
     /**
      * Lookup a forums topic count
      *
-     * @since 1.0
-     *
      * @param  integer $forum_id The ID of the forum to get topics for
      * @return array
      */
@@ -216,8 +213,6 @@ class Data
 
     /**
      * Lookup a forums reply count
-     *
-     * @since 1.0
      *
      * @param  integer $forum_id The ID of the forum to get replies for
      * @return array
@@ -257,8 +252,6 @@ class Data
     /**
      * Lookup a topic's replies
      *
-     * @since 1.0
-     *
      * @param  int           $topic_id The ID of the topic to get replies for
      * @param  int           $limit    If set, page the output to the passed limit
      * @return \Bolt\Content
@@ -293,8 +286,6 @@ class Data
     /**
      * Lookup a topic's reply count
      *
-     * @since 1.0
-     *
      * @param  integer $topic_id The ID of the forum to get replies for
      * @return array
      */
@@ -310,8 +301,6 @@ class Data
 
     /**
      * Lookup a topic's last post
-     *
-     * @since 1.0
      *
      * @param  integer $topic_id The ID of the topic to get last post for
      * @return array
@@ -363,8 +352,6 @@ class Data
 
     /**
      * Return an array of recent entries, either topics or replies
-     *
-     * @since 1.0
      *
      * @param  string  $type  Either 'topic' or 'reply'
      * @param  integer $count Number of recent entries to return
