@@ -2,12 +2,6 @@
 
 namespace Bolt\Extension\Bolt\BoltBB\Controller;
 
-use Silex;
-use Silex\Application;
-use Silex\ControllerProviderInterface;
-use Symfony\Component\HttpFoundation\Request;
-use Bolt\Extensions\Snippets\Location as SnippetLocation;
-use Bolt\Translation\Translator as Trans;
 use Bolt\Extension\Bolt\BoltBB\Extension;
 use Bolt\Extension\Bolt\BoltBB\Data;
 use Bolt\Extension\Bolt\BoltBB\Discussions;
@@ -15,7 +9,12 @@ use Bolt\Extension\Bolt\BoltBB\Entity\Topic;
 use Bolt\Extension\Bolt\BoltBB\Entity\Reply;
 use Bolt\Extension\Bolt\BoltBB\Form\TopicType;
 use Bolt\Extension\Bolt\BoltBB\Form\ReplyType;
-use Bolt\Extension\Bolt\Members\Members;
+use Bolt\Extensions\Snippets\Location as SnippetLocation;
+use Bolt\Translation\Translator as Trans;
+use Silex;
+use Silex\Application;
+use Silex\ControllerProviderInterface;
+use Symfony\Component\HttpFoundation\Request;
 
 /**
  * BoltBB front end controller
@@ -396,9 +395,7 @@ class BoltBBController implements ControllerProviderInterface
      */
     private function getMemberID(Silex\Application $app)
     {
-        $members = new Members($app);
-
-        return $members->isAuth();
+        return $app['members']->isAuth();
     }
 
 }

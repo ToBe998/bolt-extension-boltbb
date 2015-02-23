@@ -3,7 +3,6 @@
 namespace Bolt\Extension\Bolt\BoltBB;
 
 use Silex;
-use Bolt\Extension\Bolt\Members\Members;
 
 /**
  * Notification class
@@ -129,8 +128,7 @@ class Notifications
          * Author information
          */
         if (! isset($this->record->values['authorprofile'])) {
-            $members = new Members($this->app);
-            $this->record->values['authorprofile'] = $members->getMember('id', $this->record->values['author']);
+            $this->record->values['authorprofile'] = $this->app['members']->getMember('id', $this->record->values['author']);
         }
 
         /*
