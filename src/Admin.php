@@ -201,7 +201,7 @@ class Admin
                 $this->config['tables']['replies'],
                 array(
                     'title' => '[' . Trans::__('Reply') . ']: ' . $topic['title'],
-                    'slug' => $this->app['slugify']->slugify($topic['title']) . '-' . $i
+                    'slug' => substr($this->app['slugify']->slugify($topic['title']), 0, 120) . '-' . $i
                 ),
                 array('topic' => $topic['id'])
             );

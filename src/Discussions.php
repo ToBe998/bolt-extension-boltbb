@@ -99,7 +99,7 @@ class Discussions
         $values = array(
             'datecreated' => date('Y-m-d H:i:s'),
             'datepublish' => date('Y-m-d H:i:s'),
-            'slug'        => $this->app['slugify']->slugify($form['title']),
+            'slug'        => substr($this->app['slugify']->slugify($form['title']), 0, 128),
             'title'       => $form['title'],
             'author'      => $author,
             'authorip'    => $request->getClientIp(),
@@ -143,7 +143,7 @@ class Discussions
         $values = array(
             'datecreated' => date('Y-m-d H:i:s'),
             'datepublish' => date('Y-m-d H:i:s'),
-            'slug'     => $this->app['slugify']->slugify($topic['title']),
+            'slug'     => substr($this->app['slugify']->slugify($topic['title']), 0, 128),
             'title'    => '[' . Trans::__('Reply') . ']: ' . $topic['title'],
             'author'   => $author,
             'authorip' => $request->getClientIp(),
