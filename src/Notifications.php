@@ -196,9 +196,9 @@ class Notifications
         ));
 
         if ($this->app['mailer']->send($message)) {
-            $this->app['log']->add("Sent BoltBB notification to {$recipient['displayName']} <{$recipient['email']}>", 3);
+            $this->app['logger.system']->info("Sent BoltBB notification to {$recipient['displayName']} <{$recipient['email']}>", array('event' => 'extensions'));
         } else {
-            $this->app['log']->add("Failed BoltBB notification to {$recipient['displayName']} <{$recipient['email']}>", 3);
+            $this->app['logger.system']->error("Failed BoltBB notification to {$recipient['displayName']} <{$recipient['email']}>", array('event' => 'extensions'));
         }
     }
 
