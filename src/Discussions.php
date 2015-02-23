@@ -99,7 +99,7 @@ class Discussions
         $values = array(
             'datecreated' => date('Y-m-d H:i:s'),
             'datepublish' => date('Y-m-d H:i:s'),
-            'slug'        => substr($this->app['slugify']->slugify($form['title']), 0, 128),
+            'slug'        => substr($this->app['slugify']->slugify($form['title']), 0, 127),
             'title'       => $form['title'],
             'author'      => $author,
             'authorip'    => $request->getClientIp(),
@@ -143,13 +143,13 @@ class Discussions
         $values = array(
             'datecreated' => date('Y-m-d H:i:s'),
             'datepublish' => date('Y-m-d H:i:s'),
-            'slug'     => substr($this->app['slugify']->slugify($topic['title']), 0, 128),
-            'title'    => '[' . Trans::__('Reply') . ']: ' . $topic['title'],
-            'author'   => $author,
-            'authorip' => $request->getClientIp(),
-            'forum'    => $topic['forum'],
-            'topic'    => $topic['id'],
-            'body'     => $maid->clean($form['body'])
+            'slug'        => substr($this->app['slugify']->slugify($topic['title']), 0, 127),
+            'title'       => '[' . Trans::__('Reply') . ']: ' . $topic['title'],
+            'author'      => $author,
+            'authorip'    => $request->getClientIp(),
+            'forum'       => $topic['forum'],
+            'topic'       => $topic['id'],
+            'body'        => $maid->clean($form['body'])
         );
 
         $record = $this->app['storage']->getEmptyContent($this->config['contenttypes']['replies']);
