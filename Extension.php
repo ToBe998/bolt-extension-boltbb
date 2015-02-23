@@ -56,6 +56,8 @@ class Extension extends \Bolt\BaseExtension
      */
     public function initialize()
     {
+        $end = $this->app['config']->getWhichEnd();
+
         /*
          * Config
          */
@@ -69,10 +71,15 @@ class Extension extends \Bolt\BaseExtension
         /*
          * Backend
          */
-        if ($this->app['config']->getWhichEnd() == 'backend') {
+        if ($end == 'backend') {
             // Check the database table is up and working
             $this->dbCheck();
+        }
 
+        /*
+         * Admin
+         */
+        if ($end == 'backend' || $end == 'async') {
             // Create the admin page and routes
             $this->adminController();
         }
@@ -80,7 +87,7 @@ class Extension extends \Bolt\BaseExtension
         /*
          * Frontend
          */
-        if ($this->app['config']->getWhichEnd() == 'frontend') {
+        if ($end == 'frontend') {
 
             // Set up controller routes
             $this->app->mount('/' . $this->config['base_uri'], new Controller\BoltBBController());

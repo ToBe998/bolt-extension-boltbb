@@ -175,10 +175,10 @@ class BoltBBAdminController implements ControllerProviderInterface
                 return $ar->forumClose($forums);
             } elseif ($task == 'repairRelation') {
                 // Repair forum/reply relationships
-                $ar->repairRelation();
+                return $ar->repairRelation();
             } elseif ($task == 'testNotify') {
                 // Send a test notification
-                $ar->testNotify();
+                return $ar->testNotify();
             }
 
         } elseif ($request->getMethod() === 'GET') {
