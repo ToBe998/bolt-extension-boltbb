@@ -1,12 +1,13 @@
 /**
- * @license Copyright (c) 2003-2014, CKSource - Frederico Knabben. All rights reserved.
+ * @license Copyright (c) 2003-2015, CKSource - Frederico Knabben. All rights reserved.
  * For licensing, see LICENSE.md or http://ckeditor.com/license
  */
 
 CKEDITOR.plugins.setLang( 'codesnippet', 'sk', {
 	button: 'Vložte kód Snippet-u',
-	codeContents: 'Code content', // MISSING
-	emptySnippetError: 'A code snippet cannot be empty.', // MISSING
-	language: 'Language', // MISSING
-	title: 'Code snippet' // MISSING
+	codeContents: 'Obsah kódu',
+	emptySnippetError: 'Snippet kódu nesmie byť prázdny.',
+	language: 'Jazyk',
+	title: 'Snippet kódu',
+	pathName: 'snippet kódu'
 } );

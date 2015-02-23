@@ -1,5 +1,5 @@
-﻿/**
- * @license Copyright (c) 2003-2014, CKSource - Frederico Knabben. All rights reserved.
+/**
+ * @license Copyright (c) 2003-2015, CKSource - Frederico Knabben. All rights reserved.
  * For licensing, see LICENSE.md or http://ckeditor.com/license
  */
 
@@ -14,7 +14,7 @@
 
 	CKEDITOR.plugins.add( 'codesnippet', {
 		requires: 'widget,dialog',
-		lang: 'bg,ca,cs,da,de,el,en,en-gb,eo,es,et,fa,fi,fr,fr-ca,hr,hu,it,ja,km,ku,lt,lv,nb,nl,no,pl,pt,pt-br,ro,ru,sk,sl,sq,sv,th,tt,ug,uk,vi,zh,zh-cn', // %REMOVE_LINE_CORE%
+		lang: 'bg,ca,cs,da,de,el,en,en-gb,eo,es,et,fa,fi,fr,fr-ca,he,hr,hu,it,ja,km,ku,lt,lv,nb,nl,no,pl,pt,pt-br,ro,ru,sk,sl,sq,sv,th,tr,tt,ug,uk,vi,zh,zh-cn', // %REMOVE_LINE_CORE%
 		icons: 'codesnippet', // %REMOVE_LINE_CORE%
 		hidpi: true, // %REMOVE_LINE_CORE%
 
@@ -24,6 +24,12 @@
 			/**
 			 * Sets the custom syntax highlighter. See {@link CKEDITOR.plugins.codesnippet.highlighter}
 			 * to learn how to register a custom highlighter.
+			 *
+			 * **Note**:
+			 *
+			 * * This method can only be called while initialising plugins (in one of
+			 * the three callbacks).
+			 * * This method is accessible through the `editor.plugins.codesnippet` namespace only.
 			 *
 			 * @since 4.4
 			 * @member CKEDITOR.plugins.codesnippet
@@ -42,7 +48,7 @@
 			};
 		},
 
-		onLoad: function( editor ) {
+		onLoad: function() {
 			CKEDITOR.dialog.add( 'codeSnippet', this.path + 'dialogs/codesnippet.js' );
 		},
 
@@ -196,8 +202,9 @@
 
 				this.ready = true;
 			}, this ) );
-		} else
+		} else {
 			this.ready = true;
+		}
 
 		/**
 		 * If specified, this function should asynchronously load highlighter-specific
@@ -274,7 +281,8 @@
 	function registerWidget( editor ) {
 		var codeClass = editor.config.codeSnippet_codeClass,
 			newLineRegex = /\r?\n/g,
-			textarea = new CKEDITOR.dom.element( 'textarea' );
+			textarea = new CKEDITOR.dom.element( 'textarea' ),
+			lang = editor.lang.codesnippet;
 
 		editor.widgets.add( 'codeSnippet', {
 			allowedContent: 'pre; code(language-*)',
@@ -284,6 +292,7 @@
 			styleableElements: 'pre',
 			template: '<pre><code class="' + codeClass + '"></code></pre>',
 			dialog: 'codeSnippet',
+			pathName: lang.pathName,
 			mask: true,
 
 			parts: {

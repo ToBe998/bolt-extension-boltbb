@@ -1,5 +1,5 @@
 /**
- * @license Copyright (c) 2003-2014, CKSource - Frederico Knabben. All rights reserved.
+ * @license Copyright (c) 2003-2015, CKSource - Frederico Knabben. All rights reserved.
  * For licensing, see LICENSE.md or http://ckeditor.com/license
  */
 
@@ -8,5 +8,6 @@ CKEDITOR.plugins.setLang( 'codesnippet', 'nb', {
 	codeContents: 'Kodeinnhold',
 	emptySnippetError: 'En kodesnutt kan ikke være tom.',
 	language: 'Språk',
-	title: 'Kodesnutt'
+	title: 'Kodesnutt',
+	pathName: 'kodesnutt'
 } );
