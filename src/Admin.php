@@ -215,18 +215,17 @@ class Admin
     public function doTestNotification()
     {
         // Get some random default values from our good friends at http://loripsum.net/
-        $guzzleclient = new \Guzzle\Service\Client('http://loripsum.net/api/');
         $params = 'medium/decorate/link/ol/ul/dl/bq/code/headers/3';
 
         $values = array(
             'slug'        => '',
-            'title'       => trim(strip_tags($guzzleclient->get('1/veryshort')->send()->getBody(true))),
+            'title'       => trim(strip_tags($this->app['prefill']->get('1/veryshort'))),
             'author'      => 1,
             'authorip'    => '',
             'forum'       => 1,
             'state'       => 'open',
             'visibility'  => 'normal',
-            'body'        => trim($guzzleclient->get($params)->send()->getBody(true)),
+            'body'        => trim($this->app['prefill']->get($params)),
             'subscribers' => ''
         );
 
