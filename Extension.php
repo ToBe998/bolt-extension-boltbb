@@ -253,14 +253,14 @@ class Extension extends \Bolt\BaseExtension
                     'body'    => 'boltbb_email_body.twig'
                 ),
             ),
-            'pagercount' => 5,
-            'admin_roles' => array('root', 'admin', 'developer', 'chief-editor'),
+            'pagercount'    => 5,
+            'admin_roles'   => array('root', 'admin', 'developer', 'chief-editor'),
             'notifications' => array(
                 'debug'         => true,
                 'debug_address' => 'noreply@example.com',
                 'from_address'  => 'noreply@example.com'
             ),
-            'csrf' => true,
+            'csrf'   => true,
             'editor' => array(
                 'addons' => array(
                     'images'      => true,
@@ -279,8 +279,8 @@ class Extension extends \Bolt\BaseExtension
                     'autoParagraph'             => true,
                     'disableNativeSpellChecker' => false,
                     'contentsCss'               => array(
-                        $this->app['paths']['app'] . 'view/lib/ckeditor/contents.css',
-                        $this->app['paths']['app'] . 'view/css/ckeditor.css',
+                        $this->app['resources']->getUrl('app') . 'view/css/ckeditor-contents.css',
+                        $this->app['resources']->getUrl('app') . 'view/css/ckeditor.css'
                     )
                 )
             ),
