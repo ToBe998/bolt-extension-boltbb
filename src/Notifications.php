@@ -120,8 +120,8 @@ class Notifications
          * From
          */
         $sender = array(
-            'from_email'   => $this->from_address,
-            'from_name' => isset($this->config['boltbb']['title']) ? $this->config['boltbb']['title'] : 'BoltBB'
+            'from_email' => $this->from_address,
+            'from_name'  => isset($this->config['boltbb']['title']) ? $this->config['boltbb']['title'] : 'BoltBB'
         );
 
         /*
@@ -173,7 +173,8 @@ class Notifications
         /*
          * Build email
          */
-        $this->message = \Swift_Message::newInstance()
+        $this->message = $this->app['mailer']
+                ->createMessage('message')
                 ->setSubject($subject)
                 ->setFrom(array($sender['from_email'] => $sender['from_name']))
                 ->setBody(strip_tags($body))
