@@ -79,7 +79,7 @@ class BoltBBAdminController implements ControllerProviderInterface
             ->bind('BoltBBAdminAjax')
             ->method('GET|POST');
 
-        $app[Extension::CONTAINER]->addMenuOption(Trans::__('BoltBB'), $app['paths']['bolt'] . 'extensions/boltbb', "fa:pencil-square-o");
+        $app[Extension::CONTAINER]->addMenuOption(Trans::__('BoltBB'), $app['resources']->getUrl('bolt' ) . 'extensions/boltbb', 'fa:pencil-square-o');
 
         return $ctr;
     }

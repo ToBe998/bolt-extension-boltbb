@@ -117,7 +117,7 @@ class BoltBBController implements ControllerProviderInterface
 
         // Add our JS & CSS and CKeditor
         $app[Extension::CONTAINER]->addCSS('css/' . $this->config['webassets']['stylesheet'], false);
-        $app['extensions']->addJavascript($app['paths']['app'] . 'view/lib/ckeditor/ckeditor.js', true);
+        $app['extensions']->addJavascript($app['resources']->getPath('app/view/js/ckeditor/ckeditor.js'), true);
         $app[Extension::CONTAINER]->addJavascript('js/' . $this->config['webassets']['javascript'], true);
 
         // Add jQuery CSS Emoticons Plugin @see: http://os.alfajango.com/css-emoticons/
