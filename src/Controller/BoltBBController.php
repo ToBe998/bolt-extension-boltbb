@@ -117,17 +117,17 @@ class BoltBBController implements ControllerProviderInterface
 
         // Add our JS & CSS and CKeditor
         $app[Extension::CONTAINER]->addCSS('css/' . $this->config['webassets']['stylesheet'], false);
-        $app[Extension::CONTAINER]->addJavascript('js/ckeditor/ckeditor.js', true, 10);
-        $app[Extension::CONTAINER]->addJavascript('js/' . $this->config['webassets']['javascript'], true, 100);
+        $app[Extension::CONTAINER]->addJavascript('js/ckeditor/ckeditor.js', array('late' => true, 'priority' => 10, 'attrib' => 'async defer'));
+        $app[Extension::CONTAINER]->addJavascript('js/' . $this->config['webassets']['javascript'], array('late' => true, 'priority' => 100, 'attrib' => 'async defer'));
 
         // Add jQuery CSS Emoticons Plugin @see: http://os.alfajango.com/css-emoticons/
         $app[Extension::CONTAINER]->addCSS('css/jquery.cssemoticons.css', false);
-        $app[Extension::CONTAINER]->addJavascript('js/jquery.cssemoticons.min.js', true, 50);
+        $app[Extension::CONTAINER]->addJavascript('js/jquery.cssemoticons.min.js', array('late' => true, 'priority' => 50, 'attrib' => 'async defer'));
 
         // If using CKEditor CodeSnippet, enable Highlight.js
         if ($this->config['editor']['addons']['codesnippet']) {
             $app[Extension::CONTAINER]->addCSS('js/ckeditor/plugins/codesnippet/lib/highlight/styles/default.css', false);
-            $app[Extension::CONTAINER]->addJavascript('js/ckeditor/plugins/codesnippet/lib/highlight/highlight.pack.js', true, 50);
+            $app[Extension::CONTAINER]->addJavascript('js/ckeditor/plugins/codesnippet/lib/highlight/highlight.pack.js', array('late' => true, 'priority' => 50, 'attrib' => 'async defer'));
         }
     }
 
