@@ -54,11 +54,11 @@ class BoltBBAdminController implements ControllerProviderInterface
     private $admin;
 
     /**
+     * @param \Silex\Application $app
      *
-     * @param Silex\Application $app
      * @return \Silex\ControllerCollection
      */
-    public function connect(Silex\Application $app)
+    public function connect(Application $app)
     {
         $this->config = $app[Extension::CONTAINER]->config;
         $this->admin = new Admin($app);
@@ -79,18 +79,16 @@ class BoltBBAdminController implements ControllerProviderInterface
             ->bind('BoltBBAdminAjax')
             ->method('GET|POST');
 
-        $app[Extension::CONTAINER]->addMenuOption(Trans::__('BoltBB'), $app['resources']->getUrl('bolt' ) . 'extensions/boltbb', 'fa:pencil-square-o');
-
         return $ctr;
     }
 
     /**
      * Controller before render
      *
-     * @param Request           $request
-     * @param \Bolt\Application $app
+     * @param Request            $request
+     * @param \Silex\Application $app
      */
-    public function before(Request $request, \Bolt\Application $app)
+    public function before(Request $request, Application $app)
     {
         // Enable HTML snippets in our routes so that JS & CSS gets inserted
         $app['htmlsnippets'] = true;
@@ -102,11 +100,12 @@ class BoltBBAdminController implements ControllerProviderInterface
     /**
      * The main admin page
      *
-     * @param Silex\Application $app
+     * @param \Silex\Application $app
      * @param Request $request
+     *
      * @return \Twig_Markup
      */
-    public function admin(Silex\Application $app, Request $request)
+    public function admin(Application $app, Request $request)
     {
         $this->addTwigPath($app);
 
@@ -143,11 +142,12 @@ class BoltBBAdminController implements ControllerProviderInterface
     /**
      * BoltBB Admin AJAX controller
      *
-     * @param Silex\Application $app
+     * @param \Silex\Application $app
      * @param Request $request
+     *
      * @return \Symfony\Component\HttpFoundation\Response|\Symfony\Component\HttpFoundation\JsonResponse
      */
-    public function ajax(Silex\Application $app, Request $request)
+    public function ajax(Application $app, Request $request)
     {
         // Get the task name
         $task = $app['request']->get('task');
@@ -197,9 +197,9 @@ class BoltBBAdminController implements ControllerProviderInterface
     /**
      * Add our Twig path
      *
-     * @param Silex\Application $app
+     * @param \Silex\Application $app
      */
-    private function addTwigPath(Silex\Application $app)
+    private function addTwigPath(Application $app)
     {
         $app['twig.loader.filesystem']->addPath(dirname(dirname(__DIR__)) . '/assets/admin');
     }

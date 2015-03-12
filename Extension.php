@@ -7,6 +7,7 @@ use Bolt\Events\CronEvent;
 use Bolt\Events\CronEvents;
 use Bolt\Events\StorageEvent;
 use Bolt\Events\StorageEvents;
+use Bolt\Translation\Translator as Trans;
 
 /**
  * BoltBB discussion extension for Bolt
@@ -32,19 +33,14 @@ use Bolt\Events\StorageEvents;
  */
 class Extension extends \Bolt\BaseExtension
 {
-    /**
-     * Extension name
-     *
-     * @var string
-     */
+    /** @var string Extension name */
     const NAME = 'BoltBB';
 
-    /**
-     * Extension's container
-     *
-     * @var string
-     */
+    /** @var string Extension's container */
     const CONTAINER = 'extensions.BoltBB';
+
+    /** @var boolean */
+    private $isAdmin;
 
     public function getName()
     {
@@ -74,27 +70,25 @@ class Extension extends \Bolt\BaseExtension
         if ($end == 'backend') {
             // Check the database table is up and working
             $this->dbCheck();
-        }
 
-        /*
-         * Admin
-         */
-        if ($end == 'backend' || $end == 'async') {
-            // Create the admin page and routes
-            $this->adminController();
+            // Create the admin page
+            $this->adminMenu();
         }
 
         /*
          * Frontend
          */
         if ($end == 'frontend') {
-
-            // Set up controller routes
-            $this->app->mount('/' . $this->config['base_uri'], new Controller\BoltBBController());
-
             // Twig functions
             $this->app['twig']->addExtension(new Twig\BoltBBExtension($this->app));
         }
+
+        /*
+         * Set up controller routes
+         */
+        $path = $this->app['config']->get('general/branding/path') . '/extensions/boltbb';
+        $this->app->mount($path, new Controller\BoltBBAdminController());
+        $this->app->mount('/' . $this->config['base_uri'], new Controller\BoltBBController());
 
         /*
          * Scheduled cron listener
@@ -141,26 +135,38 @@ class Extension extends \Bolt\BaseExtension
     }
 
     /**
-     * Conditionally load the admin controller if the user has the valid role
+     * Determine if the user has admin rights to the page
+     *
+     * @return boolean
      */
-    private function adminController()
+    public function isAdmin()
     {
-        // check if user has allowed role(s)
-        $user    = $this->app['users']->getCurrentUser();
-        $userid  = $user['id'];
+        if (is_null($this->isAdmin)) {
+            // check if user has allowed role(s)
+            $user    = $this->app['users']->getCurrentUser();
+            $userid  = $user['id'];
 
-        $this->authorized = false;
+            $this->isAdmin = false;
 
-        foreach ($this->config['admin_roles'] as $role) {
-            if ($this->app['users']->hasRole($userid, $role)) {
-                $this->authorized = true;
-                break;
+            foreach ($this->config['admin_roles'] as $role) {
+                if ($this->app['users']->hasRole($userid, $role)) {
+                    $this->isAdmin = true;
+                    break;
+                }
             }
         }
 
-        if ($this->authorized) {
-            $path = $this->app['config']->get('general/branding/path') . '/extensions/boltbb';
-            $this->app->mount($path, new Controller\BoltBBAdminController());
+        return $this->isAdmin;
+    }
+
+    /**
+     * Conditionally create the admin menu if the user has a valid role
+     */
+    private function adminMenu()
+    {
+        if ($this->isAdmin()) {
+            $this->app[Extension::CONTAINER]->addMenuOption(Trans::__('BoltBB'), $this->app['resources']->getUrl('bolt' ) . 'extensions/boltbb', 'fa:pencil-square-o');
+
         }
     }
 
