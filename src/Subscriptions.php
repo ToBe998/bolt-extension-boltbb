@@ -44,7 +44,6 @@ class Subscriptions
     private $data;
 
     /**
-     *
      * @param Silex\Application $app
      * @param mixed             $topic Topic ID or slug
      */
@@ -120,7 +119,7 @@ class Subscriptions
             $this->app['db']->update(
                 $this->config['tables']['forums'],
                 array('subscribers' => $subscribers),
-                array('id' => $forum['id'])
+                array('id'          => $forum['id'])
             );
         }
     }
@@ -152,7 +151,7 @@ class Subscriptions
             $this->app['db']->update(
                 $this->config['tables']['topics'],
                 array('subscribers' => $subscribers),
-                array('id' => $topic->values['id'])
+                array('id'          => $topic->values['id'])
             );
         }
     }
@@ -181,7 +180,7 @@ class Subscriptions
         $this->app['db']->update(
             $this->config['tables']['forums'],
             array('subscribers' => $subscribers),
-            array('id' => $forum['id'])
+            array('id'          => $forum['id'])
         );
     }
 
@@ -211,7 +210,7 @@ class Subscriptions
         $this->app['db']->update(
             $this->config['tables']['topics'],
             array('subscribers' => $subscribers),
-            array('id' => $topic->values['id'])
+            array('id'          => $topic->values['id'])
         );
     }
 }

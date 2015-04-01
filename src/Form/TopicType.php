@@ -39,7 +39,7 @@ class TopicType extends AbstractType
                                                   new Assert\Length(array('min' => 3))
                                              )))
             ->add('body',   'textarea', array('label' => false,
-                                              'attr'  => array('style' => 'height: 150px;'),
+                                              'attr'        => array('style' => 'height: 150px;'),
                                               'constraints' => array(
                                                   new Assert\NotBlank(),
                                                   new Assert\Length(array('min' => 2))
@@ -58,5 +58,4 @@ class TopicType extends AbstractType
 //             'data_class' => 'Bolt\Extension\Bolt\BoltBB\Entity\Topic',
 //         ));
 //     }
-
 }

@@ -35,14 +35,14 @@ class ReplyType extends AbstractType
     {
         $builder
             ->add('body',   'textarea', array('label' => false,
-                                              'attr'  => array('style' => 'height: 150px;'),
+                                              'attr'        => array('style' => 'height: 150px;'),
                                               'constraints' => array(
                                                   new Assert\NotBlank(),
                                                   new Assert\Length(array('min' => 2))
                                              )))
             ->add('notify', 'checkbox', array('label' => 'Notify me of updates to this topic',
-                                              'data'  => true,
-                                              'required' => false,))
+                                              'data'     => true,
+                                              'required' => false, ))
             ->add('post',   'submit',   array('label' => 'Post reply'));
     }
 
@@ -57,5 +57,4 @@ class ReplyType extends AbstractType
 //             'data_class' => 'Bolt\Extension\Bolt\BoltBB\Entity\Reply',
 //         ));
 //     }
-
 }

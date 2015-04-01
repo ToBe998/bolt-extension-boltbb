@@ -2,13 +2,13 @@
 
 namespace Bolt\Extension\Bolt\BoltBB\Controller;
 
-use Bolt\Extension\Bolt\BoltBB\Extension;
 use Bolt\Extension\Bolt\BoltBB\Data;
 use Bolt\Extension\Bolt\BoltBB\Discussions;
-use Bolt\Extension\Bolt\BoltBB\Entity\Topic;
 use Bolt\Extension\Bolt\BoltBB\Entity\Reply;
-use Bolt\Extension\Bolt\BoltBB\Form\TopicType;
+use Bolt\Extension\Bolt\BoltBB\Entity\Topic;
+use Bolt\Extension\Bolt\BoltBB\Extension;
 use Bolt\Extension\Bolt\BoltBB\Form\ReplyType;
+use Bolt\Extension\Bolt\BoltBB\Form\TopicType;
 use Bolt\Extensions\Snippets\Location as SnippetLocation;
 use Bolt\Translation\Translator as Trans;
 use Silex;
@@ -62,11 +62,11 @@ class BoltBBController implements ControllerProviderInterface
     private $discuss;
 
     /**
+     * @param \Silex\Application $app
      *
-     * @param  Silex\Application           $app
      * @return \Silex\ControllerCollection
      */
-    public function connect(Silex\Application $app)
+    public function connect(Application $app)
     {
         $this->config = $app[Extension::CONTAINER]->config;
         $this->data = new Data($app);
@@ -107,10 +107,10 @@ class BoltBBController implements ControllerProviderInterface
     /**
      * Controller before render
      *
-     * @param Request           $request
-     * @param \Bolt\Application $app
+     * @param Request            $request
+     * @param \Silex\Application $app
      */
-    public function before(Request $request, \Bolt\Application $app)
+    public function before(Request $request, Application $app)
     {
         // Enable HTML snippets in our routes so that JS & CSS gets inserted
         $app['htmlsnippets'] = true;
@@ -134,11 +134,12 @@ class BoltBBController implements ControllerProviderInterface
     /**
      * Default route callback for forums
      *
-     * @param  Silex\Application $app
-     * @param  Request           $request
+     * @param \Silex\Application $app
+     * @param Request            $request
+     *
      * @return \Twig_Markup
      */
-    public function index(Silex\Application $app, Request $request)
+    public function index(Application $app, Request $request)
     {
         // Add assets to Twig path
         $this->addTwigPath($app);
@@ -163,11 +164,11 @@ class BoltBBController implements ControllerProviderInterface
         // Render the Twig
         $html = $app['render']->render(
             $this->config['templates']['forums']['index'], array(
-                'twigparent' => $this->config['templates']['parent'],
+                'twigparent'   => $this->config['templates']['parent'],
                 'contenttypes' => $this->config['contenttypes'],
-                'forums' => $forums,
-                'boltbb' => $this->config['boltbb'],
-                'base_uri'  => $this->config['base_uri'],
+                'forums'       => $forums,
+                'boltbb'       => $this->config['boltbb'],
+                'base_uri'     => $this->config['base_uri'],
         ));
 
         return new \Twig_Markup($html, 'UTF-8');
@@ -176,11 +177,12 @@ class BoltBBController implements ControllerProviderInterface
     /**
      * Default route callback for uncategorised forum feed
      *
-     * @param  Silex\Application $app
-     * @param  Request           $request
+     * @param \Silex\Application $app
+     * @param Request            $request
+     *
      * @return \Twig_Markup
      */
-    public function all(Silex\Application $app, Request $request)
+    public function all(Application $app, Request $request)
     {
         // Add assets to Twig path
         $this->addTwigPath($app);
@@ -188,10 +190,10 @@ class BoltBBController implements ControllerProviderInterface
         // Render the Twig
         $html = $app['render']->render(
             $this->config['templates']['forums']['forum'], array(
-                'form' => '',
-                'twigparent' => $this->config['templates']['parent'],
+                'form'         => '',
+                'twigparent'   => $this->config['templates']['parent'],
                 'contenttypes' => $this->config['contenttypes'],
-                'forum' => array(
+                'forum'        => array(
                     'id'          => 0,
                     'slug'        => 'all',
                     'state'       => 'closed',
@@ -207,11 +209,11 @@ class BoltBBController implements ControllerProviderInterface
                 ),
                 'topics' => $this->data->getForumTopics(false,
                     array('visibility' => 'normal',
-                        'state' => 'open || closed'
+                        'state'        => 'open || closed'
                     ),
                     $this->config['pagercount']),
                 'showpager' => $app['storage']->isEmptyPager() ? false : true,
-                'boltbb' => $this->config['boltbb'],
+                'boltbb'    => $this->config['boltbb'],
                 'base_uri'  => $this->config['base_uri'],
         ));
 
@@ -221,12 +223,13 @@ class BoltBBController implements ControllerProviderInterface
     /**
      * Individual forum route callback
      *
-     * @param  Silex\Application $app
-     * @param  Request           $request
-     * @param  mixed             $forum   Either ID or slug of the forum
+     * @param \Silex\Application $app
+     * @param Request            $request
+     * @param mixed              $forum   Either ID or slug of the forum
+     *
      * @return \Twig_Markup
      */
-    public function forum(Silex\Application $app, Request $request, $forum)
+    public function forum(Application $app, Request $request, $forum)
     {
         // Add assets to Twig path
         $this->addTwigPath($app);
@@ -268,8 +271,8 @@ class BoltBBController implements ControllerProviderInterface
         // Add CKEditor config javascript
         $js = $app['render']->render(
             '_editorconfig.twig', array(
-                'ckconfig' => $this->config['editor'],
-                'ckfield'  => 'topic[body]',
+                'ckconfig'        => $this->config['editor'],
+                'ckfield'         => 'topic[body]',
                 'boltbb_basepath' => $app[Extension::CONTAINER]->getBaseUrl()
         ));
         $app[Extension::CONTAINER]->addSnippet(SnippetLocation::END_OF_BODY, $js);
@@ -277,11 +280,11 @@ class BoltBBController implements ControllerProviderInterface
         // Render the Twig
         $html = $app['render']->render(
             $this->config['templates']['forums']['forum'], array(
-                'form' => $form->createView(),
-                'twigparent' => $this->config['templates']['parent'],
+                'form'         => $form->createView(),
+                'twigparent'   => $this->config['templates']['parent'],
                 'contenttypes' => $this->config['contenttypes'],
-                'forum' => $forum,
-                'global' => $this->data->getForumTopics(false,
+                'forum'        => $forum,
+                'global'       => $this->data->getForumTopics(false,
                     array('visibility' => 'global')
                 ),
                 'pinned' => $this->data->getForumTopics($forum['id'],
@@ -289,11 +292,11 @@ class BoltBBController implements ControllerProviderInterface
                 ),
                 'topics' => $this->data->getForumTopics($forum['id'],
                     array('visibility' => 'normal',
-                          'state' => 'open || closed'
+                          'state'      => 'open || closed'
                     ),
                     $this->config['pagercount']),
                 'showpager' => $app['storage']->isEmptyPager() ? false : true,
-                'boltbb' => $this->config['boltbb'],
+                'boltbb'    => $this->config['boltbb'],
                 'base_uri'  => $this->config['base_uri'],
         ));
 
@@ -303,13 +306,14 @@ class BoltBBController implements ControllerProviderInterface
     /**
      * Individual topic route callback
      *
-     * @param  Silex\Application $app
-     * @param  Request           $request
-     * @param  mixed             $forum   Either ID or slug of the forum
-     * @param  mixed             $topic   Either ID or slug of the topic
+     * @param \Silex\Application $app
+     * @param Request            $request
+     * @param mixed              $forum   Either ID or slug of the forum
+     * @param mixed              $topic   Either ID or slug of the topic
+     *
      * @return \Twig_Markup
      */
-    public function topic(Silex\Application $app, Request $request, $forum, $topic)
+    public function topic(Application $app, Request $request, $forum, $topic)
     {
         // Add assets to Twig path
         $this->addTwigPath($app);
@@ -352,8 +356,8 @@ class BoltBBController implements ControllerProviderInterface
         // Add CKEditor config javascript
         $js = $app['render']->render(
             '_editorconfig.twig', array(
-                'ckconfig' => $this->config['editor'],
-                'ckfield'  => 'reply[body]',
+                'ckconfig'        => $this->config['editor'],
+                'ckfield'         => 'reply[body]',
                 'boltbb_basepath' => $app[Extension::CONTAINER]->getBaseUrl()
         ));
         $app[Extension::CONTAINER]->addSnippet(SnippetLocation::END_OF_BODY, $js);
@@ -367,37 +371,34 @@ class BoltBBController implements ControllerProviderInterface
         // Render the Twig
         $html = $app['render']->render(
             $this->config['templates']['forums']['topic'], array(
-                'form' => $form->createView(),
-                'twigparent' => $this->config['templates']['parent'],
+                'form'         => $form->createView(),
+                'twigparent'   => $this->config['templates']['parent'],
                 'contenttypes' => $this->config['contenttypes'],
-                'forum' => $forum,
-                'topic' => $topic,
-                'replies' => $this->data->getTopicReplies($topic->values['id'], $this->config['pagercount']),
-                'showpager' => $app['storage']->isEmptyPager() ? false : true,
-                'boltbb' => $this->config['boltbb'],
-                'base_uri'  => $this->config['base_uri'],
+                'forum'        => $forum,
+                'topic'        => $topic,
+                'replies'      => $this->data->getTopicReplies($topic->values['id'], $this->config['pagercount']),
+                'showpager'    => $app['storage']->isEmptyPager() ? false : true,
+                'boltbb'       => $this->config['boltbb'],
+                'base_uri'     => $this->config['base_uri'],
         ));
 
         return new \Twig_Markup($html, 'UTF-8');
     }
 
     /**
-     *
-     * @param Silex\Application $app
+     * @param \Silex\Application $app
      */
-    private function addTwigPath(Silex\Application $app)
+    private function addTwigPath(Application $app)
     {
         $app['twig.loader.filesystem']->addPath(dirname(dirname(__DIR__)) . '/assets');
         $app['twig.loader.filesystem']->addPath(dirname(dirname(__DIR__)) . '/assets/forums');
     }
 
     /**
-     *
-     * @param Silex\Application $app
+     * @param \Silex\Application $app
      */
-    private function getMemberID(Silex\Application $app)
+    private function getMemberID(Application $app)
     {
         return $app['members']->isAuth();
     }
-
 }

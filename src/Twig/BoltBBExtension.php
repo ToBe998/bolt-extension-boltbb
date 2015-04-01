@@ -87,7 +87,8 @@ class BoltBBExtension extends \Twig_Extension
     /**
      * Return the HTML for a breadcrumb menu
      *
-     * @param  integer      $forum_id The ID of the forum
+     * @param integer $forum_id The ID of the forum
+     *
      * @return \Twig_Markup
      */
     public function forumsBreadcrumbs($forum_id = false)
@@ -101,7 +102,7 @@ class BoltBBExtension extends \Twig_Extension
         $this->app['twig.loader.filesystem']->addPath(dirname(dirname(__DIR__)) . '/assets/navigation');
 
         $html = $this->app['render']->render($this->config['templates']['navigation']['crumbs'], array(
-            'forum' => $forum,
+            'forum'  => $forum,
             'boltbb' => $this->config
         ));
 
@@ -113,7 +114,8 @@ class BoltBBExtension extends \Twig_Extension
      *
      * @since 1.0
      *
-     * @param  integer      $forum_id The ID of the forum
+     * @param integer $forum_id The ID of the forum
+     *
      * @return \Twig_Markup
      */
     public function forumSlug($forum_id)
@@ -128,7 +130,8 @@ class BoltBBExtension extends \Twig_Extension
      *
      * @since 1.0
      *
-     * @param  integer      $forum_id The ID of the forum
+     * @param integer $forum_id The ID of the forum
+     *
      * @return \Twig_Markup
      */
     public function forumTopicCount($forum_id)
@@ -143,7 +146,8 @@ class BoltBBExtension extends \Twig_Extension
      *
      * @since 1.0
      *
-     * @param  integer      $forum_id The ID of the forum
+     * @param integer $forum_id The ID of the forum
+     *
      * @return \Twig_Markup
      */
     public function forumReplyCount($forum_id)
@@ -158,7 +162,8 @@ class BoltBBExtension extends \Twig_Extension
      *
      * @since 1.0
      *
-     * @param  integer      $forum_id The ID of the forum
+     * @param integer $forum_id The ID of the forum
+     *
      * @return \Twig_Markup
      */
     public function topicReplyCount($topic_id)
@@ -171,7 +176,8 @@ class BoltBBExtension extends \Twig_Extension
     /**
      * Return the last post record for the passed forum
      *
-     * @param  integer       $forum_id The ID of the forum
+     * @param integer $forum_id The ID of the forum
+     *
      * @return \Bolt\Content
      */
     public function lastPost($record = false)

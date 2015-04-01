@@ -87,5 +87,4 @@ class Topic
     {
         $this->author = $author;
     }
-
 }

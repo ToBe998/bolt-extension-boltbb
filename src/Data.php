@@ -77,7 +77,8 @@ class Data
     /**
      * Get last post in a forum
      *
-     * @param  string|int $forum
+     * @param string|int $forum
+     *
      * @return array
      */
     public function getForumLastPost($forum = false)
@@ -85,13 +86,13 @@ class Data
         if ($forum) {
             $forum = $this->getForum($forum);
             $params = array(
-                'forum' => $forum['id'],
-                'orderby' => '-datechanged',
+                'forum'        => $forum['id'],
+                'orderby'      => '-datechanged',
                 'returnsingle' => true
             );
         } else {
             $params = array(
-                'orderby' => '-datechanged',
+                'orderby'      => '-datechanged',
                 'returnsingle' => true
             );
         }
@@ -117,7 +118,8 @@ class Data
     /**
      * Get a slug for a given forum
      *
-     * @param  mixed  $forum Either a slug or numeric ID for a forum
+     * @param mixed $forum Either a slug or numeric ID for a forum
+     *
      * @return string Slug of requested forum
      */
     public function getForumSlug($forum)
@@ -131,7 +133,8 @@ class Data
      * Get an array that describes the topic regardless of requesting via
      * slug or topic ID
      *
-     * @param  mixed $topic_input Either a slug or numeric ID for a topic
+     * @param mixed $topic_input Either a slug or numeric ID for a topic
+     *
      * @return array Details of the topic including replies
      */
     public function getTopic($topic_input)
@@ -140,13 +143,13 @@ class Data
         if (is_numeric($topic_input)) {
             $topic = $this->app['storage']->getContent($this->config['contenttypes']['topics'],
                 array(
-                    'id' => $topic_input,
+                    'id'           => $topic_input,
                     'returnsingle' => true
             ));
         } else {
             $topic = $this->app['storage']->getContent($this->config['contenttypes']['topics'],
                 array(
-                    'slug' => $topic_input,
+                    'slug'         => $topic_input,
                     'returnsingle' => true
             ));
         }
@@ -160,15 +163,16 @@ class Data
     /**
      * Lookup a forum's topics
      *
-     * @param  int           $forum_id The ID of the forum to get topics for
-     * @param  arary         $params   An optional associative array of WHERE parameters
-     * @param  int           $limit    If set, page the output to the passed limit
+     * @param int   $forum_id The ID of the forum to get topics for
+     * @param arary $params   An optional associative array of WHERE parameters
+     * @param int   $limit    If set, page the output to the passed limit
+     *
      * @return \Bolt\Content
      */
     public function getForumTopics($forum_id, $params = false, $limit = false)
     {
         $query = array(
-            'order' => '-datecreated',
+            'order'        => '-datecreated',
             'returnsingle' => false
         );
 
@@ -195,7 +199,8 @@ class Data
     /**
      * Lookup a forums topic count
      *
-     * @param  integer $forum_id The ID of the forum to get topics for
+     * @param integer $forum_id The ID of the forum to get topics for
+     *
      * @return array
      */
     public function getForumTopicCount($forum_id)
@@ -214,7 +219,8 @@ class Data
     /**
      * Lookup a forums reply count
      *
-     * @param  integer $forum_id The ID of the forum to get replies for
+     * @param integer $forum_id The ID of the forum to get replies for
+     *
      * @return array
      */
     public function getForumReplyCount($forum_id)
@@ -233,8 +239,9 @@ class Data
     /**
      * Get the unique resource identifier for a given forum
      *
-     * @param  mixed  $forum
-     * @param  bool   $relative
+     * @param mixed $forum
+     * @param bool  $relative
+     *
      * @return string
      */
     public function getForumURI($forum, $relative = true)
@@ -252,15 +259,16 @@ class Data
     /**
      * Lookup a topic's replies
      *
-     * @param  int           $topic_id The ID of the topic to get replies for
-     * @param  int           $limit    If set, page the output to the passed limit
+     * @param int $topic_id The ID of the topic to get replies for
+     * @param int $limit    If set, page the output to the passed limit
+     *
      * @return \Bolt\Content
      */
     public function getTopicReplies($topic_id, $limit = false)
     {
         $query = array(
-            'topic' => $topic_id,
-            'order' => 'datecreated',
+            'topic'        => $topic_id,
+            'order'        => 'datecreated',
             'returnsingle' => false
         );
 
@@ -286,7 +294,8 @@ class Data
     /**
      * Lookup a topic's reply count
      *
-     * @param  integer $topic_id The ID of the forum to get replies for
+     * @param integer $topic_id The ID of the forum to get replies for
+     *
      * @return array
      */
     public function getTopicReplyCount($topic_id)
@@ -302,7 +311,8 @@ class Data
     /**
      * Lookup a topic's last post
      *
-     * @param  integer $topic_id The ID of the topic to get last post for
+     * @param integer $topic_id The ID of the topic to get last post for
+     *
      * @return array
      */
     public function getTopicLastPost($topic_id)
@@ -316,8 +326,8 @@ class Data
         $record = $this->app['storage']->getContent(
             $this->config['contenttypes']['replies'],
             array(
-                'orderby' => '-datechanged',
-                'topic' => $topic_id,
+                'orderby'      => '-datechanged',
+                'topic'        => $topic_id,
                 'returnsingle' => true
         ));
 
@@ -332,8 +342,9 @@ class Data
     /**
      * Get the unique resource identifier for a given topic
      *
-     * @param  mixed  $forum
-     * @param  bool   $relative
+     * @param mixed $forum
+     * @param bool  $relative
+     *
      * @return string
      */
     public function getTopicURI($topic, $relative = true)
@@ -353,14 +364,15 @@ class Data
     /**
      * Return an array of recent entries, either topics or replies
      *
-     * @param  string  $type  Either 'topic' or 'reply'
-     * @param  integer $count Number of recent entries to return
-     * @return array   Array of recent entries
+     * @param string  $type  Either 'topic' or 'reply'
+     * @param integer $count Number of recent entries to return
+     *
+     * @return array Array of recent entries
      */
     public function getRecent($type, $count = 5)
     {
         return $this->app['storage']->getContent($type, array(
-            'count' => $count,
+            'count'        => $count,
             'returnsingle' => false
         ));
     }

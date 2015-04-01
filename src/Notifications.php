@@ -59,7 +59,6 @@ class Notifications
     private $record;
 
     /**
-     *
      * @param Silex\Application $app
      * @param \Bolt\Content     $record
      */
@@ -84,12 +83,11 @@ class Notifications
         if ($this->debug) {
             $this->recipients = array(
                 array(
-                    'firstName' => 'Test',
-                    'lastName' => 'Notifier',
+                    'firstName'   => 'Test',
+                    'lastName'    => 'Notifier',
                     'displayName' => 'Test Notifier',
-                    'email' => $this->debug_address
+                    'email'       => $this->debug_address
                 ));
-
         } else {
             // Get the subscribers to the topic and it's forum
             $subscriptions = new Subscriptions($this->app);

@@ -2,17 +2,16 @@
 
 namespace Bolt\Extension\Bolt\BoltBB\Controller;
 
+use Bolt\Extension\Bolt\BoltBB\Admin;
+use Bolt\Extension\Bolt\BoltBB\AdminAjaxRequest;
+use Bolt\Extension\Bolt\BoltBB\Contenttypes;
+use Bolt\Extension\Bolt\BoltBB\Extension;
 use Silex;
 use Silex\Application;
 use Silex\ControllerProviderInterface;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpFoundation\JsonResponse;
-use Bolt\Translation\Translator as Trans;
-use Bolt\Extension\Bolt\BoltBB\Extension;
-use Bolt\Extension\Bolt\BoltBB\Admin;
-use Bolt\Extension\Bolt\BoltBB\Contenttypes;
-use Bolt\Extension\Bolt\BoltBB\AdminAjaxRequest;
 
 /**
  * BoltBB admin area controller
@@ -39,7 +38,7 @@ use Bolt\Extension\Bolt\BoltBB\AdminAjaxRequest;
 class BoltBBAdminController implements ControllerProviderInterface
 {
     /**
-     * @var Application
+     * @var \Silex\Application
      */
     private $app;
 
@@ -85,8 +84,8 @@ class BoltBBAdminController implements ControllerProviderInterface
     /**
      * Controller before render
      *
-     * @param Request            $request
-     * @param \Silex\Application $app
+     * @param Request     $request
+     * @param Application $app
      */
     public function before(Request $request, Application $app)
     {
@@ -101,7 +100,7 @@ class BoltBBAdminController implements ControllerProviderInterface
      * The main admin page
      *
      * @param \Silex\Application $app
-     * @param Request $request
+     * @param Request            $request
      *
      * @return \Twig_Markup
      */
@@ -121,10 +120,10 @@ class BoltBBAdminController implements ControllerProviderInterface
 
         // Set a flashbag if there is missing data
         if ($forums['needsync']) {
-            $app['session']->getFlashBag()->add('error', "Configured forums are missing from the database table.  Run 'Sync Table' to resolve.<br>" );
+            $app['session']->getFlashBag()->add('error', "Configured forums are missing from the database table.  Run 'Sync Table' to resolve.<br>");
         }
         if ($needtypes) {
-            $app['session']->getFlashBag()->add('error', "BoltBB contenttypes are missing from contenttypes.yml.  Run 'Setup Contenttypes' to resolve.<br>" );
+            $app['session']->getFlashBag()->add('error', "BoltBB contenttypes are missing from contenttypes.yml.  Run 'Setup Contenttypes' to resolve.<br>");
         }
 
         $html = $app['render']->render('boltbb.twig', array(
@@ -143,7 +142,7 @@ class BoltBBAdminController implements ControllerProviderInterface
      * BoltBB Admin AJAX controller
      *
      * @param \Silex\Application $app
-     * @param Request $request
+     * @param Request            $request
      *
      * @return \Symfony\Component\HttpFoundation\Response|\Symfony\Component\HttpFoundation\JsonResponse
      */
@@ -162,7 +161,6 @@ class BoltBBAdminController implements ControllerProviderInterface
         $ar = new AdminAjaxRequest($app);
 
         if ($request->getMethod() === 'POST') {
-
             if ($task == 'forumOpen') {
                 // Open a forum
                 $forums = $request->request->get('forums');
@@ -180,9 +178,7 @@ class BoltBBAdminController implements ControllerProviderInterface
                 // Send a test notification
                 return $ar->testNotify();
             }
-
         } elseif ($request->getMethod() === 'GET') {
-
             if ($task == 'forumSync') {
                 // Sync our database table with the configuration files defined forums
                 return $ar->forumSync();
@@ -190,7 +186,6 @@ class BoltBBAdminController implements ControllerProviderInterface
                 // Write our missing contenttypes into contentypes.yml
                 return $ar->forumContenttypes();
             }
-
         }
     }
 
@@ -203,5 +198,4 @@ class BoltBBAdminController implements ControllerProviderInterface
     {
         $app['twig.loader.filesystem']->addPath(dirname(dirname(__DIR__)) . '/assets/admin');
     }
-
 }

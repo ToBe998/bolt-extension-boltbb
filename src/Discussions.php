@@ -86,7 +86,6 @@ class Discussions
      * Create a new topic
      *
      * @since 1.0
-     *
      */
     public function doTopicNew(Request $request, $forum, $author)
     {
@@ -130,7 +129,6 @@ class Discussions
      * Create a new reply
      *
      * @since 1.0
-     *
      */
     public function doReplyNew(Request $request, $topic, $author)
     {

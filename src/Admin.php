@@ -109,7 +109,6 @@ class Admin
                     $return['needsync'] = true;
                 }
             }
-
         } catch (Exception $e) {
         }
 
@@ -142,7 +141,7 @@ class Admin
         $this->app['db']->update(
             $this->config['tables']['forums'],
             array('state' => 'open'),
-            array('slug' => $forum)
+            array('slug'  => $forum)
         );
     }
 
@@ -156,7 +155,7 @@ class Admin
         $this->app['db']->update(
             $this->config['tables']['forums'],
             array('state' => 'closed'),
-            array('slug' => $forum)
+            array('slug'  => $forum)
         );
     }
 
@@ -201,7 +200,7 @@ class Admin
                 $this->config['tables']['replies'],
                 array(
                     'title' => '[' . Trans::__('Reply') . ']: ' . $topic['title'],
-                    'slug' => substr($this->app['slugify']->slugify($topic['title']), 0, 120) . '-' . $i
+                    'slug'  => substr($this->app['slugify']->slugify($topic['title']), 0, 120) . '-' . $i
                 ),
                 array('topic' => $topic['id'])
             );

@@ -3,8 +3,8 @@
 namespace Bolt\Extension\Bolt\BoltBB;
 
 use Silex;
-use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Response;
 
 /**
  * BoltBB administration request functions
@@ -55,7 +55,8 @@ class AdminAjaxRequest
     /**
      * Open a forum(s)
      *
-     * @param  array        $forums
+     * @param array $forums
+     *
      * @return JsonResponse
      */
     public function forumOpen(array $forums)
@@ -76,7 +77,8 @@ class AdminAjaxRequest
     /**
      * Close a forum(s)
      *
-     * @param  array        $forums
+     * @param array $forums
+     *
      * @return JsonResponse
      */
     public function forumClose(array $forums)
@@ -170,9 +172,9 @@ class AdminAjaxRequest
     }
 
     /**
+     * @param string     $task
+     * @param \Exception $e
      *
-     * @param  string     $task
-     * @param  \Exception $e
      * @return array
      */
     private function getResult($task, \Exception $e = null)

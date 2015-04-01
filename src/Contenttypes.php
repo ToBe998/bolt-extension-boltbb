@@ -2,11 +2,10 @@
 
 namespace Bolt\Extension\Bolt\BoltBB;
 
-use Silex;
 use Silex\Application;
-use Symfony\Component\Yaml\Yaml;
-use Symfony\Component\Yaml\Parser;
 use Symfony\Component\Yaml\Dumper;
+use Symfony\Component\Yaml\Parser;
+use Symfony\Component\Yaml\Yaml;
 
 /**
  * Default Contenttypes definitions
@@ -74,7 +73,8 @@ class Contenttypes
     /**
      * Test to see if a contenttype exists in contenttype.yml
      *
-     * @param  string  $contenttype
+     * @param string $contenttype
+     *
      * @return boolean
      */
     public function isContenttype($contenttype)
@@ -154,8 +154,9 @@ class Contenttypes
     /**
      * Work around Symfony YAML's lack of recursion support
      *
-     * @param  array  $array
-     * @param  string $out
+     * @param array  $array
+     * @param string $out
+     *
      * @return string
      */
     private function getYaml($array, $out = '')
@@ -183,9 +184,9 @@ class Contenttypes
     private function getDefaultTopics()
     {
         return array(
-            'name' => 'Topics',
+            'name'          => 'Topics',
             'singular_name' => 'Topic',
-            'fields' => array(
+            'fields'        => array(
                 'title' => array(
                     'type'    => 'text',
                     'class'   => 'large',
@@ -196,21 +197,21 @@ class Contenttypes
                     'height'  => '300px'
                 ),
                 'author' => array(
-                    'type'    => 'text',
-                    'variant' => 'inline',
-                    'info'    => 'The ClientLogin ID of the author',
+                    'type'     => 'text',
+                    'variant'  => 'inline',
+                    'info'     => 'The ClientLogin ID of the author',
                     'readonly' => true,
-                    'group'   => 'Info'
+                    'group'    => 'Info'
                 ),
                 'authorip' => array(
-                    'type'    => 'text',
-                    'variant' => 'inline',
-                    'label'   => 'IP address',
+                    'type'     => 'text',
+                    'variant'  => 'inline',
+                    'label'    => 'IP address',
                     'readonly' => true
                 ),
                 'forum' => array(
-                    'type'    => 'integer',
-                    'variant' => 'inline',
+                    'type'     => 'integer',
+                    'variant'  => 'inline',
                     'readonly' => true
                 ),
                 'state' => array(
@@ -233,9 +234,9 @@ class Contenttypes
                     ),
                 ),
                 'subscribers' => array(
-                    'type' => 'textarea',
+                    'type'     => 'textarea',
                     'readonly' => true,
-                    'hidden' => true
+                    'hidden'   => true
                 ),
             ),
             'default_status' => 'published',
@@ -250,9 +251,9 @@ class Contenttypes
     private function getDefaultReplies()
     {
         return array(
-            'name' => 'Replies',
+            'name'          => 'Replies',
             'singular_name' => 'Reply',
-            'fields' => array(
+            'fields'        => array(
                 'title' => array(
                     'type'    => 'text',
                     'class'   => 'large',
@@ -263,26 +264,26 @@ class Contenttypes
                     'height'  => '300px'
                 ),
                 'author' => array(
-                    'type'    => 'text',
-                    'variant' => 'inline',
-                    'info'    => 'The ClientLogin ID of the author',
+                    'type'     => 'text',
+                    'variant'  => 'inline',
+                    'info'     => 'The ClientLogin ID of the author',
                     'readonly' => true,
-                    'group'   => 'Info'
+                    'group'    => 'Info'
                 ),
                 'authorip' => array(
-                    'type'    => 'text',
-                    'variant' => 'inline',
-                    'label'   => 'IP address',
+                    'type'     => 'text',
+                    'variant'  => 'inline',
+                    'label'    => 'IP address',
                     'readonly' => true
                 ),
                 'forum' => array(
-                    'type'    => 'integer',
-                    'variant' => 'inline',
+                    'type'     => 'integer',
+                    'variant'  => 'inline',
                     'readonly' => true
                 ),
                 'topic' => array(
-                    'type'    => 'integer',
-                    'variant' => 'inline',
+                    'type'     => 'integer',
+                    'variant'  => 'inline',
                     'readonly' => true
                 )
             ),

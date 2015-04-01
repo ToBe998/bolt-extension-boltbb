@@ -4,6 +4,7 @@ namespace Bolt\Extension\Bolt\BoltBB;
 
 /**
  * Content override class
+ *
  * @see http://docs.bolt.cm/extensions#overriding-the-default-8216content8217-class
  *
  * Copyright (C) 2014  Gawain Lynch

@@ -2,12 +2,11 @@
 
 namespace Bolt\Extension\Bolt\BoltBB;
 
-use Doctrine\DBAL\Schema\Schema;
-use Bolt\Events\CronEvent;
 use Bolt\Events\CronEvents;
 use Bolt\Events\StorageEvent;
 use Bolt\Events\StorageEvents;
 use Bolt\Translation\Translator as Trans;
+use Doctrine\DBAL\Schema\Schema;
 
 /**
  * BoltBB discussion extension for Bolt
@@ -117,11 +116,10 @@ class Extension extends \Bolt\BaseExtension
     {
         // Get contenttype
         $contenttype = $event->getContentType();
-        if (empty($contenttype) || !(
-            $contenttype == 'topics' ||
-            $contenttype == 'replies')) {
-                return;
-            }
+        if (empty($contenttype)
+            || !($contenttype == 'topics' || $contenttype == 'replies')) {
+            return;
+        }
 
         // If this is not a create event, leave
         if ($event->isCreate()) {
@@ -165,8 +163,7 @@ class Extension extends \Bolt\BaseExtension
     private function adminMenu()
     {
         if ($this->isAdmin()) {
-            $this->app[Extension::CONTAINER]->addMenuOption(Trans::__('BoltBB'), $this->app['resources']->getUrl('bolt' ) . 'extensions/boltbb', 'fa:pencil-square-o');
-
+            $this->app[Extension::CONTAINER]->addMenuOption(Trans::__('BoltBB'), $this->app['resources']->getUrl('bolt') . 'extensions/boltbb', 'fa:pencil-square-o');
         }
     }
 
@@ -174,7 +171,6 @@ class Extension extends \Bolt\BaseExtension
      * Register, setup and index our database table
      *
      * @since 1.0
-     *
      */
     private function dbCheck()
     {
@@ -235,7 +231,7 @@ class Extension extends \Bolt\BaseExtension
     protected function getDefaultConfig()
     {
         return array(
-            'base_uri' => 'forums',
+            'base_uri'  => 'forums',
             'webassets' => array(
                 'stylesheet' => 'boltbb.min.css',
                 'javascript' => 'boltbb.min.js',

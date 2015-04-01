@@ -87,5 +87,4 @@ class Reply
     {
         $this->notify = $notify;
     }
-
 }
