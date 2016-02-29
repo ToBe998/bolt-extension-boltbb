@@ -33,7 +33,7 @@ use Symfony\Component\HttpFoundation\Response;
  * @copyright Copyright (c) 2014, Gawain Lynch
  * @license   http://opensource.org/licenses/GPL-3.0 GNU Public License 3.0
  */
-class BoltBBAdminController implements ControllerProviderInterface
+class Backend implements ControllerProviderInterface
 {
     /**
      * @var \Silex\Application
