@@ -2,6 +2,7 @@
 
 namespace Bolt\Extension\Bolt\BoltBB\Provider;
 
+use Bolt\Extension\Bolt\BoltBB\Config\Config;
 use Silex\Application;
 use Silex\ServiceProviderInterface;
 
@@ -47,6 +48,11 @@ class BoltBBServiceProvider implements ServiceProviderInterface
      */
     public function register(Application $app)
     {
+        $app['boltbb.config'] = $app->share(
+            function ($app) {
+                return new Config($this->config);
+            }
+        );
     }
 
     /**
