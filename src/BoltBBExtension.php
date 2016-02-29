@@ -132,19 +132,10 @@ class BoltBBExtension extends SimpleExtension
     }
 
     /**
-     *
+     * {@inheritdoc}
      */
     public function initialize()
     {
-        /*
-         * Backend
-         */
-        if ($end == 'backend') {
-            // Check the database table is up and working
-            $this->dbCheck();
-        }
-
-
     }
 
     /**
