@@ -74,6 +74,30 @@ class BoltBBExtension extends SimpleExtension
     }
 
     /**
+     * {@inheritdoc}
+     */
+    protected function registerFrontendControllers()
+    {
+        $app = $this->getContainer();
+
+        return [
+            $app['boltbb.config']->getBaseUri() => $app['boltbb.controller.frontend'],
+        ];
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function registerBackendControllers()
+    {
+        $app = $this->getContainer();
+
+        return [
+            '/' => $app['boltbb.controller.backend'],
+        ];
+    }
+
+    /**
      *
      */
     public function initialize()
@@ -90,13 +114,6 @@ class BoltBBExtension extends SimpleExtension
             // Check the database table is up and working
             $this->dbCheck();
         }
-
-        /*
-         * Set up controller routes
-         */
-        $path = $this->app['config']->get('general/branding/path') . '/extensions/boltbb';
-        $this->app->mount($path, new Controller\BoltBBAdminController());
-        $this->app->mount('/' . $this->config['base_uri'], new Controller\BoltBBController());
 
         /*
          * Scheduled cron listener

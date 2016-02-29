@@ -3,6 +3,7 @@
 namespace Bolt\Extension\Bolt\BoltBB\Provider;
 
 use Bolt\Extension\Bolt\BoltBB\Config\Config;
+use Bolt\Extension\Bolt\BoltBB\Controller;
 use Bolt\Extension\Bolt\BoltBB\Twig;
 use Silex\Application;
 use Silex\ServiceProviderInterface;
@@ -52,6 +53,18 @@ class BoltBBServiceProvider implements ServiceProviderInterface
         $app['boltbb.config'] = $app->share(
             function ($app) {
                 return new Config($this->config);
+            }
+        );
+
+        $app['boltbb.controller.frontend'] = $app->share(
+            function ($app) {
+                return new Controller\Frontend($this->config);
+            }
+        );
+
+        $app['boltbb.controller.backend'] = $app->share(
+            function ($app) {
+                return new Controller\Backend($this->config);
             }
         );
 
