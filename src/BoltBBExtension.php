@@ -44,6 +44,17 @@ class BoltBBExtension extends SimpleExtension
             new BoltBBServiceProvider($this->getConfig())
         ];
     }
+    /**
+     * {@inheritdoc}
+     */
+    protected function registerTwigPaths()
+    {
+        return [
+            'templates/email',
+            'templates/forums',
+            'templates/navigation',
+        ];
+    }
 
     /**
      *
@@ -64,14 +75,6 @@ class BoltBBExtension extends SimpleExtension
 
             // Create the admin page
             $this->adminMenu();
-        }
-
-        /*
-         * Frontend
-         */
-        if ($end == 'frontend') {
-            // Twig functions
-            $this->app['twig']->addExtension(new Twig\BoltBBExtension($this->app));
         }
 
         /*

@@ -3,6 +3,7 @@
 namespace Bolt\Extension\Bolt\BoltBB\Provider;
 
 use Bolt\Extension\Bolt\BoltBB\Config\Config;
+use Bolt\Extension\Bolt\BoltBB\Twig;
 use Silex\Application;
 use Silex\ServiceProviderInterface;
 
@@ -52,6 +53,21 @@ class BoltBBServiceProvider implements ServiceProviderInterface
             function ($app) {
                 return new Config($this->config);
             }
+        );
+
+        $app['twig'] = $app->share(
+            $app->extend(
+                'twig',
+                function (\Twig_Environment $twig, $app) {
+                    $twig->addExtension(
+                        new Twig\BoltBBExtension(
+                            $app['boltbb.config']
+                        )
+                    );
+
+                    return $twig;
+                }
+            )
         );
     }
 

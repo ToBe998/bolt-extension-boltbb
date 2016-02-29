@@ -2,8 +2,8 @@
 
 namespace Bolt\Extension\Bolt\BoltBB\Twig;
 
+use Bolt\Extension\Bolt\BoltBB\Config\Config;
 use Bolt\Extension\Bolt\BoltBB\Data;
-use Bolt\Extension\Bolt\BoltBB\Extension;
 
 /**
  * Twig functions for BoltBB
@@ -29,19 +29,9 @@ use Bolt\Extension\Bolt\BoltBB\Extension;
  */
 class BoltBBExtension extends \Twig_Extension
 {
-    /**
-     * @var Application
-     */
-    private $app;
-
-    /**
-     * @var array
-     */
+    /** @var Config */
     private $config;
-
-    /**
-     * @var Bolt\Extension\Bolt\BoltBB\Data
-     */
+    /** @var Data */
     private $data;
 
     /**
@@ -49,11 +39,10 @@ class BoltBBExtension extends \Twig_Extension
      */
     private $twig = null;
 
-    public function __construct(\Silex\Application $app)
+    public function __construct(Config $config, Data $data)
     {
-        $this->app = $app;
-        $this->config = $this->app[Extension::CONTAINER]->config;
-        $this->data = new Data($app);
+        $this->config = $config;
+        $this->data = $data;
     }
 
     public function initRuntime(\Twig_Environment $environment)
@@ -66,7 +55,7 @@ class BoltBBExtension extends \Twig_Extension
      */
     public function getName()
     {
-        return 'boltbb.extension';
+        return 'BoltBB';
     }
 
     /**
@@ -74,34 +63,37 @@ class BoltBBExtension extends \Twig_Extension
      */
     public function getFunctions()
     {
+        $safe = ['is_safe' => ['html'], 'is_safe_callback' => true];
+        $env  = ['needs_environment' => true];
+
         return [
-            'forumsbreadcrumbs' => new \Twig_Function_Method($this, 'forumsBreadcrumbs'),
-            'forumslug'         => new \Twig_Function_Method($this, 'forumSlug'),
-            'forumtopiccount'   => new \Twig_Function_Method($this, 'forumTopicCount'),
-            'forumreplycount'   => new \Twig_Function_Method($this, 'forumReplyCount'),
-            'topicreplycount'   => new \Twig_Function_Method($this, 'topicReplyCount'),
-            'lastpost'          => new \Twig_Function_Method($this, 'lastPost'),
+            new \Twig_SimpleFunction('forumsbreadcrumbs', [$this, 'forumsBreadcrumbs'], $env),
+            new \Twig_SimpleFunction('forumslug',         [$this, 'forumSlug']),
+            new \Twig_SimpleFunction('forumtopiccount',   [$this, 'forumTopicCount']),
+            new \Twig_SimpleFunction('forumreplycount',   [$this, 'forumReplyCount']),
+            new \Twig_SimpleFunction('topicreplycount',   [$this, 'topicReplyCount']),
+            new \Twig_SimpleFunction('lastpost',          [$this, 'lastPost']),
         ];
     }
 
     /**
      * Return the HTML for a breadcrumb menu
      *
-     * @param integer $forum_id The ID of the forum
+     * @param \Twig_Environment $twig
+     * @param bool|int          $forum_id The ID of the forum
      *
      * @return \Twig_Markup
      */
-    public function forumsBreadcrumbs($forum_id = false)
+    public function forumsBreadcrumbs(\Twig_Environment $twig, $forum_id = false)
     {
-        if (empty($forum_id)) {
+        if ($forum_id === false) {
             $forum = '';
         } else {
             $forum = $this->data->getForum($forum_id);
         }
 
-        $this->app['twig.loader.filesystem']->addPath(dirname(dirname(__DIR__)) . '/assets/navigation');
-
-        $html = $this->app['render']->render($this->config['templates']['navigation']['crumbs'], [
+        $template = $this->config->getTemplate('navigation', 'crumbs');
+        $html = $twig->render($template, [
             'forum'  => $forum,
             'boltbb' => $this->config,
         ]);
@@ -178,11 +170,11 @@ class BoltBBExtension extends \Twig_Extension
      *
      * @param integer $forum_id The ID of the forum
      *
-     * @return \Bolt\Content
+     * @return \Bolt\Storage\Entity\Entity
      */
     public function lastPost($record = false)
     {
-        if (gettype($record) == 'object') {
+        if (gettype($record) === 'object') {
             $lastpost = $this->data->getTopicLastPost($record->values['id']);
 
             if ($lastpost) {
