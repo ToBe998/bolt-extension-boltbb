@@ -7,6 +7,7 @@ use Bolt\Events\StorageEvent;
 use Bolt\Events\StorageEvents;
 use Bolt\Extension\Bolt\BoltBB\Provider\BoltBBServiceProvider;
 use Bolt\Extension\SimpleExtension;
+use Bolt\Menu\MenuEntry;
 use Bolt\Translation\Translator as Trans;
 use Doctrine\DBAL\Schema\Schema;
 
@@ -57,6 +58,22 @@ class BoltBBExtension extends SimpleExtension
     }
 
     /**
+     * {@inheritdoc}
+     */
+    protected function registerMenuEntries()
+    {
+        $config = $this->getConfig();
+        $roles = isset($config['roles']['admin_roles']) ? $config['roles']['admin_roles'] : ['root'];
+
+        return [
+            (new MenuEntry('boltbb', 'boltbb'))
+                ->setLabel(Trans::__('BoltBB'))
+                ->setIcon('fa:pencil-square-o')
+                ->setPermission(implode('||', $roles)),
+        ];
+    }
+
+    /**
      *
      */
     public function initialize()
@@ -72,9 +89,6 @@ class BoltBBExtension extends SimpleExtension
         if ($end == 'backend') {
             // Check the database table is up and working
             $this->dbCheck();
-
-            // Create the admin page
-            $this->adminMenu();
         }
 
         /*
@@ -124,41 +138,6 @@ class BoltBBExtension extends SimpleExtension
             // Launch the notification
             $notify = new Notifications($this->app, $record);
             $notify->doNotification();
-        }
-    }
-
-    /**
-     * Determine if the user has admin rights to the page
-     *
-     * @return boolean
-     */
-    public function isAdmin()
-    {
-        if (is_null($this->isAdmin)) {
-            // check if user has allowed role(s)
-            $user    = $this->app['users']->getCurrentUser();
-            $userid  = $user['id'];
-
-            $this->isAdmin = false;
-
-            foreach ($this->config['admin_roles'] as $role) {
-                if ($this->app['users']->hasRole($userid, $role)) {
-                    $this->isAdmin = true;
-                    break;
-                }
-            }
-        }
-
-        return $this->isAdmin;
-    }
-
-    /**
-     * Conditionally create the admin menu if the user has a valid role
-     */
-    private function adminMenu()
-    {
-        if ($this->isAdmin()) {
-            $this->app[Extension::CONTAINER]->addMenuOption(Trans::__('BoltBB'), $this->app['resources']->getUrl('bolt') . 'extensions/boltbb', 'fa:pencil-square-o');
         }
     }
 
