@@ -5,6 +5,7 @@ namespace Bolt\Extension\Bolt\BoltBB;
 use Bolt\Events\CronEvents;
 use Bolt\Events\StorageEvent;
 use Bolt\Events\StorageEvents;
+use Bolt\Extension\SimpleExtension;
 use Bolt\Translation\Translator as Trans;
 use Doctrine\DBAL\Schema\Schema;
 
@@ -30,34 +31,13 @@ use Doctrine\DBAL\Schema\Schema;
  * @copyright Copyright (c) 2014, Gawain Lynch
  * @license   http://opensource.org/licenses/GPL-3.0 GNU Public License 3.0
  */
-class Extension extends \Bolt\BaseExtension
+class BoltBBExtension extends SimpleExtension
 {
-    /** @var string Extension name */
-    const NAME = 'BoltBB';
-
-    /** @var string Extension's container */
-    const CONTAINER = 'extensions.BoltBB';
-
-    /** @var boolean */
-    private $isAdmin;
-
-    public function getName()
-    {
-        return Extension::NAME;
-    }
-
     /**
      *
      */
     public function initialize()
     {
-        $end = $this->app['config']->getWhichEnd();
-
-        /*
-         * Config
-         */
-        $this->setConfig();
-
         /*
          * Roles
          */
@@ -209,18 +189,6 @@ class Extension extends \Bolt\BaseExtension
                 $this->app['members']->addAvailableRole($role, $name);
             }
         }
-    }
-
-    /**
-     * Set up config and defaults
-     */
-    private function setConfig()
-    {
-        // Database table names
-        $prefix = $this->app['config']->get('general/database/prefix', 'bolt_');
-        $this->config['tables']['forums'] = $prefix . 'forums';
-        $this->config['tables']['topics'] = $prefix . $this->config['contenttypes']['topics'];
-        $this->config['tables']['replies'] = $prefix . $this->config['contenttypes']['replies'];
     }
 
     /**
