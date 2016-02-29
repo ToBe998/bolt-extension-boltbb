@@ -6,6 +6,9 @@ use Bolt\Events\CronEvents;
 use Bolt\Events\StorageEvent;
 use Bolt\Events\StorageEvents;
 use Bolt\Extension\Bolt\BoltBB\Provider\BoltBBServiceProvider;
+use Bolt\Extension\Bolt\Members\AccessControl\Role;
+use Bolt\Extension\Bolt\Members\Event\MembersEvents;
+use Bolt\Extension\Bolt\Members\Event\MembersRolesEvent;
 use Bolt\Extension\SimpleExtension;
 use Bolt\Menu\MenuEntry;
 use Bolt\Translation\Translator as Trans;
@@ -108,6 +111,24 @@ class BoltBBExtension extends SimpleExtension
 
         // Post-save hook for topic and reply creations
         $dispatcher->addListener(StorageEvents::POST_SAVE, [$this, 'hookPostSave']);
+
+        // Member roles
+        $dispatcher->addListener(MembersEvents::MEMBER_ROLE, [$this, 'addMemberRoles']);
+    }
+
+    /**
+     * Add our required roles to Members
+     *
+     * @param MembersRolesEvent $event
+     */
+    public function addMemberRoles(MembersRolesEvent $event)
+    {
+        $config = $this->getConfig();
+
+        foreach ($config['roles'] as $role => $name) {
+            $role = new Role($role, $name);
+            $event->addRole($role);
+        }
     }
 
     /**
@@ -115,11 +136,6 @@ class BoltBBExtension extends SimpleExtension
      */
     public function initialize()
     {
-        /*
-         * Roles
-         */
-        $this->addRoles();
-
         /*
          * Backend
          */
@@ -193,18 +209,6 @@ class BoltBBExtension extends SimpleExtension
 
                 return $table;
             });
-    }
-
-    /**
-     * Add our required roles to Members
-     */
-    private function addRoles()
-    {
-        if (is_object($this->app['members'])) {
-            foreach ($this->config['roles'] as $role => $name) {
-                $this->app['members']->addAvailableRole($role, $name);
-            }
-        }
     }
 
     /**
