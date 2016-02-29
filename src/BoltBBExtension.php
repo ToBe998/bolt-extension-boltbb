@@ -171,38 +171,6 @@ class BoltBBExtension extends SimpleExtension
     }
 
     /**
-     * Register, setup and index our database table
-     *
-     * @since 1.0
-     */
-    private function dbCheck()
-    {
-        $prefix = $this->app['config']->get('general/database/prefix', 'bolt_');
-        $me = $this;
-
-        $this->forums_table_name = $prefix . 'forums';
-        $this->app['integritychecker']->registerExtensionTable(
-            function (Schema $schema) use ($me) {
-                // Define table
-                $table = $schema->createTable($me->forums_table_name);
-
-                // Add primary column
-                $table->addColumn('id', 'integer', ['autoincrement' => true]);
-                $table->setPrimaryKey(['id']);
-
-                // Add working columns
-                $table->addColumn('slug',        'string', ['length' => 256,  'default' => '']);
-                $table->addColumn('state',       'string', ['length' => 32,   'default' => 'open']);
-                $table->addColumn('subscribers', 'string', ['length' => 2048, 'default' => '']);
-
-                // Index column(s)
-                $table->addIndex(['subscribers']);
-
-                return $table;
-            });
-    }
-
-    /**
      * Default config options
      *
      * @return array
