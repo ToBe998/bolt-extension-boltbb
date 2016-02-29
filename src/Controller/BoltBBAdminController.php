@@ -6,10 +6,8 @@ use Bolt\Extension\Bolt\BoltBB\Admin;
 use Bolt\Extension\Bolt\BoltBB\AdminAjaxRequest;
 use Bolt\Extension\Bolt\BoltBB\Contenttypes;
 use Bolt\Extension\Bolt\BoltBB\Extension;
-use Silex;
 use Silex\Application;
 use Silex\ControllerProviderInterface;
-use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -68,13 +66,13 @@ class BoltBBAdminController implements ControllerProviderInterface
         $ctr = $app['controllers_factory'];
 
         // Admin page
-        $ctr->match('/', array($this, 'admin'))
-            ->before(array($this, 'before'))
+        $ctr->match('/', [$this, 'admin'])
+            ->before([$this, 'before'])
             ->bind('BoltBBAdmin')
             ->method('GET');
 
         // AJAX requests
-        $ctr->match('/ajax', array($this, 'ajax'))
+        $ctr->match('/ajax', [$this, 'ajax'])
             ->bind('BoltBBAdminAjax')
             ->method('GET|POST');
 
@@ -126,14 +124,14 @@ class BoltBBAdminController implements ControllerProviderInterface
             $app['session']->getFlashBag()->add('error', "BoltBB contenttypes are missing from contenttypes.yml.  Run 'Setup Contenttypes' to resolve.<br>");
         }
 
-        $html = $app['render']->render('boltbb.twig', array(
+        $html = $app['render']->render('boltbb.twig', [
             'boltbb'    => $this->config['boltbb'],
             'base_uri'  => $this->config['base_uri'],
             'forums'    => $forums['forums'],
             'needsync'  => $forums['needsync'],
             'needtypes' => $needtypes,
-            'hasrows'   => $forums['hasrows']
-        ));
+            'hasrows'   => $forums['hasrows'],
+        ]);
 
         return new \Twig_Markup($html, 'UTF-8');
     }
@@ -151,7 +149,7 @@ class BoltBBAdminController implements ControllerProviderInterface
         // Get the task name
         $task = $app['request']->get('task');
 
-        $allowedTasks = array('forumOpen', 'forumClose', 'forumSync', 'forumContenttypes', 'repairRelation', 'testNotify');
+        $allowedTasks = ['forumOpen', 'forumClose', 'forumSync', 'forumContenttypes', 'repairRelation', 'testNotify'];
 
         if (!$task || !in_array($task, $allowedTasks)) {
             // Yeah, nah

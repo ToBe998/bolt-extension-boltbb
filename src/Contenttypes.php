@@ -166,10 +166,10 @@ class Contenttypes
 
         foreach ($array as $key => $value) {
             if (is_array($value)) {
-                $out .= str_repeat(" ", $this->indent) . $key . ":\n";
+                $out .= str_repeat(' ', $this->indent) . $key . ":\n";
                 $out .= $this->yaml->dump($value, 2, $this->indent + 4);
             } else {
-                $out .= $this->yaml->dump(array($key => $value), 2, $this->indent);
+                $out .= $this->yaml->dump([$key => $value], 2, $this->indent);
             }
         }
 
@@ -183,64 +183,64 @@ class Contenttypes
      */
     private function getDefaultTopics()
     {
-        return array(
+        return [
             'name'          => 'Topics',
             'singular_name' => 'Topic',
-            'fields'        => array(
-                'title' => array(
+            'fields'        => [
+                'title' => [
                     'type'    => 'text',
                     'class'   => 'large',
-                    'group'   => 'topic'
-                ),
-                'body' => array(
+                    'group'   => 'topic',
+                ],
+                'body' => [
                     'type'    => 'html',
-                    'height'  => '300px'
-                ),
-                'author' => array(
+                    'height'  => '300px',
+                ],
+                'author' => [
                     'type'     => 'text',
                     'variant'  => 'inline',
                     'info'     => 'The ClientLogin ID of the author',
                     'readonly' => true,
-                    'group'    => 'Info'
-                ),
-                'authorip' => array(
+                    'group'    => 'Info',
+                ],
+                'authorip' => [
                     'type'     => 'text',
                     'variant'  => 'inline',
                     'label'    => 'IP address',
-                    'readonly' => true
-                ),
-                'forum' => array(
+                    'readonly' => true,
+                ],
+                'forum' => [
                     'type'     => 'integer',
                     'variant'  => 'inline',
-                    'readonly' => true
-                ),
-                'state' => array(
+                    'readonly' => true,
+                ],
+                'state' => [
                     'type'    => 'select',
                     'info'    => 'Open: Replies can be made<br><br>Closed: Replies are closed',
-                    'values'  => array(
+                    'values'  => [
                         'open',
-                        'closed'
-                    ),
-                    'variant' => 'inline'
-                ),
-                'visibility' => array(
+                        'closed',
+                    ],
+                    'variant' => 'inline',
+                ],
+                'visibility' => [
                     'type'    => 'select',
                     'variant' => 'inline',
                     'info'    => 'Global: List at top of all forums<br><br>Pinned: List at the top of the specified form (below any global)<br><br>Normal: Listed newest first in the specified forum',
-                    'values'  => array(
+                    'values'  => [
                         'normal',
                         'pinned',
-                        'global'
-                    ),
-                ),
-                'subscribers' => array(
+                        'global',
+                    ],
+                ],
+                'subscribers' => [
                     'type'     => 'textarea',
                     'readonly' => true,
-                    'hidden'   => true
-                ),
-            ),
+                    'hidden'   => true,
+                ],
+            ],
             'default_status' => 'published',
-        );
+        ];
     }
 
     /**
@@ -250,44 +250,44 @@ class Contenttypes
      */
     private function getDefaultReplies()
     {
-        return array(
+        return [
             'name'          => 'Replies',
             'singular_name' => 'Reply',
-            'fields'        => array(
-                'title' => array(
+            'fields'        => [
+                'title' => [
                     'type'    => 'text',
                     'class'   => 'large',
-                    'group'   => 'topic'
-                ),
-                'body' => array(
+                    'group'   => 'topic',
+                ],
+                'body' => [
                     'type'    => 'html',
-                    'height'  => '300px'
-                ),
-                'author' => array(
+                    'height'  => '300px',
+                ],
+                'author' => [
                     'type'     => 'text',
                     'variant'  => 'inline',
                     'info'     => 'The ClientLogin ID of the author',
                     'readonly' => true,
-                    'group'    => 'Info'
-                ),
-                'authorip' => array(
+                    'group'    => 'Info',
+                ],
+                'authorip' => [
                     'type'     => 'text',
                     'variant'  => 'inline',
                     'label'    => 'IP address',
-                    'readonly' => true
-                ),
-                'forum' => array(
+                    'readonly' => true,
+                ],
+                'forum' => [
                     'type'     => 'integer',
                     'variant'  => 'inline',
-                    'readonly' => true
-                ),
-                'topic' => array(
+                    'readonly' => true,
+                ],
+                'topic' => [
                     'type'     => 'integer',
                     'variant'  => 'inline',
-                    'readonly' => true
-                )
-            ),
+                    'readonly' => true,
+                ],
+            ],
             'default_status' => 'published',
-        );
+        ];
     }
 }

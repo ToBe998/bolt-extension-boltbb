@@ -58,11 +58,11 @@ class Admin
         $conf = $this->config['forums'];
 
         // Defaults for return array
-        $return = array(
+        $return = [
             'needsync' => false,
             'hasrows'  => false,
-            'forums'   => $conf
-        );
+            'forums'   => $conf,
+        ];
 
         // Database rows
         try {
@@ -71,15 +71,15 @@ class Admin
 
             // Check to see if the site admin has created our table
             $sm = $this->app['db']->getSchemaManager();
-            if (! $sm->tablesExist(array($this->config['tables']['forums']))) {
+            if (! $sm->tablesExist([$this->config['tables']['forums']])) {
                 return $return;
             }
 
-            if ($sm->tablesExist(array($this->config['tables']['topics']))) {
+            if ($sm->tablesExist([$this->config['tables']['topics']])) {
                 $hastopics = true;
             }
 
-            if ($sm->tablesExist(array($this->config['tables']['replies']))) {
+            if ($sm->tablesExist([$this->config['tables']['replies']])) {
                 $hasreplies = true;
             }
 
@@ -89,14 +89,14 @@ class Admin
             foreach ($rows as $row) {
                 $slug = $row['slug'];
 
-                $return['forums'][$slug] = array(
+                $return['forums'][$slug] = [
                     'title'       => isset($conf[$slug]) ? $conf[$slug]['title'] : $slug,
                     'description' => $conf[$slug]['description'],
                     'subscribers' => empty($row['subscribers']) ? '' : json_decode($row['subscribers'], true),
                     'state'       => isset($conf[$slug]) ? $row['state'] : 'abandoned',
                     'topics'      => $hastopics ? $data->getForumTopicCount($row['id']) : 0,
-                    'replies'     => $hasreplies ? $data->getForumReplyCount($row['id']) : 0
-                );
+                    'replies'     => $hasreplies ? $data->getForumReplyCount($row['id']) : 0,
+                ];
 
                 // Not enough forums to warrant the extra if()
                 $return['hasrows'] = true;
@@ -140,8 +140,8 @@ class Admin
     {
         $this->app['db']->update(
             $this->config['tables']['forums'],
-            array('state' => 'open'),
-            array('slug'  => $forum)
+            ['state' => 'open'],
+            ['slug'  => $forum]
         );
     }
 
@@ -154,8 +154,8 @@ class Admin
     {
         $this->app['db']->update(
             $this->config['tables']['forums'],
-            array('state' => 'closed'),
-            array('slug'  => $forum)
+            ['state' => 'closed'],
+            ['slug'  => $forum]
         );
     }
 
@@ -175,8 +175,8 @@ class Admin
         foreach ($topics as $topic) {
             $this->app['db']->update(
                 $this->config['tables']['replies'],
-                array('forum' => $topic['forum']),
-                array('topic' => $topic['id'])
+                ['forum' => $topic['forum']],
+                ['topic' => $topic['id']]
             );
         }
     }
@@ -198,11 +198,11 @@ class Admin
             $i = 1;
             $this->app['db']->update(
                 $this->config['tables']['replies'],
-                array(
+                [
                     'title' => '[' . Trans::__('Reply') . ']: ' . $topic['title'],
-                    'slug'  => substr($this->app['slugify']->slugify($topic['title']), 0, 120) . '-' . $i
-                ),
-                array('topic' => $topic['id'])
+                    'slug'  => substr($this->app['slugify']->slugify($topic['title']), 0, 120) . '-' . $i,
+                ],
+                ['topic' => $topic['id']]
             );
             $i++;
         }
@@ -216,7 +216,7 @@ class Admin
         // Get some random default values from our good friends at http://loripsum.net/
         $params = 'medium/decorate/link/ol/ul/dl/bq/code/headers/3';
 
-        $values = array(
+        $values = [
             'slug'        => '',
             'title'       => trim(strip_tags($this->app['prefill']->get('1/veryshort'))),
             'author'      => 1,
@@ -225,8 +225,8 @@ class Admin
             'state'       => 'open',
             'visibility'  => 'normal',
             'body'        => trim($this->app['prefill']->get($params)),
-            'subscribers' => ''
-        );
+            'subscribers' => '',
+        ];
 
         // Create and fill a record object
         $record = $this->app['storage']->getEmptyContent($this->config['contenttypes']['topics']);
@@ -256,10 +256,10 @@ class Admin
 
         if (empty($record)) {
             // Default data for the new forum record
-            $data = array(
+            $data = [
                 'slug'  => $forum,
-                'state' => 'open'
-            );
+                'state' => 'open',
+            ];
 
             $this->app['db']->insert($this->config['tables']['forums'], $data);
         }

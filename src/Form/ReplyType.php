@@ -34,16 +34,16 @@ class ReplyType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('body',   'textarea', array('label' => false,
-                                              'attr'        => array('style' => 'height: 150px;'),
-                                              'constraints' => array(
+            ->add('body',   'textarea', ['label'            => false,
+                                              'attr'        => ['style' => 'height: 150px;'],
+                                              'constraints' => [
                                                   new Assert\NotBlank(),
-                                                  new Assert\Length(array('min' => 2))
-                                             )))
-            ->add('notify', 'checkbox', array('label' => 'Notify me of updates to this topic',
+                                                  new Assert\Length(['min' => 2]),
+                                             ], ])
+            ->add('notify', 'checkbox', ['label'         => 'Notify me of updates to this topic',
                                               'data'     => true,
-                                              'required' => false, ))
-            ->add('post',   'submit',   array('label' => 'Post reply'));
+                                              'required' => false, ])
+            ->add('post',   'submit',   ['label' => 'Post reply']);
     }
 
     public function getName()

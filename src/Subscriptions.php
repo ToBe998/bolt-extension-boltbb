@@ -68,7 +68,7 @@ class Subscriptions
     {
         $topic = $this->data->getTopic($topic);
         $forum = $this->data->getForum($topic->values['forum']);
-        $subscribers = array();
+        $subscribers = [];
 
         // Get the topic subscribers
         if (! empty($topic->values['subscribers'])) {
@@ -100,7 +100,7 @@ class Subscriptions
      * @param mixed $forum
      * @param int   $id    ID to add to subscription array
      */
-    public function addSubscriberForum($forum, $id, $subscribers = array())
+    public function addSubscriberForum($forum, $id, $subscribers = [])
     {
         $forum = $this->data->getForum($forum);
 
@@ -118,8 +118,8 @@ class Subscriptions
 
             $this->app['db']->update(
                 $this->config['tables']['forums'],
-                array('subscribers' => $subscribers),
-                array('id'          => $forum['id'])
+                ['subscribers' => $subscribers],
+                ['id'          => $forum['id']]
             );
         }
     }
@@ -132,7 +132,7 @@ class Subscriptions
      * @param mixed $topic
      * @param int   $id    ID to add to subscription array
      */
-    public function addSubscriberTopic($topic, $id, $subscribers = array())
+    public function addSubscriberTopic($topic, $id, $subscribers = [])
     {
         $topic = $this->data->getTopic($topic);
 
@@ -150,8 +150,8 @@ class Subscriptions
 
             $this->app['db']->update(
                 $this->config['tables']['topics'],
-                array('subscribers' => $subscribers),
-                array('id'          => $topic->values['id'])
+                ['subscribers' => $subscribers],
+                ['id'          => $topic->values['id']]
             );
         }
     }
@@ -162,7 +162,7 @@ class Subscriptions
      * @param mixed $forum
      * @param int   $id    ID to add to subscription array
      */
-    public function delSubscriberForum($forum,  $id, $subscribers = array())
+    public function delSubscriberForum($forum,  $id, $subscribers = [])
     {
         $forum = $this->data->getForum($forum);
 
@@ -175,12 +175,12 @@ class Subscriptions
         }
 
         // Remove the ID if present
-        $subscribers = json_encode(array_diff($subscribers, array($id)));
+        $subscribers = json_encode(array_diff($subscribers, [$id]));
 
         $this->app['db']->update(
             $this->config['tables']['forums'],
-            array('subscribers' => $subscribers),
-            array('id'          => $forum['id'])
+            ['subscribers' => $subscribers],
+            ['id'          => $forum['id']]
         );
     }
 
@@ -192,7 +192,7 @@ class Subscriptions
      * @param mixed $topic
      * @param int   $id    ID to add to subscription array
      */
-    public function delSubscriberTopic($topic,  $id, $subscribers = array())
+    public function delSubscriberTopic($topic,  $id, $subscribers = [])
     {
         $topic = $this->data->getTopic($topic);
 
@@ -205,12 +205,12 @@ class Subscriptions
         }
 
         // Remove the ID if present
-        $subscribers = json_encode(array_diff($subscribers, array($id)));
+        $subscribers = json_encode(array_diff($subscribers, [$id]));
 
         $this->app['db']->update(
             $this->config['tables']['topics'],
-            array('subscribers' => $subscribers),
-            array('id'          => $topic->values['id'])
+            ['subscribers' => $subscribers],
+            ['id'          => $topic->values['id']]
         );
     }
 }

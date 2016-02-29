@@ -58,10 +58,10 @@ class Data
     {
         if (is_numeric($forum)) {
             $query = "SELECT * FROM {$this->config['tables']['forums']} WHERE id = :id";
-            $forum = $this->app['db']->fetchAssoc($query, array(':id' => $forum));
+            $forum = $this->app['db']->fetchAssoc($query, [':id' => $forum]);
         } else {
             $query = "SELECT * FROM {$this->config['tables']['forums']} WHERE slug = :slug";
-            $forum = $this->app['db']->fetchAssoc($query, array(':slug' => $forum));
+            $forum = $this->app['db']->fetchAssoc($query, [':slug' => $forum]);
         }
 
         if ($forum) {
@@ -85,16 +85,16 @@ class Data
     {
         if ($forum) {
             $forum = $this->getForum($forum);
-            $params = array(
+            $params = [
                 'forum'        => $forum['id'],
                 'orderby'      => '-datechanged',
-                'returnsingle' => true
-            );
+                'returnsingle' => true,
+            ];
         } else {
-            $params = array(
+            $params = [
                 'orderby'      => '-datechanged',
-                'returnsingle' => true
-            );
+                'returnsingle' => true,
+            ];
         }
 
         // Try for a reply first
@@ -142,16 +142,16 @@ class Data
         //
         if (is_numeric($topic_input)) {
             $topic = $this->app['storage']->getContent($this->config['contenttypes']['topics'],
-                array(
+                [
                     'id'           => $topic_input,
-                    'returnsingle' => true
-            ));
+                    'returnsingle' => true,
+            ]);
         } else {
             $topic = $this->app['storage']->getContent($this->config['contenttypes']['topics'],
-                array(
+                [
                     'slug'         => $topic_input,
-                    'returnsingle' => true
-            ));
+                    'returnsingle' => true,
+            ]);
         }
 
         // Fill in the author information if exists
@@ -171,10 +171,10 @@ class Data
      */
     public function getForumTopics($forum_id, $params = false, $limit = false)
     {
-        $query = array(
+        $query = [
             'order'        => '-datecreated',
-            'returnsingle' => false
-        );
+            'returnsingle' => false,
+        ];
 
         if ($forum_id) {
             $query['forum'] = $forum_id;
@@ -207,10 +207,10 @@ class Data
     {
         if (empty($forum_id)) {
             $query = "SELECT * FROM {$this->config['tables']['topics']}";
-            $map = array();
+            $map = [];
         } else {
             $query = "SELECT * FROM {$this->config['tables']['topics']} WHERE forum = :forum";
-            $map = array(':forum' => $forum_id);
+            $map = [':forum' => $forum_id];
         }
 
         return $this->app['db']->executeQuery($query, $map)->rowCount();
@@ -227,10 +227,10 @@ class Data
     {
         if (empty($forum_id)) {
             $query = "SELECT * FROM {$this->config['tables']['replies']}";
-            $map = array();
+            $map = [];
         } else {
             $query = "SELECT * FROM {$this->config['tables']['replies']} WHERE forum = :forum";
-            $map = array(':forum' => $forum_id);
+            $map = [':forum' => $forum_id];
         }
 
         return $this->app['db']->executeQuery($query, $map)->rowCount();
@@ -266,11 +266,11 @@ class Data
      */
     public function getTopicReplies($topic_id, $limit = false)
     {
-        $query = array(
+        $query = [
             'topic'        => $topic_id,
             'order'        => 'datecreated',
-            'returnsingle' => false
-        );
+            'returnsingle' => false,
+        ];
 
         if ($limit) {
             $query['limit'] = $limit;
@@ -301,9 +301,9 @@ class Data
     public function getTopicReplyCount($topic_id)
     {
         $query = "SELECT * FROM {$this->config['tables']['replies']} WHERE topic = :topic";
-        $map = array(
-            ':topic' => $topic_id
-        );
+        $map = [
+            ':topic' => $topic_id,
+        ];
 
         return $this->app['db']->executeQuery($query, $map)->rowCount();
     }
@@ -325,11 +325,11 @@ class Data
 
         $record = $this->app['storage']->getContent(
             $this->config['contenttypes']['replies'],
-            array(
+            [
                 'orderby'      => '-datechanged',
                 'topic'        => $topic_id,
-                'returnsingle' => true
-        ));
+                'returnsingle' => true,
+        ]);
 
         // Fill in the author information if exists
         if (! empty($record)) {
@@ -371,9 +371,9 @@ class Data
      */
     public function getRecent($type, $count = 5)
     {
-        return $this->app['storage']->getContent($type, array(
+        return $this->app['storage']->getContent($type, [
             'count'        => $count,
-            'returnsingle' => false
-        ));
+            'returnsingle' => false,
+        ]);
     }
 }

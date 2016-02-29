@@ -133,7 +133,7 @@ class AdminAjaxRequest
             }
         }
 
-        return new Response('', Response::HTTP_OK, array('content-type' => 'text/html'));
+        return new Response('', Response::HTTP_OK, ['content-type' => 'text/html']);
     }
 
     /**
@@ -180,17 +180,17 @@ class AdminAjaxRequest
     private function getResult($task, \Exception $e = null)
     {
         if (is_null($e)) {
-            return array(
+            return [
                 'job'    => $task,
                 'result' => true,
-                'data'   => ''
-            );
+                'data'   => '',
+            ];
         }
 
-        return array(
+        return [
             'job'    => $task,
             'result' => true,
-            'data'   => $e->getMessage()
-        );
+            'data'   => $e->getMessage(),
+        ];
     }
 }

@@ -74,14 +74,14 @@ class BoltBBExtension extends \Twig_Extension
      */
     public function getFunctions()
     {
-        return array(
+        return [
             'forumsbreadcrumbs' => new \Twig_Function_Method($this, 'forumsBreadcrumbs'),
             'forumslug'         => new \Twig_Function_Method($this, 'forumSlug'),
             'forumtopiccount'   => new \Twig_Function_Method($this, 'forumTopicCount'),
             'forumreplycount'   => new \Twig_Function_Method($this, 'forumReplyCount'),
             'topicreplycount'   => new \Twig_Function_Method($this, 'topicReplyCount'),
             'lastpost'          => new \Twig_Function_Method($this, 'lastPost'),
-        );
+        ];
     }
 
     /**
@@ -101,10 +101,10 @@ class BoltBBExtension extends \Twig_Extension
 
         $this->app['twig.loader.filesystem']->addPath(dirname(dirname(__DIR__)) . '/assets/navigation');
 
-        $html = $this->app['render']->render($this->config['templates']['navigation']['crumbs'], array(
+        $html = $this->app['render']->render($this->config['templates']['navigation']['crumbs'], [
             'forum'  => $forum,
-            'boltbb' => $this->config
-        ));
+            'boltbb' => $this->config,
+        ]);
 
         return new \Twig_Markup($html, 'UTF-8');
     }

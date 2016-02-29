@@ -34,17 +34,17 @@ class TopicType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('title',  'text',     array('constraints' => array(
+            ->add('title',  'text',     ['constraints' => [
                                                   new Assert\NotBlank(),
-                                                  new Assert\Length(array('min' => 3))
-                                             )))
-            ->add('body',   'textarea', array('label' => false,
-                                              'attr'        => array('style' => 'height: 150px;'),
-                                              'constraints' => array(
+                                                  new Assert\Length(['min' => 3]),
+                                             ]])
+            ->add('body',   'textarea', ['label'            => false,
+                                              'attr'        => ['style' => 'height: 150px;'],
+                                              'constraints' => [
                                                   new Assert\NotBlank(),
-                                                  new Assert\Length(array('min' => 2))
-                                             )))
-            ->add('post',   'submit',   array('label' => 'Post new topic'));
+                                                  new Assert\Length(['min' => 2]),
+                                             ], ])
+            ->add('post',   'submit',   ['label' => 'Post new topic']);
     }
 
     public function getName()

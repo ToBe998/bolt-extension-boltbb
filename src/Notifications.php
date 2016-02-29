@@ -81,13 +81,13 @@ class Notifications
     {
         // Sort out the "to whom" list
         if ($this->debug) {
-            $this->recipients = array(
-                array(
+            $this->recipients = [
+                [
                     'firstName'   => 'Test',
                     'lastName'    => 'Notifier',
                     'displayName' => 'Test Notifier',
-                    'email'       => $this->debug_address
-                ));
+                    'email'       => $this->debug_address,
+                ], ];
         } else {
             // Get the subscribers to the topic and it's forum
             $subscriptions = new Subscriptions($this->app);
@@ -117,10 +117,10 @@ class Notifications
         /*
          * From
          */
-        $sender = array(
+        $sender = [
             'from_email' => $this->from_address,
-            'from_name'  => isset($this->config['boltbb']['title']) ? $this->config['boltbb']['title'] : 'BoltBB'
-        );
+            'from_name'  => isset($this->config['boltbb']['title']) ? $this->config['boltbb']['title'] : 'BoltBB',
+        ];
 
         /*
          * Author information
@@ -145,26 +145,26 @@ class Notifications
         /*
          * Subject
          */
-        $html = $this->app['render']->render($this->config['templates']['email']['subject'], array(
+        $html = $this->app['render']->render($this->config['templates']['email']['subject'], [
             'forum'       => $forum['title'],
             'contenttype' => $this->record->contenttype['singular_name'],
             'title'       => $title,
-            'author'      => $this->record->values['authorprofile']['displayname']
-        ));
+            'author'      => $this->record->values['authorprofile']['displayname'],
+        ]);
 
         $subject = new \Twig_Markup($html, 'UTF-8');
 
         /*
          * Body
          */
-        $html = $this->app['render']->render($this->config['templates']['email']['body'], array(
+        $html = $this->app['render']->render($this->config['templates']['email']['body'], [
             'forum'       => $forum['title'],
             'contenttype' => $this->record->contenttype['singular_name'],
             'title'       => $title,
             'author'      => $this->record->values['authorprofile']['displayname'],
             'uri'         => $uri,
-            'body'        => $this->record->values['body']
-        ));
+            'body'        => $this->record->values['body'],
+        ]);
 
         $body = new \Twig_Markup($html, 'UTF-8');
 
@@ -174,7 +174,7 @@ class Notifications
         $this->message = $this->app['mailer']
                 ->createMessage('message')
                 ->setSubject($subject)
-                ->setFrom(array($sender['from_email'] => $sender['from_name']))
+                ->setFrom([$sender['from_email'] => $sender['from_name']])
                 ->setBody(strip_tags($body))
                 ->addPart($body, 'text/html');
     }
@@ -188,14 +188,14 @@ class Notifications
     private function doSend(\Swift_Message $message, $recipient)
     {
         // Set the recipient for *this* message
-        $message->setTo(array(
-            $recipient['email'] => $recipient['displayName']
-        ));
+        $message->setTo([
+            $recipient['email'] => $recipient['displayName'],
+        ]);
 
         if ($this->app['mailer']->send($message)) {
-            $this->app['logger.system']->info("Sent BoltBB notification to {$recipient['displayName']} <{$recipient['email']}>", array('event' => 'extensions'));
+            $this->app['logger.system']->info("Sent BoltBB notification to {$recipient['displayName']} <{$recipient['email']}>", ['event' => 'extensions']);
         } else {
-            $this->app['logger.system']->error("Failed BoltBB notification to {$recipient['displayName']} <{$recipient['email']}>", array('event' => 'extensions'));
+            $this->app['logger.system']->error("Failed BoltBB notification to {$recipient['displayName']} <{$recipient['email']}>", ['event' => 'extensions']);
         }
     }
 

@@ -72,12 +72,12 @@ class BoltBBExtension extends SimpleExtension
         /*
          * Scheduled cron listener
          */
-        $this->app['dispatcher']->addListener(CronEvents::CRON_DAILY, array($this, 'cronDaily'));
+        $this->app['dispatcher']->addListener(CronEvents::CRON_DAILY, [$this, 'cronDaily']);
 
         /*
          * Post-save hook for topic and reply creations
          */
-        $this->app['dispatcher']->addListener(StorageEvents::POST_SAVE, array($this, 'hookPostSave'));
+        $this->app['dispatcher']->addListener(StorageEvents::POST_SAVE, [$this, 'hookPostSave']);
     }
 
     /**
@@ -164,16 +164,16 @@ class BoltBBExtension extends SimpleExtension
                 $table = $schema->createTable($me->forums_table_name);
 
                 // Add primary column
-                $table->addColumn('id', 'integer', array('autoincrement' => true));
-                $table->setPrimaryKey(array('id'));
+                $table->addColumn('id', 'integer', ['autoincrement' => true]);
+                $table->setPrimaryKey(['id']);
 
                 // Add working columns
-                $table->addColumn('slug',        'string', array('length' => 256,  'default' => ''));
-                $table->addColumn('state',       'string', array('length' => 32,   'default' => 'open'));
-                $table->addColumn('subscribers', 'string', array('length' => 2048, 'default' => ''));
+                $table->addColumn('slug',        'string', ['length' => 256,  'default' => '']);
+                $table->addColumn('state',       'string', ['length' => 32,   'default' => 'open']);
+                $table->addColumn('subscribers', 'string', ['length' => 2048, 'default' => '']);
 
                 // Index column(s)
-                $table->addIndex(array('subscribers'));
+                $table->addIndex(['subscribers']);
 
                 return $table;
             });
@@ -198,41 +198,41 @@ class BoltBBExtension extends SimpleExtension
      */
     protected function getDefaultConfig()
     {
-        return array(
+        return [
             'base_uri'  => 'forums',
-            'webassets' => array(
+            'webassets' => [
                 'stylesheet' => 'boltbb.min.css',
                 'javascript' => 'boltbb.min.js',
-            ),
-            'contenttypes' => array(
+            ],
+            'contenttypes' => [
                 'topics'  => 'topics',
-                'replies' => 'replies'
-            ),
-            'templates' => array(
+                'replies' => 'replies',
+            ],
+            'templates' => [
                 'parent' => 'boltbb.twig',
-                'forums' => array(
+                'forums' => [
                     'index' => 'boltbb_index.twig',
                     'forum' => 'boltbb_forum.twig',
-                    'topic' => 'boltbb_topic.twig'
-                ),
-                'navigation' => array(
-                    'crumbs' => 'boltbb_crumbs.twig'
-                ),
-                'email'  => array(
+                    'topic' => 'boltbb_topic.twig',
+                ],
+                'navigation' => [
+                    'crumbs' => 'boltbb_crumbs.twig',
+                ],
+                'email'  => [
                     'subject' => 'boltbb_email_subject.twig',
-                    'body'    => 'boltbb_email_body.twig'
-                ),
-            ),
+                    'body'    => 'boltbb_email_body.twig',
+                ],
+            ],
             'pagercount'    => 5,
-            'admin_roles'   => array('root', 'admin', 'developer', 'chief-editor'),
-            'notifications' => array(
+            'admin_roles'   => ['root', 'admin', 'developer', 'chief-editor'],
+            'notifications' => [
                 'debug'         => true,
                 'debug_address' => 'noreply@example.com',
-                'from_address'  => 'noreply@example.com'
-            ),
+                'from_address'  => 'noreply@example.com',
+            ],
             'csrf'   => true,
-            'editor' => array(
-                'addons' => array(
+            'editor' => [
+                'addons' => [
                     'images'      => true,
                     'anchor'      => false,
                     'tables'      => true,
@@ -242,23 +242,23 @@ class BoltBBExtension extends SimpleExtension
                     'embed'       => true,
                     'codetag'     => false,
                     'codesnippet' => false,
-                    'footnotes'   => false
-                ),
-                'internal' => array(
+                    'footnotes'   => false,
+                ],
+                'internal' => [
                     'allowedContent'            => false,
                     'autoParagraph'             => true,
                     'disableNativeSpellChecker' => false,
-                    'contentsCss'               => array(
+                    'contentsCss'               => [
                         $this->app['resources']->getUrl('app') . 'view/css/ckeditor-contents.css',
-                        $this->app['resources']->getUrl('app') . 'view/css/ckeditor.css'
-                    )
-                )
-            ),
-            'roles' => array(
+                        $this->app['resources']->getUrl('app') . 'view/css/ckeditor.css',
+                    ],
+                ],
+            ],
+            'roles' => [
                 'boltbb_admin'       => 'BoltBB Admin',
                 'boltbb_moderator'   => 'BoltBB Moderator',
-                'boltbb_participant' => 'BoltBB Participant'
-            )
-        );
+                'boltbb_participant' => 'BoltBB Participant',
+            ],
+        ];
     }
 }

@@ -57,8 +57,8 @@ class Discussions
         $this->config = $this->app[Extension::CONTAINER]->config;
         $this->data = new Data($this->app);
 
-        $this->maidOptions = array(
-            'allowed-tags' => array(
+        $this->maidOptions = [
+            'allowed-tags' => [
                 'section', 'footer',
                 'div', 'p', 'strong', 'em',
                 'i', 'b', 'u', 's', 'sup', 'sub',
@@ -68,18 +68,18 @@ class Discussions
                 'h1', 'h2', 'h3', 'h4', 'h5', 'h6',
                 'dd', 'dl', 'dh',
                 'table', 'tbody', 'thead', 'tfoot', 'th', 'td', 'tr',
-                'img', 'header', 'cite', 'a', 'iframe'
-            ),
-            'allowed-attribs' => array(
+                'img', 'header', 'cite', 'a', 'iframe',
+            ],
+            'allowed-attribs' => [
                 'id', 'class', 'style', 'name', 'value',
                 'href', 'target', 'rel', 'src',
                 'data-footnote-id',
                 'data-resizetype', 'data-align', 'data-oembed',
                 'allowfullscreen', 'allowscriptaccess',
                 'scrolling', 'frameborder',
-                'width', 'height'
-            )
-        );
+                'width', 'height',
+            ],
+        ];
     }
 
     /**
@@ -95,7 +95,7 @@ class Discussions
         // Get form
         $form = $request->get('topic');
 
-        $values = array(
+        $values = [
             'datecreated' => date('Y-m-d H:i:s'),
             'datepublish' => date('Y-m-d H:i:s'),
             'slug'        => substr($this->app['slugify']->slugify($form['title']), 0, 127),
@@ -106,8 +106,8 @@ class Discussions
             'state'       => 'open',
             'visibility'  => 'normal',
             'body'        => $maid->clean($form['body']),
-            'subscribers' => json_encode(array((int) $author))
-        );
+            'subscribers' => json_encode([(int) $author]),
+        ];
 
         $record = $this->app['storage']->getEmptyContent($this->config['contenttypes']['topics']);
         $record->setValues($values);
@@ -138,7 +138,7 @@ class Discussions
         // Get form
         $form = $request->get('reply');
 
-        $values = array(
+        $values = [
             'datecreated' => date('Y-m-d H:i:s'),
             'datepublish' => date('Y-m-d H:i:s'),
             'slug'        => substr($this->app['slugify']->slugify($topic['title']), 0, 127),
@@ -147,8 +147,8 @@ class Discussions
             'authorip'    => $request->getClientIp(),
             'forum'       => $topic['forum'],
             'topic'       => $topic['id'],
-            'body'        => $maid->clean($form['body'])
-        );
+            'body'        => $maid->clean($form['body']),
+        ];
 
         $record = $this->app['storage']->getEmptyContent($this->config['contenttypes']['replies']);
         $record->setValues($values);
