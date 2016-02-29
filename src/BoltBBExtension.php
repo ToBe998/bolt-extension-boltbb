@@ -10,6 +10,7 @@ use Bolt\Extension\SimpleExtension;
 use Bolt\Menu\MenuEntry;
 use Bolt\Translation\Translator as Trans;
 use Doctrine\DBAL\Schema\Schema;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 /**
  * BoltBB discussion extension for Bolt
@@ -98,6 +99,18 @@ class BoltBBExtension extends SimpleExtension
     }
 
     /**
+     * {@inheritdoc}
+     */
+    protected function subscribe(EventDispatcherInterface $dispatcher)
+    {
+        // Scheduled cron listener
+        $dispatcher->addListener(CronEvents::CRON_DAILY, [$this, 'cronDaily']);
+
+        // Post-save hook for topic and reply creations
+        $dispatcher->addListener(StorageEvents::POST_SAVE, [$this, 'hookPostSave']);
+    }
+
+    /**
      *
      */
     public function initialize()
@@ -115,15 +128,7 @@ class BoltBBExtension extends SimpleExtension
             $this->dbCheck();
         }
 
-        /*
-         * Scheduled cron listener
-         */
-        $this->app['dispatcher']->addListener(CronEvents::CRON_DAILY, [$this, 'cronDaily']);
 
-        /*
-         * Post-save hook for topic and reply creations
-         */
-        $this->app['dispatcher']->addListener(StorageEvents::POST_SAVE, [$this, 'hookPostSave']);
     }
 
     /**
