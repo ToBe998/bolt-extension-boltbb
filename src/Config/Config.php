@@ -342,21 +342,32 @@ class Config
     }
 
     /**
+     * @param string $parent
+     * @param string $key
+     *
      * @return string
      */
-    public function getTemplates()
+    public function getTemplate($parent, $key)
     {
-        return $this->templates;
+        if (!isset($this->templates[$parent][$key])) {
+            throw new \BadMethodCallException(sprintf('Template of type "%s" and name of "%s" does not exist in configuration!', $parent, $key));
+        }
+
+        return $this->templates[$parent][$key];
     }
 
     /**
-     * @param string $templates
+     * @param string $parent
+     * @param string $key
+     * @param string $template
      *
      * @return Config
+     * @internal param string $templates
+     *
      */
-    public function setTemplates($templates)
+    public function setTemplate($parent, $key, $template)
     {
-        $this->templates = $templates;
+        $this->templates[$parent][$key] = $template;
 
         return $this;
     }
