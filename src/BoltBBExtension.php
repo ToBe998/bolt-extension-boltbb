@@ -5,6 +5,7 @@ namespace Bolt\Extension\Bolt\BoltBB;
 use Bolt\Events\CronEvents;
 use Bolt\Events\StorageEvent;
 use Bolt\Events\StorageEvents;
+use Bolt\Extension\Bolt\BoltBB\Provider\BoltBBServiceProvider;
 use Bolt\Extension\SimpleExtension;
 use Bolt\Translation\Translator as Trans;
 use Doctrine\DBAL\Schema\Schema;
@@ -33,6 +34,17 @@ use Doctrine\DBAL\Schema\Schema;
  */
 class BoltBBExtension extends SimpleExtension
 {
+    /**
+     * {@inheritdoc}
+     */
+    public function getServiceProviders()
+    {
+        return [
+            $this,
+            new BoltBBServiceProvider($this->getConfig())
+        ];
+    }
+
     /**
      *
      */
@@ -249,8 +261,8 @@ class BoltBBExtension extends SimpleExtension
                     'autoParagraph'             => true,
                     'disableNativeSpellChecker' => false,
                     'contentsCss'               => [
-                        $this->app['resources']->getUrl('app') . 'view/css/ckeditor-contents.css',
-                        $this->app['resources']->getUrl('app') . 'view/css/ckeditor.css',
+                        //$this->app['resources']->getUrl('app') . 'view/css/ckeditor-contents.css',
+                        //$this->app['resources']->getUrl('app') . 'view/css/ckeditor.css',
                     ],
                 ],
             ],
