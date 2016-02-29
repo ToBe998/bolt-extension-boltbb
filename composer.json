@@ -1,39 +1,41 @@
 {
-	"name" : "bolt/boltbb",
-	"description" : "A bulletin board extension",
-	"type" : "bolt-extension",
-	"keywords" : [
-		"discussion",
-		"bulletin board",
-		"members"
-	],
-	"require" : {
-		"bolt/bolt" : ">=2.1.0,<3.0.0",
-		"bolt/clientlogin" : ">=2.0.0",
-		"bolt/members" : ">=2.0.0",
-		"bolt/geoip" : ">=2.0.0"
-	},
-	"license" : "GPL-3.0+",
-	"authors" : [{
-			"name" : "Gawain Lynch",
-			"email" : "gawain.lynch@gmail.com"
-		}
-	],
-	"autoload" : {
-		"files" : [
-			"init.php"
-		],
-		"psr-4" : {
-			"Bolt\\Extension\\Bolt\\BoltBB\\" : [
-				"",
-				"src/"
-			]
-		}
-	},
-	"extra" : {
+    "name": "bolt/boltbb",
+    "description": "A bulletin board extension",
+    "type": "bolt-extension",
+    "keywords": [
+        "discussion",
+        "bulletin board",
+        "members"
+    ],
+    "require": {
+        "bolt/bolt": "^3.0",
+        "bolt/members": "^3.0",
+        "bolt/geoip": "^3.0.0"
+    },
+    "license": "GPL-3.0+",
+    "authors": [
+        {
+            "name": "Gawain Lynch",
+            "email": "gawain.lynch@gmail.com"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "Bolt\\Extension\\Bolt\\BoltBB\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Bolt\\Extension\\Bolt\\BoltBB\\Tests\\": "tests",
+            "Bolt\\Tests\\": "vendor/bolt/bolt/tests/phpunit/unit/"
+        }
+    },
+    "extra": {
+        "bolt-assets": "web",
+        "bolt-class": "Bolt\\Extension\\Bolt\\Members\\MembersExtension",
         "bolt-icon": "img/icon-boltbb.png",
-		"branch-alias" : {
-			"dev-master" : "2.1.*-dev"
-		}
-	}
+        "branch-alias": {
+            "dev-master": "3.0.x-dev"
+        }
+    }
 }
