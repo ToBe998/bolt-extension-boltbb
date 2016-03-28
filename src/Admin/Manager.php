@@ -1,9 +1,9 @@
 <?php
 
-namespace Bolt\Extension\Bolt\BoltBB;
+namespace Bolt\Extension\Bolt\BoltBB\Admin;
 
 use Bolt\Translation\Translator as Trans;
-use Silex;
+use Silex\Application;
 
 /**
  * BoltBB administration functions
@@ -27,28 +27,23 @@ use Silex;
  * @copyright Copyright (c) 2014, Gawain Lynch
  * @license   http://opensource.org/licenses/GPL-3.0 GNU Public License 3.0
  */
-class Admin
+class Manager
 {
-    /**
-     * @var Application
-     */
+    /** @var Application */
     private $app;
-
-    /**
-     * @var array
-     */
+    /** @var array */
     private $config;
 
-    public function __construct(Silex\Application $app)
+    public function __construct(Application $app)
     {
         $this->app = $app;
-        $this->config = $this->app[Extension::CONTAINER]->config;
+        $this->config = $app['boltbb.config'];
     }
 
     /**
      * Return an associative array of all of our forums in the database and config
      *
-     * @return mixed
+     * @return array
      */
     public function getForums()
     {
@@ -109,7 +104,7 @@ class Admin
                     $return['needsync'] = true;
                 }
             }
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
         }
 
         return $return;

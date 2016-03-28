@@ -1,6 +1,6 @@
 <?php
 
-namespace Bolt\Extension\Bolt\BoltBB;
+namespace Bolt\Extension\Bolt\BoltBB\Admin;
 
 use Silex;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -49,7 +49,7 @@ class AdminAjaxRequest
     {
         $this->app = $app;
         $this->config = $this->app[Extension::CONTAINER]->config;
-        $this->admin = new Admin($app);
+        $this->admin = new Manager($app);
     }
 
     /**
@@ -121,7 +121,7 @@ class AdminAjaxRequest
      */
     public function forumContenttypes()
     {
-        $bbct = new Contenttypes($this->app);
+        $bbct = new ContentTypes($this->app);
 
         foreach ($this->config['contenttypes'] as $type => $values) {
             if (! $bbct->isContenttype($type)) {
