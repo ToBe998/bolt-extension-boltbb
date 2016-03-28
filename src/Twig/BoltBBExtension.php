@@ -3,7 +3,7 @@
 namespace Bolt\Extension\Bolt\BoltBB\Twig;
 
 use Bolt\Extension\Bolt\BoltBB\Config\Config;
-use Bolt\Extension\Bolt\BoltBB\Data;
+use Bolt\Extension\Bolt\BoltBB\Storage\Records;
 
 /**
  * Twig functions for BoltBB
@@ -31,18 +31,22 @@ class BoltBBExtension extends \Twig_Extension
 {
     /** @var Config */
     private $config;
-    /** @var Data */
-    private $data;
+    /** @var Records */
+    private $records;
+
+    /** @var \Twig_Environment */
+    private $twig;
 
     /**
-     * @var \Twig_Environment
+     * Constructor.
+     *
+     * @param Config  $config
+     * @param Records $records
      */
-    private $twig = null;
-
-    public function __construct(Config $config, Data $data)
+    public function __construct(Config $config, Records $records)
     {
         $this->config = $config;
-        $this->data = $data;
+        $this->records = $records;
     }
 
     public function initRuntime(\Twig_Environment $environment)
@@ -89,7 +93,7 @@ class BoltBBExtension extends \Twig_Extension
         if ($forum_id === false) {
             $forum = '';
         } else {
-            $forum = $this->data->getForum($forum_id);
+            $forum = $this->records->getForum($forum_id);
         }
 
         $template = $this->config->getTemplate('navigation', 'crumbs');
@@ -112,7 +116,7 @@ class BoltBBExtension extends \Twig_Extension
      */
     public function forumSlug($forum_id)
     {
-        $html = $this->data->getForumSlug($forum_id);
+        $html = $this->records->getForumSlug($forum_id);
 
         return new \Twig_Markup($html, 'UTF-8');
     }
@@ -128,7 +132,7 @@ class BoltBBExtension extends \Twig_Extension
      */
     public function forumTopicCount($forum_id)
     {
-        $html = $this->data->getForumTopicCount($forum_id);
+        $html = $this->records->getForumTopicCount($forum_id);
 
         return new \Twig_Markup($html, 'UTF-8');
     }
@@ -144,7 +148,7 @@ class BoltBBExtension extends \Twig_Extension
      */
     public function forumReplyCount($forum_id)
     {
-        $html = $this->data->getForumReplyCount($forum_id);
+        $html = $this->records->getForumReplyCount($forum_id);
 
         return new \Twig_Markup($html, 'UTF-8');
     }
@@ -160,7 +164,7 @@ class BoltBBExtension extends \Twig_Extension
      */
     public function topicReplyCount($topic_id)
     {
-        $html = $this->data->getTopicReplyCount($topic_id);
+        $html = $this->records->getTopicReplyCount($topic_id);
 
         return new \Twig_Markup($html, 'UTF-8');
     }
@@ -175,7 +179,7 @@ class BoltBBExtension extends \Twig_Extension
     public function lastPost($record = false)
     {
         if (gettype($record) === 'object') {
-            $lastpost = $this->data->getTopicLastPost($record->values['id']);
+            $lastpost = $this->records->getTopicLastPost($record->values['id']);
 
             if ($lastpost) {
                 return $lastpost;
@@ -185,6 +189,6 @@ class BoltBBExtension extends \Twig_Extension
             return $record;
         }
 
-        return $this->data->getForumLastPost($record['id']);
+        return $this->records->getForumLastPost($record['id']);
     }
 }

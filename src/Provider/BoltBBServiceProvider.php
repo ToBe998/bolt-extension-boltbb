@@ -5,7 +5,10 @@ namespace Bolt\Extension\Bolt\BoltBB\Provider;
 use Bolt\Extension\Bolt\BoltBB\Config\Config;
 use Bolt\Extension\Bolt\BoltBB\Config\ContentTypes;
 use Bolt\Extension\Bolt\BoltBB\Controller;
+use Bolt\Extension\Bolt\BoltBB\Storage\Records;
 use Bolt\Extension\Bolt\BoltBB\Twig;
+use Bolt\Extension\Bolt\Members\Storage\Schema\Table\Forums;
+use Pimple as Container;
 use Silex\Application;
 use Silex\ServiceProviderInterface;
 
@@ -52,20 +55,36 @@ class BoltBBServiceProvider implements ServiceProviderInterface
     public function register(Application $app)
     {
         $app['boltbb.config'] = $app->share(
-            function ($app) {
+            function () {
                 return new Config($this->config);
             }
         );
 
         $app['boltbb.controller.frontend'] = $app->share(
-            function ($app) {
+            function () {
                 return new Controller\Frontend($this->config);
             }
         );
 
         $app['boltbb.controller.backend'] = $app->share(
-            function ($app) {
+            function () {
                 return new Controller\Backend($this->config);
+            }
+        );
+
+        $app['boltbb.repos'] = $app->share(
+            function ($app) {
+                return new Container([
+                    'boltbb_forums'  => $app->share(function ($app) { return $app['storage']->getRepository(Forums::class); }),
+                    'boltbb_topics'  => $app->share(function ($app) { return $app['storage']->getRepository('boltbb_topics'); }),
+                    'boltbb_replies' => $app->share(function ($app) { return $app['storage']->getRepository('boltbb_replies'); }),
+                ]);
+            }
+        );
+
+        $app['boltbb.records'] = $app->share(
+            function ($app) {
+                return new Records($app['boltbb.config'], $app['boltbb.repos']);
             }
         );
 
@@ -73,11 +92,7 @@ class BoltBBServiceProvider implements ServiceProviderInterface
             $app->extend(
                 'twig',
                 function (\Twig_Environment $twig, $app) {
-                    $twig->addExtension(
-                        new Twig\BoltBBExtension(
-                            $app['boltbb.config']
-                        )
-                    );
+                    $twig->addExtension(new Twig\BoltBBExtension($app['boltbb.config'], $app['boltbb.records']));
 
                     return $twig;
                 }
@@ -105,7 +120,6 @@ class BoltBBServiceProvider implements ServiceProviderInterface
                 }
             )
         );
-
     }
 
     /**
