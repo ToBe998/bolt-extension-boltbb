@@ -38,6 +38,8 @@ class Config
     protected $editorAddons;
     /** @var array */
     protected $editorInternal;
+    /** @var array */
+    protected $forums;
     /** @var boolean */
     protected $notificationsDebug;
     /** @var string */
@@ -70,6 +72,7 @@ class Config
         $this->csrf = $config['csrf'];
         $this->editorAddons = $config['editor']['addons'];
         $this->editorInternal = $config['editor']['internal'];
+        $this->forums = $config['forums'];
         $this->notificationsDebug = $config['notifications']['debug'];
         $this->notificationsDebugAddress = $config['notifications']['debug_address'];
         $this->notificationsName = $config['notifications']['from_name'];
@@ -197,6 +200,32 @@ class Config
     public function setEditorInternal(array $editorInternal)
     {
         $this->editorInternal = $editorInternal;
+
+        return $this;
+    }
+
+    /**
+     * @param string $forum
+     *
+     * @return array
+     */
+    public function getForums($forum = null)
+    {
+        if ($forum === null) {
+            return $this->forums;
+        }
+
+        return $this->forums[$forum];
+    }
+
+    /**
+     * @param array $forums
+     *
+     * @return Config
+     */
+    public function setForums(array $forums)
+    {
+        $this->forums = $forums;
 
         return $this;
     }

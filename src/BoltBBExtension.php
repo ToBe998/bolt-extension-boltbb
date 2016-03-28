@@ -179,6 +179,7 @@ class BoltBBExtension extends SimpleExtension
     {
         return [
             'base_uri'  => 'forums',
+            'forums' => [],
             'webassets' => [
                 'stylesheet' => 'boltbb.min.css',
                 'javascript' => 'boltbb.min.js',
