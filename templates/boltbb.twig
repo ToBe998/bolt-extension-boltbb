@@ -1,5 +1,20 @@
 {% include '_header.twig' %}
 
+{{ block assets }}
+<link rel="stylesheet" href="{{ stylesheet_url }}">
+<script src="{{ editor_url }}" async defer></script>
+<script src="{{ javascript_url }}" async defer></script>
+
+<link rel="stylesheet" href="css/jquery.cssemoticons.css">
+<script src="js/jquery.cssemoticons.min.js" async defer></script>
+
+{# if ($this->config['editor']['addons']['codesnippet']) #}
+{% if addons.codesnippet|default(false) %}
+    <link rel="stylesheet" href="js/ckeditor/plugins/codesnippet/lib/highlight/styles/default.css">
+    <script src="js/ckeditor/plugins/codesnippet/lib/highlight/highlight.pack.js" async defer></script>
+{% endif %}
+{{ endblock assets }}
+
 <!-- Main Page Content and Sidebar -->
 
     <!-- Main Blog Content -->
