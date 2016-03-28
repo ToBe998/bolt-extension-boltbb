@@ -61,7 +61,7 @@ class Backend implements ControllerProviderInterface
         $ctr = $app['controllers_factory'];
 
         // Admin page
-        $ctr->match('/', [$this, 'admin'])
+        $ctr->match('/extend/boltbb/', [$this, 'admin'])
             ->before([$this, 'before'])
             ->bind('BoltBBAdmin')
             ->method('GET')
