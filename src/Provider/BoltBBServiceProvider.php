@@ -96,8 +96,8 @@ class BoltBBServiceProvider implements ServiceProviderInterface
                     $topicsTypes = ContentTypes::getDefaultTopics();
                     $repliesTypes = ContentTypes::getDefaultReplies();
 
-                    $boltContentTypes['topics'] = $method->invoke(new \Bolt\Config($app), 'foo', $topicsTypes, $general);
-                    $boltContentTypes['replies'] = $method->invoke(new \Bolt\Config($app), 'foo', $repliesTypes, $general);
+                    $boltContentTypes['topics'] = $method->invoke(new \Bolt\Config($app), 'topics', $topicsTypes, $general);
+                    $boltContentTypes['replies'] = $method->invoke(new \Bolt\Config($app), 'replies', $repliesTypes, $general);
 
                     $config->set('contenttypes', $boltContentTypes);
 
