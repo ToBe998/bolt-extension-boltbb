@@ -1,6 +1,6 @@
 <?php
 
-namespace Bolt\Extension\Bolt\BoltBB;
+namespace Bolt\Extension\Bolt\BoltBB\Config;
 
 use Silex\Application;
 use Symfony\Component\Yaml\Dumper;
@@ -33,164 +33,27 @@ use Symfony\Component\Yaml\Yaml;
  * @copyright Copyright (c) 2014, Gawain Lynch
  * @license   http://opensource.org/licenses/GPL-3.0 GNU Public License 3.0
  */
-class Contenttypes
+class ContentTypes
 {
     /**
-     * @var Application
-     */
-    private $app;
-
-    /**
-     * @var array
-     */
-    private $config;
-
-    /**
-     * @var Symfony\Component\Yaml\Parser
-     */
-    private $parser;
-
-    /**
-     * @var array
-     */
-    private $contenttypes;
-
-    /**
-     * Typo avoiding filename of contenttypes.yml
+     * Getter for topics array
      *
-     * @var string
+     * @return array
      */
-    private $yamlfile = 'contenttypes.yml';
-
-    public function __construct(Application $app)
-    {
-        $this->app = $app;
-        $this->config = $this->app[Extension::CONTAINER]->config;
-
-        $this->parser = new Parser();
-    }
-
-    /**
-     * Test to see if a contenttype exists in contenttype.yml
-     *
-     * @param string $contenttype
-     *
-     * @return boolean
-     */
-    public function isContenttype($contenttype)
-    {
-        if (! isset($this->contenttypes)) {
-            $this->loadContenttypesYml();
-        }
-
-        if (isset($this->contenttypes[$contenttype])) {
-            return true;
-        }
-
-        return false;
-    }
-
-    /**
-     * Load an uncached copy of contenttypes.yml
-     *
-     * This is overkill in the long-run, but will do until we can dynamically
-     * insert contenttypes into $app['config'] early enough to be useful
-     */
-    private function loadContenttypesYml()
-    {
-        $filename = $this->app['resources']->getPath('config') . '/' . $this->yamlfile;
-
-        if (is_readable($filename)) {
-            $this->contenttypes = $this->parser->parse(file_get_contents($filename) . "\n");
-        } else {
-            throw new \Exception($filename . ' is not readable!');
-        }
-    }
-
-    /**
-     * Insert a missing contenttype into contenttypes.yml
-     *
-     * @param string $type Either 'topics' or 'replies'
-     *
-     * @return void
-     */
-    public function insertContenttype($type)
-    {
-        // Check to see if the contenttype is already in contenttypes.yml
-        if ($this->isContenttype($type)) {
-            return;
-        }
-
-        // Build our defaults
-        if ($type == 'topics') {
-            $output = $this->getDefaultTopics();
-        } elseif ($type == 'replies') {
-            $output = $this->getDefaultReplies();
-        }
-
-        // Get the existing file, comments and all...  Play nice!
-        $filename = $this->app['resources']->getPath('config') . '/' . $this->yamlfile;
-
-        if (is_readable($filename)) {
-            $data = file_get_contents($filename) . "\n";
-
-            // Append the contenttype
-            $data .= "##\n";
-            $data .= "## Automatically generated BoltBB contenttype for {$type}\n";
-            $data .= "##\n";
-            $data .= "{$type}:\n";
-            $data .= $this->getYaml($output);
-
-            try {
-                file_put_contents($filename, $data . "\n");
-            } catch (\Exception $e) {
-                throw new \Exception($filename . ' is not writeable!');
-            }
-        } else {
-            throw new \Exception($filename . ' is not readable!');
-        }
-    }
-
-    /**
-     * Work around Symfony YAML's lack of recursion support
-     *
-     * @param array  $array
-     * @param string $out
-     *
-     * @return string
-     */
-    private function getYaml($array, $out = '')
-    {
-        $this->yaml = new Dumper();
-        $this->indent = 4;
-
-        foreach ($array as $key => $value) {
-            if (is_array($value)) {
-                $out .= str_repeat(' ', $this->indent) . $key . ":\n";
-                $out .= $this->yaml->dump($value, 2, $this->indent + 4);
-            } else {
-                $out .= $this->yaml->dump([$key => $value], 2, $this->indent);
-            }
-        }
-
-        return $out;
-    }
-
-    /**
-     * Setter for topics array
-     *
-     * @return void
-     */
-    private function getDefaultTopics()
+    public static function getDefaultTopics()
     {
         return [
-            'name'          => 'Topics',
-            'singular_name' => 'Topic',
+            'name'          => 'BoltBB Topics',
+            'singular_name' => 'BoltBB Topic',
             'fields'        => [
                 'title' => [
                     'type'    => 'text',
                     'class'   => 'large',
                     'group'   => 'topic',
+                ],
+                'slug' => [
+                    'type'    => 'slug',
+                    'uses'    => 'title',
                 ],
                 'body' => [
                     'type'    => 'html',
@@ -199,7 +62,7 @@ class Contenttypes
                 'author' => [
                     'type'     => 'text',
                     'variant'  => 'inline',
-                    'info'     => 'The ClientLogin ID of the author',
+                    'info'     => 'The GUID of the author',
                     'readonly' => true,
                     'group'    => 'Info',
                 ],
@@ -244,20 +107,24 @@ class Contenttypes
     }
 
     /**
-     * Setter for replies array
+     * Getter for replies array
      *
-     * @return void
+     * @return array
      */
-    private function getDefaultReplies()
+    public static function getDefaultReplies()
     {
         return [
-            'name'          => 'Replies',
-            'singular_name' => 'Reply',
+            'name'          => 'BoltBB Replies',
+            'singular_name' => 'BoltBB Reply',
             'fields'        => [
                 'title' => [
                     'type'    => 'text',
                     'class'   => 'large',
                     'group'   => 'topic',
+                ],
+                'slug' => [
+                    'type'    => 'slug',
+                    'uses'    => 'title',
                 ],
                 'body' => [
                     'type'    => 'html',
@@ -266,7 +133,7 @@ class Contenttypes
                 'author' => [
                     'type'     => 'text',
                     'variant'  => 'inline',
-                    'info'     => 'The ClientLogin ID of the author',
+                    'info'     => 'The GUID of the author',
                     'readonly' => true,
                     'group'    => 'Info',
                 ],

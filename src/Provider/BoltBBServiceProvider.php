@@ -3,6 +3,7 @@
 namespace Bolt\Extension\Bolt\BoltBB\Provider;
 
 use Bolt\Extension\Bolt\BoltBB\Config\Config;
+use Bolt\Extension\Bolt\BoltBB\Config\ContentTypes;
 use Bolt\Extension\Bolt\BoltBB\Controller;
 use Bolt\Extension\Bolt\BoltBB\Twig;
 use Silex\Application;
@@ -82,6 +83,29 @@ class BoltBBServiceProvider implements ServiceProviderInterface
                 }
             )
         );
+
+        $app['config'] = $app->share(
+            $app->extend(
+                'config',
+                function ($config) use ($app) {
+                    $boltContentTypes = $config->get('contenttypes');
+                    $general = $config->get('general');
+                    $method = new \ReflectionMethod('\Bolt\Config', 'parseContentType');
+                    $method->setAccessible(true);
+
+                    $topicsTypes = ContentTypes::getDefaultTopics();
+                    $repliesTypes = ContentTypes::getDefaultReplies();
+
+                    $boltContentTypes['topics'] = $method->invoke(new \Bolt\Config($app), 'foo', $topicsTypes, $general);
+                    $boltContentTypes['replies'] = $method->invoke(new \Bolt\Config($app), 'foo', $repliesTypes, $general);
+
+                    $config->set('contenttypes', $boltContentTypes);
+
+                    return $config;
+                }
+            )
+        );
+
     }
 
     /**

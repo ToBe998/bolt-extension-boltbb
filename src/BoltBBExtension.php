@@ -12,7 +12,6 @@ use Bolt\Extension\Bolt\Members\Event\MembersRolesEvent;
 use Bolt\Extension\SimpleExtension;
 use Bolt\Menu\MenuEntry;
 use Bolt\Translation\Translator as Trans;
-use Doctrine\DBAL\Schema\Schema;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 /**
