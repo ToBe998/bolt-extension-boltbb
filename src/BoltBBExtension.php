@@ -96,7 +96,8 @@ class BoltBBExtension extends SimpleExtension
         $app = $this->getContainer();
 
         return [
-            '/' => $app['boltbb.controller.backend'],
+            '/'      => $app['boltbb.controller.backend'],
+            '/async' => $app['boltbb.controller.ajax'],
         ];
     }
 

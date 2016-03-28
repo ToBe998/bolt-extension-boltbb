@@ -2,6 +2,8 @@
 
 namespace Bolt\Extension\Bolt\BoltBB\Provider;
 
+use Bolt\Extension\Bolt\BoltBB\Admin\AdminAjaxRequest;
+use Bolt\Extension\Bolt\BoltBB\Admin\Manager;
 use Bolt\Extension\Bolt\BoltBB\Config\Config;
 use Bolt\Extension\Bolt\BoltBB\Config\ContentTypes;
 use Bolt\Extension\Bolt\BoltBB\Controller;
@@ -61,14 +63,20 @@ class BoltBBServiceProvider implements ServiceProviderInterface
         );
 
         $app['boltbb.controller.frontend'] = $app->share(
-            function () {
-                return new Controller\Frontend($this->config);
+            function ($app) {
+                return new Controller\Frontend($app['boltbb.config']);
             }
         );
 
         $app['boltbb.controller.backend'] = $app->share(
-            function () {
-                return new Controller\Backend($this->config);
+            function ($app) {
+                return new Controller\Backend($app['boltbb.config']);
+            }
+        );
+
+        $app['boltbb.controller.ajax'] = $app->share(
+            function ($app) {
+                return new Controller\Ajax($app['boltbb.config']);
             }
         );
 
@@ -87,6 +95,19 @@ class BoltBBServiceProvider implements ServiceProviderInterface
                 return new Records($app['boltbb.config'], $app['boltbb.repos']);
             }
         );
+        
+        $app['boltbb.admin.manager'] = $app->share(
+            function ($app) {
+                return new Manager($app);
+            }
+        );
+
+        $app['boltbb.admin.request'] = $app->share(
+            function ($app) {
+                return new AdminAjaxRequest($app);
+            }
+        );
+
 
         $app['twig'] = $app->share(
             $app->extend(
