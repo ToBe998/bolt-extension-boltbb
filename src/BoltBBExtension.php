@@ -18,7 +18,7 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 /**
  * BoltBB discussion extension for Bolt
  *
- * Copyright (C) 2014  Gawain Lynch
+ * Copyright (C) 2014-2016 Gawain Lynch
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by

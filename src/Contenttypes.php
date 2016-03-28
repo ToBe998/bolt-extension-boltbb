@@ -14,7 +14,7 @@ use Symfony\Component\Yaml\Yaml;
  * Yes this is over-engineered!  It is a placeholder until Bolt catches up with
  * extension defined contenttypes
  *
- * Copyright (C) 2014  Gawain Lynch
+ * Copyright (C) 2014-2016 Gawain Lynch
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
