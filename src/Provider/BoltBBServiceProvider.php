@@ -95,7 +95,7 @@ class BoltBBServiceProvider implements ServiceProviderInterface
                 return new Records($app['boltbb.config'], $app['boltbb.repos']);
             }
         );
-        
+
         $app['boltbb.admin.manager'] = $app->share(
             function ($app) {
                 return new Manager($app);
@@ -129,11 +129,13 @@ class BoltBBServiceProvider implements ServiceProviderInterface
                     $method = new \ReflectionMethod('\Bolt\Config', 'parseContentType');
                     $method->setAccessible(true);
 
+                    $forumsTypes = ContentTypes::getDefaultForums();
                     $topicsTypes = ContentTypes::getDefaultTopics();
                     $repliesTypes = ContentTypes::getDefaultReplies();
 
-                    $boltContentTypes['topics'] = $method->invoke(new \Bolt\Config($app), 'topics', $topicsTypes, $general);
-                    $boltContentTypes['replies'] = $method->invoke(new \Bolt\Config($app), 'replies', $repliesTypes, $general);
+                    $boltContentTypes['bb_forums'] = $method->invoke($config, 'bb_forums', $forumsTypes, $general);
+                    $boltContentTypes['bb_topics'] = $method->invoke($config, 'bb_topics', $topicsTypes, $general);
+                    $boltContentTypes['bb_replies'] = $method->invoke($config, 'bb_replies', $repliesTypes, $general);
 
                     $config->set('contenttypes', $boltContentTypes);
 

@@ -36,7 +36,47 @@ use Symfony\Component\Yaml\Yaml;
 class ContentTypes
 {
     /**
-     * Getter for topics array
+     * Getter for forums array.
+     *
+     * @return array
+     */
+    public static function getDefaultForums()
+    {
+        return [
+            'name'          => 'BoltBB Forums',
+            'singular_name' => 'BoltBB Forum',
+            'fields'        => [
+                'title' => [
+                    'type'    => 'text',
+                    'class'   => 'large',
+                    'group'   => 'topic',
+                ],
+                'slug' => [
+                    'type'    => 'slug',
+                    'uses'    => 'title',
+                ],
+                'state' => [
+                    'type'    => 'select',
+                    'info'    => 'Open: Topics can be made<br><br>Closed: Replies are closed',
+                    'values'  => [
+                        'open',
+                        'closed',
+                    ],
+                    'variant' => 'inline',
+                ],
+                'subscribers' => [
+                    'type'     => 'textarea',
+                    'readonly' => true,
+                    'hidden'   => true,
+                ],
+            ],
+            'default_status' => 'published',
+            'viewless'       => true,
+        ];
+    }
+
+    /**
+     * Getter for topics array.
      *
      * @return array
      */
@@ -103,11 +143,12 @@ class ContentTypes
                 ],
             ],
             'default_status' => 'published',
+            'viewless'       => true,
         ];
     }
 
     /**
-     * Getter for replies array
+     * Getter for replies array.
      *
      * @return array
      */
@@ -155,6 +196,7 @@ class ContentTypes
                 ],
             ],
             'default_status' => 'published',
+            'viewless'       => true,
         ];
     }
 }
