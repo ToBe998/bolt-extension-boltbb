@@ -33,10 +33,10 @@ class Forums extends BaseTable
      */
     protected function addColumns()
     {
-        $this->table->addColumn('id',          'integer', ['autoincrement' => true]);
-        $this->table->addColumn('slug',        'string',  ['length' => 256]);
-        $this->table->addColumn('state',       'string',  ['length' => 32,   'default' => 'open']);
-        $this->table->addColumn('subscribers', 'string',  ['length' => 2048, 'notnull' => false]);
+        $this->table->addColumn('id',          'integer',    ['autoincrement' => true]);
+        $this->table->addColumn('slug',        'string',     ['length' => 256]);
+        $this->table->addColumn('state',       'string',     ['length' => 32,   'default' => 'open']);
+        $this->table->addColumn('subscribers', 'json_array', []);
     }
 
     /**
