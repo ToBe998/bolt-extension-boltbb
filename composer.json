@@ -33,7 +33,7 @@
     "extra": {
         "bolt-assets": "web",
         "bolt-class": "Bolt\\Extension\\Bolt\\BoltBB\\BoltBBExtension",
-        "bolt-icon": "img/icon-boltbb.png",
+        "bolt-icon": "icon-boltbb.png",
         "branch-alias": {
             "dev-master": "3.0.x-dev"
         }
