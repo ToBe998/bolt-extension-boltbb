@@ -80,10 +80,10 @@ class Backend implements ControllerProviderInterface
     {
         /** @var BoltBBExtension $extension */
         $extension = $app['extensions']->get('Bolt/BoltBB');
-        $dir = $extension->getWebDirectory()->getPath();
+        $dir = $app['resources']->urlPrefix . "/" . $extension->getWebDirectory()->getPath();
 
         // Add our JS & CSS
-        $js = (new JavaScript('/' . $dir . '/js/boltbb.admin.js'))->setZone(Zone::BACKEND)->setPriority(20)->setLate(true);
+        $js = (new JavaScript($dir . '/js/boltbb.admin.js'))->setZone(Zone::BACKEND)->setPriority(20)->setLate(true);
         $app['asset.queue.file']->add($js);
     }
 
